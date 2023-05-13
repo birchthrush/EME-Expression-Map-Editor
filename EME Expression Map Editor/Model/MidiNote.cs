@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EME_Refactored.Model
+namespace EME_Expression_Map_Editor.Model
 {
     /*
      * Utility class for handling conversion of midi notes as either numerical values or letter names

@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Xml;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Security.AccessControl;
-using System.Linq;
-using System.Security.Cryptography;
 
 namespace EME_Expression_Map_Editor.Model
 {

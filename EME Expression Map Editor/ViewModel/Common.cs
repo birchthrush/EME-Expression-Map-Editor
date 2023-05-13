@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace EME_Expression_Map_Editor.ViewModel
 {
@@ -48,5 +49,14 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         static public int ParsePercentage(string s, int default_value)
             => Int32.TryParse(s.Replace("%", String.Empty), out int n) ? n : default_value;
+
+        public static class KeyModifiers
+        {
+            public static bool CascadeKeyActive()
+                => Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
+
+            public static bool AlternativeInputKeyActive()
+                => Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+        }
     }
 }

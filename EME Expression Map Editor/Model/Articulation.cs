@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml;
-
-namespace EME_Expression_Map_Editor.Model
+﻿namespace EME_Expression_Map_Editor.Model
 {
 	public class Articulation
 	{
