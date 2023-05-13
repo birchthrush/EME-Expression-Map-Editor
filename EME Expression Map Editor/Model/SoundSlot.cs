@@ -7,7 +7,6 @@ namespace EME_Expression_Map_Editor.Model
 {
 	public class SoundSlot
 	{
-		//public static readonly string XmlMemberName = "slots";
 		public static readonly int AnyChannel = -1;
 		public static readonly int NoRemoteKey = -1;
 
@@ -207,7 +206,6 @@ namespace EME_Expression_Map_Editor.Model
         {
 			for (int i = 0; i < _articulations.Count; ++i)
             {
-				//if (_articulations[i] != null && ReferenceEquals(_articulations[i], tgt))
 				if (Articulation.IsBlank(_articulations[i]) && ReferenceEquals(_articulations[i], tgt))
                 {
 					_articulations[i] = Articulation.Blank;

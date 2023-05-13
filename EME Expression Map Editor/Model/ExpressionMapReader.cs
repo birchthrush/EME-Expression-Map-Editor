@@ -28,13 +28,6 @@ namespace EME_Expression_Map_Editor.Model
             string? val = reader.GetAttribute(XmlConstants.Value);
             reader.Read();
             return val != null ? val : string.Empty; 
-
-            /*
-            reader.ReadToFollowing(XmlConstants.StringTypename);
-            string val = reader[Value];
-            reader.Read();
-            return val;
-            */
         }
 
         public static int NextInteger(XmlReader reader)
@@ -43,13 +36,6 @@ namespace EME_Expression_Map_Editor.Model
             Int32.TryParse(reader.GetAttribute(XmlConstants.Value), out int val);
             reader.Read();
             return val;
-
-            /*
-            reader.ReadToFollowing(XmlConstants.IntegerTypename);
-            int val = Int32.Parse(reader[XmlConstants.Value]);
-            reader.Read();
-            return val;
-            */
         }
 
         public static double NextFloat(XmlReader reader)
@@ -58,13 +44,6 @@ namespace EME_Expression_Map_Editor.Model
             Double.TryParse(reader.GetAttribute(XmlConstants.Value), out double val);
             reader.Read(); 
             return val;
-
-            /*
-            reader.ReadToFollowing(XmlConstants.FloatTypename);
-            double val = Double.Parse(reader[XmlConstants.Value], new CultureInfo(XmlConstants.DefaultCultureInfo));
-            reader.Read();
-            return val;
-            */
         }
 
         public static void ReadArticulation(XmlReader reader, Articulation art)
@@ -98,16 +77,13 @@ namespace EME_Expression_Map_Editor.Model
             }
 
             
-            NextInteger(reader); // Throwaway 'Status' element
+            NextInteger(reader); // Throw away 'Status' element; its function is unknown, and is never used
             slot.RemoteKey = NextInteger(reader);
 
             do
             {
                 reader.ReadToFollowing("obj");
             } while (ReadUntilAttributeFound(reader, "class", "PSlotNoteChanger")); 
-            
-            //while (!reader["class"].Equals("PSlotNoteChanger"));
-
 
             // SoundSlot Attributes
             slot.Channel = NextInteger(reader);
@@ -124,10 +100,8 @@ namespace EME_Expression_Map_Editor.Model
             {
                 reader.ReadToFollowing("member");
             } while (ReadUntilAttributeFound(reader, "name", "midiMessages")); 
-            
-            //while (!reader["name"].Equals("midiMessages"));
 
-            NextInteger(reader); // Throw away version number
+            NextInteger(reader); // Throw away version number; unknown function, never used
 
             do
             {
@@ -137,19 +111,15 @@ namespace EME_Expression_Map_Editor.Model
             if (reader.Name.Equals("list"))
             {
                 reader.Read();
+
                 do
                 {
                     OutputEvent output_event = new OutputEvent();
                     ReadOutputEvent(reader, output_event); 
                     slot.AddOutputEvent(output_event);
                     reader.Read(); 
-
-                    /*
-                    output_event.ReadXml(reader);
-                    AddOutputEvent(output_event);
-                    reader.Read();
-                    */
                 } while (reader.Name.Equals("obj"));
+
                 reader.ReadEndElement(); // End of list
             }
 
@@ -166,13 +136,6 @@ namespace EME_Expression_Map_Editor.Model
                     ReadArticulation(reader, art);
                     slot.AssignArticulation(art, art.Group);
                     reader.Read(); 
-
-                    /*
-                    Articulation art = new Articulation();
-                    art.ReadXml(reader);
-                    AssignArticulation(art, art.Group);
-                    reader.Read();
-                    */
                 } while (reader.Name.Equals("obj"));
             }
 
@@ -199,7 +162,6 @@ namespace EME_Expression_Map_Editor.Model
                     {
                         Articulation art = new Articulation();
                         ReadArticulation(reader, art);
-                        //art.ReadXml(reader);
                         expmap.Articulations.Add(art);
                         reader.Read();
                     } while (reader.Name.Equals("obj"));
@@ -209,7 +171,6 @@ namespace EME_Expression_Map_Editor.Model
                     do
                     {
                         SoundSlot slot = new SoundSlot();
-                        //slot.ReadXml(reader);
                         ReadSoundSlot(reader, slot);
                         expmap.SoundSlots.Add(slot);
                         reader.Read();

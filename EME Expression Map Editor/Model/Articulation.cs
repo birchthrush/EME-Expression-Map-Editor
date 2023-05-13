@@ -12,12 +12,10 @@ namespace EME_Expression_Map_Editor.Model
 		public static Articulation Blank
 		{
 			get => _blank; 
-			//get => null; 
 		}
 
 		public static bool IsBlank(Articulation art)
 			=> art.Equals(Blank); 
-			//=> art == null; 
 
 		// Candidate for removal - unused? 
 		/*
@@ -86,7 +84,7 @@ namespace EME_Expression_Map_Editor.Model
 
 		// Articulations belong to one of four groups, numbered 0-3. 
         private int _group;
-        public int Group
+		public int Group
 		{
 			get => _group;
 			set => _group = ExpressionMap.Common.ConstrainToRange(value, MinGroup, MaxGroup);

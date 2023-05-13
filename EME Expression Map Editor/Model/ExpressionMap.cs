@@ -10,11 +10,6 @@ namespace EME_Expression_Map_Editor.Model
 {
 	public static class ExpressionMapCommon
 	{
-		/*
-        public static sbyte IncrementAndWrapAround(sbyte val, sbyte floor, sbyte ceiling)
-			=> ++val > ceiling ? floor : val;		
-		*/
-
 		public static Dictionary<string, string> Abbreviations = new Dictionary<string, string>()
 		{
             { "s", "Short" },
@@ -126,7 +121,6 @@ namespace EME_Expression_Map_Editor.Model
                 => Math.Clamp(val, min, max);
         }
 
-
 		private string _name = ""; 
 		public string Name
 		{
@@ -146,7 +140,6 @@ namespace EME_Expression_Map_Editor.Model
 			get => _soundslots;
 			set => _soundslots = value; 
 		}
-
 
 		public ExpressionMap()
 		{
@@ -192,7 +185,6 @@ namespace EME_Expression_Map_Editor.Model
 			{
 				for (int i = 0; i < 4; ++i)
 				{
-					//if (slot.Articulations[i] != null)
 					if (!Articulation.IsBlank(slot.Articulations[i]))
 					{
 						int ref_idx = this.Articulations.FindIndex(x => x.IsEquivalentTo(slot.Articulations[i]));
@@ -320,13 +312,6 @@ namespace EME_Expression_Map_Editor.Model
 			Dictionary<Articulation, bool> dictionary = new Dictionary<Articulation, bool>();
 			foreach (Articulation a in _articulations)
 				dictionary.Add(a, false);
-
-			/*
-			foreach (SoundSlot s in _soundslots)
-				foreach (Articulation a in s.Articulations)
-					if (a != null)
-						dictionary[a] = true; 
-			*/
 
 			foreach (SoundSlot s in _soundslots)
 				foreach (Articulation a in s.Articulations)

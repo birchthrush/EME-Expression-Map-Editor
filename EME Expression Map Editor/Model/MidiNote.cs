@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace EME_Refactored.Model
 {
+    /*
+     * Utility class for handling conversion of midi notes as either numerical values or letter names
+     */
     public static class MidiNote
     {
         public static string MidiNoteName(int n)

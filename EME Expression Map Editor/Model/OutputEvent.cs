@@ -7,6 +7,7 @@ namespace EME_Expression_Map_Editor.Model
 {
 	public class OutputEvent
 	{
+		// Predefined constants in ExpressionMap spec to define whether an Output Event transmits a midi note, program change or continuous controller
 		public static readonly int NoteEvent = 144;
 		public static readonly int ProgramChangeEvent = 192;
 		public static readonly int ControllerEvent = 176;
