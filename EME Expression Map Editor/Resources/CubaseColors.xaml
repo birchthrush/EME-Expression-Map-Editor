@@ -1,0 +1,34 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <x:Array Type="Brush" x:Key="DefaultColorOptions">
+        <SolidColorBrush Color="#E53636" />
+        <SolidColorBrush Color="#E57636" />
+        <SolidColorBrush Color="#E5BA3B" />
+        <SolidColorBrush Color="#D5E84C" />
+        <SolidColorBrush Color="#8de536" />
+        <SolidColorBrush Color="#51d83c" />
+        <SolidColorBrush Color="#35dd5f" />
+        <SolidColorBrush Color="#33d697" />
+        <SolidColorBrush Color="#30cccc" />
+        <SolidColorBrush Color="#40aae8" />
+        <SolidColorBrush Color="#5d80ea" />
+        <SolidColorBrush Color="#796aed" />
+        <SolidColorBrush Color="#a056ea" />
+        <SolidColorBrush Color="#cf44e5" />
+        <SolidColorBrush Color="#e536b9" />
+        <SolidColorBrush Color="#e53679" />
+    </x:Array>
+    <SolidColorBrush x:Key="WindowBackgroundColor" Color="#09090a" />
+    <SolidColorBrush x:Key="ElementBackgroundColor" Color="#25282b" />
+    <SolidColorBrush x:Key="TextBoxBackgroundColor" Color="#15181b" />
+    <SolidColorBrush x:Key="HeaderBackgroundColor" Color="#45484a" />
+    <SolidColorBrush x:Key="BorderColor" Color="#5b5d60" />
+    <SolidColorBrush x:Key="ButtonColorLighter" Color="#a1a2a3" />
+    <SolidColorBrush x:Key="ButtonColorDarker" Color="#7f8081"/>
+    <SolidColorBrush x:Key="ButtonBorderColor" Color="#121e29" />
+    <SolidColorBrush x:Key="DefaultForegroundColor" Color="#e1f4f4" />
+    <SolidColorBrush x:Key="SelectionBackgroundColor" Color="#525354" />
+    <SolidColorBrush x:Key="SelectionTextColor" Color="#010102" />
+    <SolidColorBrush x:Key="EditingBackgroundColor" Color="#525354" />
+    <SolidColorBrush x:Key="EditingBorderColor" Color="#525394" />
+</ResourceDictionary>

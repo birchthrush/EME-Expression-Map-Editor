@@ -4,6 +4,13 @@
              xmlns:local="clr-namespace:EME_Expression_Map_Editor"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/GlobalStrings.xaml" />
+                <ResourceDictionary Source="Resources/CubaseColors.xaml" />
+                <ResourceDictionary Source="Resources/DataTemplates.xaml" />
+                <ResourceDictionary Source="Resources/StyleRules.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

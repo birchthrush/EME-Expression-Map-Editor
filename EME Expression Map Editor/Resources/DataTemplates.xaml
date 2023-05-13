@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:presenters="clr-namespace:ExpMapUI.Presenters">
+    <DataTemplate x:Key="ColorPicker">
+        <StackPanel Orientation="Horizontal">
+            <Rectangle Width="40" Height="15" Fill="{Binding}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ArticulationPicker">
+        <StackPanel Orientation="Horizontal">
+            
+        </StackPanel>
+    </DataTemplate>
+
+</ResourceDictionary>
