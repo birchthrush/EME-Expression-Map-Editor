@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,8 @@ namespace EME_Expression_Map_Editor.ViewModel
     internal class ExpressionMapViewModel : ViewModelBase
     {
         ExpressionMap _map = new ExpressionMap(); 
+
+        
 
         public ExpressionMapViewModel() 
         {
