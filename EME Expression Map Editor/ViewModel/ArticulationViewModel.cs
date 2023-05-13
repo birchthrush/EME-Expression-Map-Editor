@@ -78,14 +78,15 @@ namespace EME_Expression_Map_Editor.ViewModel
                 //ExpressionMapPresenter.Instance.ArticulationNameChanged(_articulation);
             }
         }
+
         public int DisplayType
         {
             get => _articulation.DisplayType == Articulation.Display.Symbol ? 0 : 1;
             set
             {
                 _articulation.DisplayType = ((value == 0) ? Articulation.Display.Symbol : Articulation.Display.Text);
-                OnPropertyChanged(nameof(DisplayType));
                 OnPropertyChanged(nameof(SymbolOrText));
+                OnPropertyChanged(nameof(DisplayType));
             }
         }
 

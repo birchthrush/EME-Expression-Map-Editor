@@ -45,12 +45,14 @@
                                 CommandParameter="{Binding ElementName=SoundSlotGrid, Path=SelectedItems}" 
                                 />
                     </StackPanel>
+                              <!--
+                              SelectedIndex="{Binding SelectedSlotIndex}"
+                                -->
                     <DataGrid Height="800" 
                               SelectionMode="Extended"
                               Name="SoundSlotGrid"
                               ItemsSource="{Binding SoundSlots}" 
                               SelectedValue="{Binding SelectedSlot}" 
-                              SelectedIndex="{Binding SelectedSlotIndex}"
                               SelectionChanged="SoundSlotGrid_SelectionChanged"
                               dd:DragDrop.IsDragSource="True"
                               dd:DragDrop.IsDropTarget="True"
@@ -423,7 +425,10 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Text/Symbol" Width="90" Binding="{Binding SymbolOrText}">
+                            <DataGridTextColumn Header="Text/Symbol" 
+                                                Width="90" 
+                                                Binding="{Binding SymbolOrText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                                
+                                                >
 
                             </DataGridTextColumn>
                             <DataGridTextColumn Header="Description" Width="200" Binding="{Binding Description}"/>

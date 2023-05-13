@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EME_Expression_Map_Editor.ViewModel
 {
-    public abstract class ViewModelBase
+    public abstract class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged = null; 
         protected void OnPropertyChanged (string property_name)

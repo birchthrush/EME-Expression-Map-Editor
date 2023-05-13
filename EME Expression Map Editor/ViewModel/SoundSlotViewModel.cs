@@ -39,7 +39,6 @@ namespace EME_Expression_Map_Editor.ViewModel
                     _slot.Channel = channel - 1;
                 else if (value.ToLower().Equals(AnyChannelLabel.ToLower()))
                     _slot.Channel = SoundSlot.AnyChannel;
-                
                 OnPropertyChanged(nameof(Channel));
             }
         }

@@ -33,8 +33,12 @@ namespace EME_Expression_Map_Editor.ViewModel
         private SoundSlotViewModel? _selectedSlot; 
         public SoundSlotViewModel? SelectedSlot
         {
-            get => _selectedSlot; 
-            set => _selectedSlot = value;
+            get => _selectedSlot;
+            set
+            {
+                _selectedSlot = value;
+                OnPropertyChanged(nameof(SelectedSlot));
+            }
         }
 
         private ObservableCollection<ArticulationViewModel> _articulations = new ObservableCollection<ArticulationViewModel>();
