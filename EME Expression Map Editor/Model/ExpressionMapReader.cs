@@ -153,7 +153,7 @@ namespace EME_Expression_Map_Editor.Model
             reader.MoveToNextAttribute();
             expmap.Name = reader.Value;
 
-            while (!reader.EOF)
+            while (!reader.EOF) 
             {
                 reader.ReadToFollowing(XmlConstants.Object);
                 if (reader[XmlConstants.Class] == XmlConstants.Articulation.XmlClass)
