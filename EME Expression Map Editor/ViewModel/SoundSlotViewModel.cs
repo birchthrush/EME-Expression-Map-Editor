@@ -56,6 +56,20 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
+        public string RemoteKey
+        {
+            get => _slot.RemoteKey == SoundSlot.NoRemoteKey ? "-" : _slot.RemoteKey.ToString(); 
+            set
+            {
+                if (Int32.TryParse(value, out int n))
+                    _slot.RemoteKey = n;
+                else if (value.Equals("-") || value.Equals(string.Empty))
+                    _slot.RemoteKey = SoundSlot.NoRemoteKey;
+
+                OnPropertyChanged("RemoteKey");
+            }
+        }
+
         // Slot's midi channel: displayed as 1-16 on UI for readability
         // An offset of (-1) is applied to convert to 0-15 formatting internally
         // Model layer handles range checks
