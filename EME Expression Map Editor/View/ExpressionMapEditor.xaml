@@ -4,17 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EME_Expression_Map_Editor"
+        xmlns:viewmodel="clr-namespace:EME_Expression_Map_Editor.ViewModel"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:dd="urn:gong-wpf-dragdrop"
         mc:Ignorable="d"
         ResizeMode="CanMinimize"
         WindowStyle="SingleBorderWindow"
         Title="{StaticResource ApplicationTitle}" Height="960" Width="1107">
-        <!--
     <Window.DataContext>
-        <presenters:ExpressionMapPresenter />
+        <viewmodel:ExpressionMapViewModel />
     </Window.DataContext>
-        -->
     <Window.InputBindings>
         <!--
         <KeyBinding Key="H" Modifiers="Ctrl" Command="{Binding OutputEventReplacementCommand}" />
