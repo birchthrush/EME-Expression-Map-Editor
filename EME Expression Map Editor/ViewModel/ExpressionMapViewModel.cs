@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Xml;
 using EME_Expression_Map_Editor.Command;
 using EME_Expression_Map_Editor.Model;
@@ -14,7 +15,9 @@ namespace EME_Expression_Map_Editor.ViewModel
 {
     internal class ExpressionMapViewModel : ViewModelBase
     {
-        ExpressionMap _map = new ExpressionMap(); 
+        ExpressionMap _map = new ExpressionMap();
+
+        #region ExpressionMap Properties
 
         private string _name = string.Empty;
         public string Name 
@@ -47,7 +50,74 @@ namespace EME_Expression_Map_Editor.ViewModel
             get => _articulations;
             set => _articulations = value;
         }
-        
+
+        #endregion
+
+        #region Commands relating to Articulations
+
+        public ICommand PropagateArticulationTypeCommand { get; private set; }
+        private void PropagateArticulationDisplayType(int display_type)
+        {
+            foreach (var item in Articulations)
+                if (item.IsSelected) 
+                    item.DisplayType = display_type;
+
+
+            /*
+            if (SelectedArticulations == null)
+                return;
+
+            foreach (ArticulationPresenter art in SelectedArticulations)
+                art.DisplayType = display_type;
+
+            OnPropertyChanged("SoundSlots");
+            */
+        }
+
+        public ICommand PropagateArticulationDisplayTypeCommand { get; private set; }
+        private void PropagateArticulationType(int art_type)
+        {
+            foreach (var item in Articulations)
+                if (item.IsSelected)
+                    item.ArticulationType = art_type;
+            /*
+            if (SelectedArticulations == null)
+                return;
+
+            foreach (ArticulationPresenter art in SelectedArticulations)
+                art.ArticulationType = art_type;
+
+            OnPropertyChanged("SoundSlots");
+            */
+        }
+
+        public ICommand TestCommand { get; private set; }
+        private void Test(System.Collections.IList items)
+        {
+            if (items == null || items.Count == 0)
+                return; 
+
+            List<ArticulationViewModel> list = items.Cast<ArticulationViewModel>().ToList();
+            list = GetSortedList<ArticulationViewModel>(list, Articulations);
+
+            var target = list.First().DisplayType; 
+            
+            foreach (ArticulationViewModel art in list)
+            {
+                art.DisplayType = target;
+                art.Description = "Test";
+            }
+        }
+
+        private List<T> GetSortedList<T>(List<T> src, IList<T> ordering)
+        {
+            src.Sort((x, y) => ordering.IndexOf(x).CompareTo(ordering.IndexOf(y)));
+            return src; 
+        }
+
+
+        #endregion
+
 
         public ExpressionMapViewModel() 
         {
@@ -56,9 +126,13 @@ namespace EME_Expression_Map_Editor.ViewModel
                 Console.WriteLine("Loading ExpressionMap VM in DEBUG mode: fetching sample data");
                 GenerateTestData();
                 ExtractViewModels();
-            #endif
+#endif
+
+            PropagateArticulationDisplayTypeCommand = new CustomCommand<int>(PropagateArticulationDisplayType);
+            PropagateArticulationTypeCommand = new CustomCommand<int>(PropagateArticulationType);
 
 
+            TestCommand = new CustomCommand<System.Collections.IList>(Test); 
         }
 
         private void ExtractViewModels()

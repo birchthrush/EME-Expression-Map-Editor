@@ -15,7 +15,18 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         // Trigger PropertyChanged for *all* properties
         public void Refresh()
-            => this.OnPropertyChanged(string.Empty); 
+            => this.OnPropertyChanged(string.Empty);
+
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged(nameof(IsSelected));
+            }
+        }
 
         public ViewModelBase()
         {

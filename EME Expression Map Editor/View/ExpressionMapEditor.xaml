@@ -74,6 +74,11 @@
                               VirtualizingStackPanel.VirtualizationMode="Recycling"
                               VirtualizingPanel.IsVirtualizingWhenGrouping="True"                              
                               >
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="IsSelected" Value="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" />
+                            </Style>
+                        </DataGrid.Resources>
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Insert multiple new slots" Command="{Binding AddMultipleSlotsPopupCommand}" />
@@ -370,7 +375,10 @@
                               CanUserReorderColumns="False"
                               CanUserResizeRows="False"
                               CanUserSortColumns="False"
-                              CanUserResizeColumns="False">
+                              CanUserResizeColumns="False"        
+                              EnableRowVirtualization="False"
+                              >
+                        <!--
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Insert multiple new articulation" Command="{Binding AddMultipleArticulationsPopupCommand}" />
@@ -386,6 +394,7 @@
                                         CommandParameter="{Binding ElementName=ArticulationGrid, Path=SelectedItems}"
                                         />
                         </DataGrid.InputBindings>
+                        -->
                         <DataGrid.Columns>
                             <DataGridTemplateColumn Header="Type" Width="50">
                                 <DataGridTemplateColumn.CellTemplate>

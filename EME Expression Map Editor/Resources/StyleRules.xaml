@@ -121,6 +121,7 @@
         <Setter Property="RowStyle">
             <Setter.Value>
                 <Style TargetType="DataGridRow">
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" />
                     <Setter Property="Background" Value="{StaticResource ElementBackgroundColor}" />
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
