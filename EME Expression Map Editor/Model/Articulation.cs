@@ -12,12 +12,6 @@
 		public static bool IsBlank(Articulation art)
 			=> art.Equals(Blank); 
 
-		// Candidate for removal - unused? 
-		/*
-		public static readonly int DisplayAsSymbol = 0;
-		public static readonly int DisplayAsText = 1;
-		*/
-		
 		public static readonly int MinGroup = 0;
 		public static readonly int MaxGroup = 3; 
 
@@ -33,7 +27,7 @@
 			Direction = 1
 		}
 
-		public enum SymbolMapping
+		public enum SymbolCode
 		{
 			TenutoDash = 43,
 			StaccatoDot = 73,
@@ -94,7 +88,7 @@
 		{
 			DisplayType = Display.Text;
 			ArticulationType = ArtType.Attribute;
-			Symbol = (int)SymbolMapping.StaccatoDot;
+			Symbol = (int)SymbolCode.StaccatoDot;
 			Text = "";
 			Description = "";
 			Group = 0;

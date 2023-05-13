@@ -159,7 +159,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="Color" Width="50" CanUserResize="False" >
+                            <DataGridTemplateColumn Header="Color" Width="50" CanUserResize="False">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <ComboBox ItemsSource="{StaticResource DefaultColorOptions}" 

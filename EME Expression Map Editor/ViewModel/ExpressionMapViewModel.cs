@@ -16,6 +16,33 @@ namespace EME_Expression_Map_Editor.ViewModel
     {
         ExpressionMap _map = new ExpressionMap(); 
 
+        private string _name = string.Empty;
+        public string Name 
+        {
+            get => _name;
+            set => _name = value;
+        }
+
+        private ObservableCollection<SoundSlotViewModel> _soundSlots = new ObservableCollection<SoundSlotViewModel>();
+        public ObservableCollection<SoundSlotViewModel> SoundSlots
+        {
+            get => _soundSlots; 
+            set => _soundSlots = value; 
+        }
+
+        private SoundSlotViewModel? _selectedSlot; 
+        public SoundSlotViewModel? SelectedSlot
+        {
+            get => _selectedSlot; 
+            set => _selectedSlot = value;
+        }
+
+        private ObservableCollection<ArticulationViewModel> _articulations = new ObservableCollection<ArticulationViewModel>();
+        public ObservableCollection<ArticulationViewModel> Articulations
+        {
+            get => _articulations;
+            set => _articulations = value;
+        }
         
 
         public ExpressionMapViewModel() 
@@ -23,12 +50,31 @@ namespace EME_Expression_Map_Editor.ViewModel
 
             #if DEBUG
                 Console.WriteLine("Loading ExpressionMap VM in DEBUG mode: fetching sample data");
-                GenerateTestData(); 
+                GenerateTestData();
+                ExtractViewModels();
             #endif
 
 
+        }
+
+        private void ExtractViewModels()
+        {
+            Name = _map.Name;
+
+            _soundSlots.Clear();
+            foreach (var slot in _map.SoundSlots)
+            {
+                SoundSlots.Add(new SoundSlotViewModel(slot));
+            }
+
+            _articulations.Clear(); 
+            foreach (var art in _map.Articulations)
+            {
+                Articulations.Add(new ArticulationViewModel(art));
+            }
 
         }
+
         private void GenerateTestData()
         {
             try
