@@ -13,7 +13,38 @@ namespace EME_Expression_Map_Editor.ViewModel
     {
         private static readonly string AnyChannelLabel = "Any"; 
 
-        private SoundSlot _slot; 
+        private SoundSlot _slot;
+
+        private ObservableCollection<OutputEventViewModel>? _outputEvents; 
+        public ObservableCollection<OutputEventViewModel>? OutputEvents
+        {
+            get
+            {
+                if (_outputEvents == null)
+                {
+                    ObservableCollection<OutputEventViewModel> events = new ObservableCollection<OutputEventViewModel>();
+                    foreach (OutputEvent oe in _slot.OutputEvents)
+                        events.Add(new OutputEventViewModel(oe));
+                    _outputEvents = events;
+                }
+                
+                return _outputEvents;
+            }
+        }
+
+        private OutputEventViewModel? _selectedEvent;
+        public OutputEventViewModel? SelectedEvent
+        {
+            get => _selectedEvent;
+            set
+            {
+                _selectedEvent = value;
+                OnPropertyChanged(nameof(SelectedEvent));
+            }
+        }
+
+
+        #region SoundSlot Properties
 
         public string Name
         {
@@ -169,6 +200,8 @@ namespace EME_Expression_Map_Editor.ViewModel
                 }
             }
         }
+
+        #endregion
 
         public SoundSlotViewModel(SoundSlot slot)
         {

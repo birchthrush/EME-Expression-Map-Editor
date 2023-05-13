@@ -107,8 +107,8 @@ namespace EME_Expression_Map_Editor.Model
 	{        
 		public static class Common
         {
-            const int DATA_MIN = 0;
-            const int DATA_MAX = 127;
+            public const int DATA_MIN = 0;
+            public const int DATA_MAX = 127;
             public static int ConstrainToRange(int value, int min = DATA_MIN, int max = DATA_MAX)
                 => Math.Clamp(value, min, max);
 
