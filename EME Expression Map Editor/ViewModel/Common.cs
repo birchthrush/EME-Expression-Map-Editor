@@ -41,8 +41,8 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
-        static public int FactorToPercentage(float f)
-            => (int)MathF.Round((f * 100.0f));
+        static public int FactorToPercentage(double f)
+            => (int)Math.Round((f * 100.0));
 
         static public double PercentageToFactor(int n)
             => (n / 100.0f);

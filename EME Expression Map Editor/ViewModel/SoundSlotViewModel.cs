@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,165 @@ namespace EME_Expression_Map_Editor.ViewModel
 
     internal class SoundSlotViewModel : ViewModelBase
     {
+        private static readonly string AnyChannelLabel = "Any"; 
+
         private SoundSlot _slot; 
+
+        public string Name
+        {
+            get => _slot.Name;
+            set
+            {
+                _slot.Name = value;
+                OnPropertyChanged(nameof(Name));
+            }
+        }
+
+        // Slot's midi channel: displayed as 1-16 on UI for readability
+        // An offset of (-1) is applied to convert to 0-15 formatting internally
+        // Model layer handles range checks
+        public string Channel
+        {
+            get => _slot.Channel == SoundSlot.AnyChannel ? AnyChannelLabel : (_slot.Channel + 1).ToString();
+            set
+            {
+                int channel = 0;
+                
+                if (Int32.TryParse(value, out channel))
+                    _slot.Channel = channel - 1;
+                else if (value.ToLower().Equals(AnyChannelLabel.ToLower()))
+                    _slot.Channel = SoundSlot.AnyChannel;
+                
+                OnPropertyChanged(nameof(Channel));
+            }
+        }
+
+        // Read-only property with human-readable Midi Channel options for UI display
+        // Options are channel 1-16 or 'Any'
+        public ObservableCollection<string> ChannelOptions
+        {
+            get
+            {
+                ObservableCollection<string> options = new ObservableCollection<string>();
+                options.Add(AnyChannelLabel);
+                for (int i = 1; i <= 16; ++i)
+                    options.Add(i.ToString());
+                return options;
+            }
+        }
+
+        // Color codes are defined in Global Resources
+        // ExpressionMap format uses 1-16 internally:
+        // ViewModel uses 0-15 for easier indexing in resource file, hence (+/-1) offset in translation between layers
+        public int Color
+        {
+            get => _slot.Color - 1;
+            set
+            {
+                if (_slot.Color != (value + 1))
+                {
+                    _slot.Color = (value + 1);
+                    OnPropertyChanged(nameof(Color));
+                }
+            }
+        }
+
+        private int _velocityFactor
+        {
+            get => Common.FactorToPercentage(_slot.VelocityFactor);
+            set
+            {
+                _slot.VelocityFactor = Common.PercentageToFactor(value);
+                OnPropertyChanged(nameof(_velocityFactor));
+            }
+        }
+
+        public string VelocityFactor
+        {
+            get => _velocityFactor.ToString() + "%";
+            set => _velocityFactor = Common.ParsePercentage(value, _velocityFactor);
+        }
+
+        private int _lengthFactor
+        {
+            get => Common.FactorToPercentage(_slot.LengthFactor);
+            set
+            {
+                _slot.LengthFactor = Common.PercentageToFactor(value);
+                OnPropertyChanged(nameof(_lengthFactor));
+            }
+        }
+
+        public string LengthFactor
+        {
+            get => _lengthFactor.ToString() + "%";
+            set => _lengthFactor = Common.ParsePercentage(value, _lengthFactor);
+        }
+
+        public string MinVelocity
+        {
+            get => _slot.MinVelocity.ToString();
+            set
+            {
+                if (Int32.TryParse(value, out int n))
+                {
+                    _slot.MinVelocity = n;
+                    OnPropertyChanged(nameof(MinVelocity));
+                }
+            }
+        }
+
+        public string MaxVelocity
+        {
+            get => _slot.MaxVelocity.ToString();
+            set
+            {
+                if (Int32.TryParse(value, out int n))
+                {
+                    _slot.MaxVelocity = n;
+                    OnPropertyChanged(nameof(MaxVelocity));
+                }
+            }
+        }
+
+        public string Transpose
+        {
+            get => _slot.Transpose.ToString();
+            set
+            {
+                if (Int32.TryParse(value, out int n))
+                {
+                    _slot.Transpose = n;
+                    OnPropertyChanged(nameof(Transpose));
+                }
+            }
+        }
+
+        public string MinPitch
+        {
+            get => _slot.MinPitch.ToString();
+            set
+            {
+                if (Int32.TryParse(value, out int n))
+                {
+                    _slot.MinPitch = n;
+                    OnPropertyChanged(nameof(MinPitch));
+                }
+            }
+        }
+
+        public string MaxPitch
+        {
+            get => _slot.MaxPitch.ToString();
+            set
+            {
+                if (Int32.TryParse(value, out int n))
+                {
+                    _slot.MaxPitch = n;
+                    OnPropertyChanged(nameof(MaxPitch));
+                }
+            }
+        }
 
         public SoundSlotViewModel(SoundSlot slot)
         {
