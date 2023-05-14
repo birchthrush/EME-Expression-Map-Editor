@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml;
 using EME_Expression_Map_Editor.Command;
 using EME_Expression_Map_Editor.Model;
 using EME_Expression_Map_Editor.Model.XmlFileManagement;
+using GongSolutions.Wpf.DragDrop;
 
 namespace EME_Expression_Map_Editor.ViewModel
 {
@@ -55,8 +58,8 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         #region Commands relating to Articulations
 
-        public ICommand PropagateArticulationTypeCommand { get; private set; }
-        private void PropagateArticulationDisplayType(int display_type)
+        public ICommand ChangeArticulationTypeCommand { get; private set; }
+        private void ChangeArticulationDisplayType(int display_type)
         {
             foreach (var item in Articulations)
                 if (item.IsSelected) 
@@ -74,8 +77,8 @@ namespace EME_Expression_Map_Editor.ViewModel
             */
         }
 
-        public ICommand PropagateArticulationDisplayTypeCommand { get; private set; }
-        private void PropagateArticulationType(int art_type)
+        public ICommand ChangeArticulationDisplayTypeCommand { get; private set; }
+        private void ChangeArticulationType(int art_type)
         {
             foreach (var item in Articulations)
                 if (item.IsSelected)
@@ -91,22 +94,27 @@ namespace EME_Expression_Map_Editor.ViewModel
             */
         }
 
-        public ICommand TestCommand { get; private set; }
-        private void Test(System.Collections.IList items)
+        public ICommand ChangeGroupCommand { get; private set; }
+        private void ChangeGroup(int group)
         {
-            if (items == null || items.Count == 0)
-                return; 
+            foreach (var item in Articulations)
+                if (item.IsSelected)
+                    item.Group = group;
+            SortArticulationsByGroup(); 
+        }
 
-            List<ArticulationViewModel> list = items.Cast<ArticulationViewModel>().ToList();
-            list = GetSortedList<ArticulationViewModel>(list, Articulations);
-
-            var target = list.First().DisplayType; 
-            
-            foreach (ArticulationViewModel art in list)
+        private void SortArticulationsByGroup()
+        {
+            ObservableCollection<ArticulationViewModel> sorted = new ObservableCollection<ArticulationViewModel>();
+            for (int i = Articulation.MinGroup; i <= Articulation.MaxGroup; ++i)
             {
-                art.DisplayType = target;
-                art.Description = "Test";
+                foreach (var item in Articulations)
+                    if (item.Group == i)
+                        sorted.Add(item);
             }
+
+            Articulations = sorted;
+            OnPropertyChanged(nameof(Articulations));
         }
 
         private List<T> GetSortedList<T>(List<T> src, IList<T> ordering)
@@ -128,12 +136,30 @@ namespace EME_Expression_Map_Editor.ViewModel
                 ExtractViewModels();
 #endif
 
-            PropagateArticulationDisplayTypeCommand = new CustomCommand<int>(PropagateArticulationDisplayType);
-            PropagateArticulationTypeCommand = new CustomCommand<int>(PropagateArticulationType);
+            // Articulation Grid Commands: 
+            ChangeArticulationDisplayTypeCommand = new CustomCommand<int>(ChangeArticulationDisplayType);
+            ChangeArticulationTypeCommand = new CustomCommand<int>(ChangeArticulationType);
+            ChangeGroupCommand = new CustomCommand<int>(ChangeGroup);
 
-
-            TestCommand = new CustomCommand<System.Collections.IList>(Test); 
+            // Drop handlers: 
+            ArticulationDropHandler = new CustomDropHandler(DefaultDragOver, DropArticulations); 
         }
+
+        #region Drag-And-Drop Handlers
+        public DefaultDropHandler _defaultDropHandler = new DefaultDropHandler();
+        private void DefaultDragOver(IDropInfo dropInfo)
+        {
+            _defaultDropHandler.DragOver(dropInfo);
+        }
+        public IDropTarget ArticulationDropHandler { get; private set; }
+        private void DropArticulations(IDropInfo dropInfo)
+        {
+            _defaultDropHandler.Drop(dropInfo); 
+            SortArticulationsByGroup(); 
+        }
+
+        #endregion
+
 
         private void ExtractViewModels()
         {

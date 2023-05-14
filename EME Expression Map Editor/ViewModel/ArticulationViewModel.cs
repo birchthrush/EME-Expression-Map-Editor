@@ -37,7 +37,9 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
-        // Dictionary mapping internal-storage (0-3) to human-readable (1-4) representations of Articulation groups
+        // Options listed on UI in Group selection ComboBox: 
+        // Key (0-3) represents internal representation of Group and is passed on to Group property as the actual value
+        // Value (1-4) is the human-readable representation displayed on UI
         private static Dictionary<int, int> _groupOptions = new Dictionary<int, int>()
         {
             { 0, 1 },

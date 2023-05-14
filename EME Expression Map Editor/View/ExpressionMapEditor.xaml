@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:dat="clr-namespace:System.Windows.Data;assembly=PresentationFramework"
         xmlns:local="clr-namespace:EME_Expression_Map_Editor"
         xmlns:viewmodel="clr-namespace:EME_Expression_Map_Editor.ViewModel"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
@@ -11,6 +13,18 @@
         ResizeMode="CanMinimize"
         WindowStyle="SingleBorderWindow"
         Title="{StaticResource ApplicationTitle}" Height="960" Width="1107">
+    <Window.Resources>
+        <CollectionViewSource x:Key="ArticulationViewSource" Source="{Binding Articulations}">
+            <!--
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="GroupAsString"  />
+            </CollectionViewSource.SortDescriptions>
+            <CollectionViewSource.GroupDescriptions>
+                <dat:PropertyGroupDescription PropertyName="Group" />
+            </CollectionViewSource.GroupDescriptions>
+            -->
+        </CollectionViewSource>
+    </Window.Resources>
     <Window.DataContext>
         <viewmodel:ExpressionMapViewModel />
     </Window.DataContext>
@@ -374,11 +388,9 @@
                               CanUserAddRows="False"
                               CanUserReorderColumns="False"
                               CanUserResizeRows="False"
-                              CanUserSortColumns="False"
                               CanUserResizeColumns="False"        
-                              EnableRowVirtualization="False"
-                              >
-                        <!--
+                              CanUserSortColumns="False"
+                              EnableRowVirtualization="False">
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Insert multiple new articulation" Command="{Binding AddMultipleArticulationsPopupCommand}" />
@@ -394,7 +406,6 @@
                                         CommandParameter="{Binding ElementName=ArticulationGrid, Path=SelectedItems}"
                                         />
                         </DataGrid.InputBindings>
-                        -->
                         <DataGrid.Columns>
                             <DataGridTemplateColumn Header="Type" Width="50">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -407,7 +418,7 @@
                                                   VerticalContentAlignment="Center" >
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="DropDownClosed">
-                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.PropagateArticulationDisplayTypeCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.ChangeArticulationDisplayTypeCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                                             CommandParameter="{Binding DisplayType}" />
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
@@ -426,7 +437,7 @@
                                                   VerticalContentAlignment="Center" >
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="DropDownClosed">
-                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.PropagateArticulationTypeCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.ChangeArticulationTypeCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                                            CommandParameter="{Binding ArticulationType}" />
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
@@ -436,9 +447,7 @@
                             </DataGridTemplateColumn>
                             <DataGridTextColumn Header="Text/Symbol" 
                                                 Width="90" 
-                                                Binding="{Binding SymbolOrText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                                
-                                                >
-
+                                                Binding="{Binding SymbolOrText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             </DataGridTextColumn>
                             <DataGridTextColumn Header="Description" Width="200" Binding="{Binding Description}"/>
                             <DataGridTemplateColumn Header="Group" Width="50" KeyboardNavigation.IsTabStop="True" >
