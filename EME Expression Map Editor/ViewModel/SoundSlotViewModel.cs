@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Navigation;
 using EME_Expression_Map_Editor.Model; 
 
 namespace EME_Expression_Map_Editor.ViewModel
@@ -45,6 +46,137 @@ namespace EME_Expression_Map_Editor.ViewModel
 
 
         #region SoundSlot Properties
+
+        private ArticulationViewModel _art1;
+        public ArticulationViewModel Art1
+        {
+            get => _art1; 
+            set 
+            {
+                if (value == null)
+                    _art1 = ArticulationViewModel.Blank; 
+                else
+                    _art1 = value;
+                OnPropertyChanged(nameof(Art1));
+            }
+        }
+        private ArticulationViewModel _art2;
+        public ArticulationViewModel Art2
+        {
+            get => _art2;
+            set
+            {
+                if (value == null)
+                    _art2 = ArticulationViewModel.Blank;
+                else
+                    _art2 = value;
+                OnPropertyChanged(nameof(Art2));
+            }
+        }
+        private ArticulationViewModel _art3;
+        public ArticulationViewModel Art3
+        {
+            get => _art3;
+            set
+            {
+                if (value == null)
+                    _art3 = ArticulationViewModel.Blank;
+                else
+                    _art3 = value;
+                OnPropertyChanged(nameof(Art3));
+            }
+        }
+        private ArticulationViewModel _art4;
+        public ArticulationViewModel Art4
+        {
+            get => _art4;
+            set
+            {
+                if (value == null)
+                    _art4 = ArticulationViewModel.Blank;
+                else
+                    _art4 = value;
+                OnPropertyChanged(nameof(Art1));
+            }
+        }
+
+        public bool ContainsArticulation(ArticulationViewModel a)
+            => Art1.Equals(a) || Art2.Equals(a) || Art3.Equals(a) || Art4.Equals(a); 
+
+        public void SetArticulation(ArticulationViewModel art_vm)
+        {
+            UnassignArticulation(art_vm); 
+
+            if (art_vm.Group == 0) Art1 = art_vm;
+            if (art_vm.Group == 1) Art2 = art_vm;
+            if (art_vm.Group == 2) Art3 = art_vm;
+            if (art_vm.Group == 3) Art4 = art_vm;
+        }
+
+        public void UnassignArticulation(ArticulationViewModel art_vm)
+        {
+            if (Art1.Equals(art_vm)) Art1 = ArticulationViewModel.Blank;
+            if (Art2.Equals(art_vm)) Art2 = ArticulationViewModel.Blank;
+            if (Art3.Equals(art_vm)) Art3 = ArticulationViewModel.Blank;
+            if (Art4.Equals(art_vm)) Art4 = ArticulationViewModel.Blank;
+        }
+
+        /*
+        public ArticulationViewModel Art1
+        {
+            get => GetArticulation(0);
+            set
+            {
+                SetArticulation(value, 0);
+                OnPropertyChanged(nameof(Art1)); 
+            }
+        }
+        public ArticulationViewModel Art2
+        {
+            get => GetArticulation(1);
+            set
+            {
+                SetArticulation(value, 1);
+                OnPropertyChanged(nameof(Art2));
+            }
+        }
+        public ArticulationViewModel Art3
+        {
+            get => GetArticulation(2);
+            set
+            {
+                SetArticulation(value, 2);
+                OnPropertyChanged(nameof(Art3));
+            }
+        }
+        public ArticulationViewModel Art4
+        {
+            get => GetArticulation(3);
+            set
+            {
+                SetArticulation(value, 3);
+                OnPropertyChanged(nameof(Art4));
+            }
+        }
+        */
+
+        /*
+        private ArticulationViewModel GetArticulation(int n)
+        {
+
+            if (Articulation.IsBlank(_slot.Articulations[n]))
+                return ArticulationViewModel.Blank;
+            else
+                return new ArticulationViewModel(_slot.Articulations[n]); 
+        }
+
+        private void SetArticulation(ArticulationViewModel art, int n)
+        {
+            ArticulationViewModel.AssignArticulationToSlot(art, n, _slot); 
+        }
+    */
+
+        /*
         public Articulation Art1
         {
             get => GetArticulation(0);
@@ -88,10 +220,8 @@ namespace EME_Expression_Map_Editor.ViewModel
             if (n == 1) OnPropertyChanged(nameof(Art2));
             if (n == 2) OnPropertyChanged(nameof(Art3));
             if (n == 3) OnPropertyChanged(nameof(Art4));
-
-            //OnPropertyChanged("Art" + (n + 1).ToString());
-            //OnPropertyChanged("Art" + (n + 1).ToString() + "Idx");
         }
+        */
 
 
         public string Name
@@ -267,6 +397,12 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         public SoundSlotViewModel(SoundSlot slot)
         {
+            _art1 = ArticulationViewModel.Blank;
+            _art2 = ArticulationViewModel.Blank;
+            _art3 = ArticulationViewModel.Blank;
+            _art4 = ArticulationViewModel.Blank;
+
+
             _slot = slot;
         }
     }

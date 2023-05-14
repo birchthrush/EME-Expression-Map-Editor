@@ -54,6 +54,22 @@ namespace EME_Expression_Map_Editor.ViewModel
             set => _articulations = value;
         }
 
+
+        public IList<ArticulationViewModel> Group1Options { get => ArticulationGroupOptions(0); }
+        public IList<ArticulationViewModel> Group2Options { get => ArticulationGroupOptions(1); }
+        public IList<ArticulationViewModel> Group3Options { get => ArticulationGroupOptions(2); }
+        public IList<ArticulationViewModel> Group4Options { get => ArticulationGroupOptions(3); }
+        public List<ArticulationViewModel> ArticulationGroupOptions(int group)
+        {
+            List<ArticulationViewModel> arts = new List<ArticulationViewModel>();
+            arts.Add(ArticulationViewModel.Blank);
+            foreach (var item in Articulations)
+                if (item.Group == group)
+                    arts.Add(item);
+            return arts; 
+        }
+
+        /*
         public IList<Articulation> Group1Options { get => ArticulationGroupOptions(0); }
         public IList<Articulation> Group2Options { get => ArticulationGroupOptions(1); }
         public IList<Articulation> Group3Options { get => ArticulationGroupOptions(2); }
@@ -65,6 +81,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             arts.Insert(0, Articulation.Blank);
             return arts;
         }
+        */
 
         #endregion
 
@@ -107,10 +124,31 @@ namespace EME_Expression_Map_Editor.ViewModel
         public ICommand ChangeGroupCommand { get; private set; }
         private void ChangeGroup(int group)
         {
-            foreach (var item in Articulations)
-                if (item.IsSelected)
-                    item.Group = group;
-            SortArticulationsByGroup(); 
+            Dictionary<SoundSlotViewModel, ArticulationViewModel> mapper = new Dictionary<SoundSlotViewModel, ArticulationViewModel>(); 
+
+            foreach (var art in Articulations)
+            {
+                if (art.IsSelected)
+                {
+                    art.Group = group;
+                    foreach (var slot in SoundSlots)
+                    {
+                        if (slot.ContainsArticulation(art))
+                        {
+                            // SoundSlots affected by the group change will have the pre-change Art set to Blank
+                            // Post-change Arts will be applied later after sorting and updating Articulation list
+                            slot.UnassignArticulation(art); 
+                            mapper.Add(slot, art);
+                        }
+                    }
+                }
+            }
+
+            SortArticulationsByGroup();
+
+            // Re-assign: 
+            foreach (var pair in mapper)
+                pair.Key.SetArticulation(pair.Value);   
         }
 
         private void SortArticulationsByGroup()
@@ -125,6 +163,10 @@ namespace EME_Expression_Map_Editor.ViewModel
 
             Articulations = sorted;
             OnPropertyChanged(nameof(Articulations));
+            OnPropertyChanged(nameof(Group1Options));
+            OnPropertyChanged(nameof(Group2Options));
+            OnPropertyChanged(nameof(Group3Options));
+            OnPropertyChanged(nameof(Group4Options));
         }
 
         private List<T> GetSortedList<T>(List<T> src, IList<T> ordering)
@@ -179,18 +221,29 @@ namespace EME_Expression_Map_Editor.ViewModel
         {
             Name = _map.Name;
 
-            _soundSlots.Clear();
-            foreach (var slot in _map.SoundSlots)
-            {
-                SoundSlots.Add(new SoundSlotViewModel(slot));
-            }
+            Dictionary<Articulation, ArticulationViewModel> art_map = new Dictionary<Articulation, ArticulationViewModel>();
+            art_map.Add(Articulation.Blank, ArticulationViewModel.Blank); 
 
             _articulations.Clear(); 
             foreach (var art in _map.Articulations)
             {
-                Articulations.Add(new ArticulationViewModel(art));
+                ArticulationViewModel art_vm = new ArticulationViewModel(art);
+                Articulations.Add(art_vm); 
+                art_map.Add(art, art_vm);        
             }
 
+            _soundSlots.Clear();
+            foreach (var slot in _map.SoundSlots)
+            {
+                SoundSlotViewModel slot_vm = new SoundSlotViewModel(slot);
+
+                slot_vm.Art1 = art_map[slot.Articulations[0]];
+                slot_vm.Art2 = art_map[slot.Articulations[1]];
+                slot_vm.Art3 = art_map[slot.Articulations[2]];
+                slot_vm.Art4 = art_map[slot.Articulations[3]];
+
+                SoundSlots.Add(slot_vm); 
+            }
         }
 
         private void GenerateTestData()
