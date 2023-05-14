@@ -54,6 +54,18 @@ namespace EME_Expression_Map_Editor.ViewModel
             set => _articulations = value;
         }
 
+        public IList<Articulation> Group1Options { get => ArticulationGroupOptions(0); }
+        public IList<Articulation> Group2Options { get => ArticulationGroupOptions(1); }
+        public IList<Articulation> Group3Options { get => ArticulationGroupOptions(2); }
+        public IList<Articulation> Group4Options { get => ArticulationGroupOptions(3); }
+
+        public IList<Articulation> ArticulationGroupOptions(int group)
+        {
+            IList<Articulation> arts = _map.ArticulationGroup(group);
+            arts.Insert(0, Articulation.Blank);
+            return arts;
+        }
+
         #endregion
 
         #region Commands relating to SoundSlots
@@ -71,7 +83,6 @@ namespace EME_Expression_Map_Editor.ViewModel
                 }
             }
         }
-
 
         #endregion
 
@@ -133,7 +144,7 @@ namespace EME_Expression_Map_Editor.ViewModel
                 Console.WriteLine("Loading ExpressionMap VM in DEBUG mode: fetching sample data");
                 GenerateTestData();
                 ExtractViewModels();
-#endif
+            #endif
 
             // SoundSlot Grid Commands: 
             ChangeColorCommand = new CustomCommand<int>(ChangeColor);

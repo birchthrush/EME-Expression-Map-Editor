@@ -45,6 +45,54 @@ namespace EME_Expression_Map_Editor.ViewModel
 
 
         #region SoundSlot Properties
+        public Articulation Art1
+        {
+            get => GetArticulation(0);
+            set => SetArticulation(value, 0);
+        }
+
+        public Articulation Art2
+        {
+            get => GetArticulation(1);
+            set => SetArticulation(value, 1);
+        }
+
+        public Articulation Art3
+        {
+            get => GetArticulation(2);
+            set => SetArticulation(value, 2);
+        }
+
+        public Articulation Art4
+        {
+            get => GetArticulation(3);
+            set => SetArticulation(value, 3);
+        }
+
+        private Articulation GetArticulation(int n)
+        {
+            if (_slot.Articulations[n] == null)
+                return Articulation.Blank; 
+            else
+                return _slot.Articulations[n];
+        }
+
+        public void SetArticulation(Articulation art, int n)
+        {
+            if (art == null || art == Articulation.Blank)
+                _slot.UnassignArticulation(n);
+            else
+                _slot.AssignArticulation(art, n);
+
+            if (n == 0) OnPropertyChanged(nameof(Art1));
+            if (n == 1) OnPropertyChanged(nameof(Art2));
+            if (n == 2) OnPropertyChanged(nameof(Art3));
+            if (n == 3) OnPropertyChanged(nameof(Art4));
+
+            //OnPropertyChanged("Art" + (n + 1).ToString());
+            //OnPropertyChanged("Art" + (n + 1).ToString() + "Idx");
+        }
+
 
         public string Name
         {

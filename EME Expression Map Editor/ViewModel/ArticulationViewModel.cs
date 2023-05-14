@@ -11,11 +11,14 @@ namespace EME_Expression_Map_Editor.ViewModel
     {
         private Articulation _articulation;
 
-        private static ArticulationViewModel? _blank = new ArticulationViewModel(Articulation.Blank); 
-        public static ArticulationViewModel? Blank
+        private static ArticulationViewModel _blank = new ArticulationViewModel(Articulation.Blank); 
+        public static ArticulationViewModel Blank
         {
             get => _blank; 
         }
+
+        public bool IsBlank(ArticulationViewModel art)
+            => Articulation.IsBlank(art._articulation); 
 
         public string Description
         {
@@ -124,6 +127,11 @@ namespace EME_Expression_Map_Editor.ViewModel
         public static Dictionary<int, string> ArticulationTypeOptions
         {
             get => _articulationTypeOptions;
+        }
+
+        public static void AssignArticulationToSlot(ArticulationViewModel art, int n, SoundSlot slot)
+        {
+            slot.AssignArticulation(art._articulation, n); 
         }
 
         public override string ToString()

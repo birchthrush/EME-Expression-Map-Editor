@@ -80,19 +80,13 @@
                               CanUserDeleteRows="False"
                               CanUserReorderColumns="False"
                               CanUserSortColumns="False"
-                              CanUserResizeRows="False"
-                              
+                              CanUserResizeRows="False"                              
                               VirtualizingStackPanel.IsVirtualizing="True"
                               EnableRowVirtualization="True"
                               EnableColumnVirtualization="True"
                               VirtualizingStackPanel.VirtualizationMode="Recycling"
                               VirtualizingPanel.IsVirtualizingWhenGrouping="True"                              
                               >
-                        <DataGrid.Resources>
-                            <Style TargetType="DataGridRow">
-                                <Setter Property="IsSelected" Value="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" />
-                            </Style>
-                        </DataGrid.Resources>
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Insert multiple new slots" Command="{Binding AddMultipleSlotsPopupCommand}" />
