@@ -188,7 +188,7 @@
                                              SelectedIndex="{Binding Color, UpdateSourceTrigger=PropertyChanged}" >
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="DropDownClosed">
-                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.ChangeColorsCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.ChangeColorCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                                            CommandParameter="{Binding Color}" />
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>

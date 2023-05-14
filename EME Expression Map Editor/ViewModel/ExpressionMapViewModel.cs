@@ -56,6 +56,25 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         #endregion
 
+        #region Commands relating to SoundSlots
+
+        public ICommand ChangeColorCommand { get; private set; }
+        private void ChangeColor(int col)
+        {
+            foreach (var item in SoundSlots)
+            {
+                if (item.IsSelected)
+                {
+                    item.Color = col; 
+                    if (Common.KeyModifiers.CascadeKeyActive())
+                        col = SoundSlot.GetNextColor(col);
+                }
+            }
+        }
+
+
+        #endregion
+
         #region Commands relating to Articulations
 
         public ICommand ChangeArticulationTypeCommand { get; private set; }
@@ -64,17 +83,6 @@ namespace EME_Expression_Map_Editor.ViewModel
             foreach (var item in Articulations)
                 if (item.IsSelected) 
                     item.DisplayType = display_type;
-
-
-            /*
-            if (SelectedArticulations == null)
-                return;
-
-            foreach (ArticulationPresenter art in SelectedArticulations)
-                art.DisplayType = display_type;
-
-            OnPropertyChanged("SoundSlots");
-            */
         }
 
         public ICommand ChangeArticulationDisplayTypeCommand { get; private set; }
@@ -83,15 +91,6 @@ namespace EME_Expression_Map_Editor.ViewModel
             foreach (var item in Articulations)
                 if (item.IsSelected)
                     item.ArticulationType = art_type;
-            /*
-            if (SelectedArticulations == null)
-                return;
-
-            foreach (ArticulationPresenter art in SelectedArticulations)
-                art.ArticulationType = art_type;
-
-            OnPropertyChanged("SoundSlots");
-            */
         }
 
         public ICommand ChangeGroupCommand { get; private set; }
@@ -136,6 +135,9 @@ namespace EME_Expression_Map_Editor.ViewModel
                 ExtractViewModels();
 #endif
 
+            // SoundSlot Grid Commands: 
+            ChangeColorCommand = new CustomCommand<int>(ChangeColor);
+
             // Articulation Grid Commands: 
             ChangeArticulationDisplayTypeCommand = new CustomCommand<int>(ChangeArticulationDisplayType);
             ChangeArticulationTypeCommand = new CustomCommand<int>(ChangeArticulationType);
@@ -146,11 +148,12 @@ namespace EME_Expression_Map_Editor.ViewModel
         }
 
         #region Drag-And-Drop Handlers
-        public DefaultDropHandler _defaultDropHandler = new DefaultDropHandler();
+        private DefaultDropHandler _defaultDropHandler = new DefaultDropHandler();
         private void DefaultDragOver(IDropInfo dropInfo)
         {
             _defaultDropHandler.DragOver(dropInfo);
         }
+
         public IDropTarget ArticulationDropHandler { get; private set; }
         private void DropArticulations(IDropInfo dropInfo)
         {
