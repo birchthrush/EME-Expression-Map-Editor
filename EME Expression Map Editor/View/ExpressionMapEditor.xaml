@@ -38,25 +38,23 @@
                         <Button Width="100" 
                                 Content="{StaticResource AddElement}" 
                                 Style="{StaticResource UpperLeftButton}" 
-                                Command="{Binding AddNewSlotCommand}"
+                                Command="{Binding AddSoundSlotCommand}"
                                 CommandParameter="{Binding ElementName=SoundSlotGrid, Path=SelectedIndex}" 
                                 />
                         <Button Width="100" 
                                 BorderThickness="0 1 1 1"
                                 Content="{StaticResource RemoveElement}" 
                                 Style="{StaticResource UpperRightButton}"
-                                Command="{Binding RemoveSlotsCommand}"
-                                CommandParameter="{Binding ElementName=SoundSlotGrid, Path=SelectedItems}" 
+                                Command="{Binding RemoveSoundSlotCommand}"
+                                CommandParameter="{Binding ElementName=SoundSlotGrid}" 
                                 />
                     </StackPanel>
-                              <!--
-                              SelectedIndex="{Binding SelectedSlotIndex}"
-                                -->
                     <DataGrid Height="800" 
                               SelectionMode="Extended"
                               Name="SoundSlotGrid"
                               ItemsSource="{Binding SoundSlots}" 
                               SelectedValue="{Binding SelectedSlot}" 
+                              SelectedIndex="{Binding SelectedSlotIndex}"
                               SelectionChanged="SoundSlotGrid_SelectionChanged"
                               dd:DragDrop.IsDragSource="True"
                               dd:DragDrop.IsDropTarget="True"
