@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EME_Expression_Map_Editor.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace EME_Expression_Map_Editor
         public ExpressionMapEditor()
         {
             InitializeComponent();
+            this.DataContext = ExpressionMapViewModel.Instance;
         }
 
         private void ArticulationGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)

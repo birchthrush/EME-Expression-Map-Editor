@@ -13,21 +13,11 @@
         ResizeMode="CanMinimize"
         WindowStyle="SingleBorderWindow"
         Title="{StaticResource ApplicationTitle}" Height="960" Width="1107">
-    <Window.Resources>
-        <CollectionViewSource x:Key="ArticulationViewSource" Source="{Binding Articulations}">
-            <!--
-            <CollectionViewSource.SortDescriptions>
-                <scm:SortDescription PropertyName="GroupAsString"  />
-            </CollectionViewSource.SortDescriptions>
-            <CollectionViewSource.GroupDescriptions>
-                <dat:PropertyGroupDescription PropertyName="Group" />
-            </CollectionViewSource.GroupDescriptions>
-            -->
-        </CollectionViewSource>
-    </Window.Resources>
+    <!--
     <Window.DataContext>
         <viewmodel:ExpressionMapViewModel />
     </Window.DataContext>
+    -->
     <Window.InputBindings>
         <!--
         <KeyBinding Key="H" Modifiers="Ctrl" Command="{Binding OutputEventReplacementCommand}" />
@@ -358,13 +348,12 @@
                     <StackPanel Orientation="Horizontal" Margin=" 10 10 10 0">
                         <Button Content="{StaticResource AddElement}" 
                                 Style="{StaticResource UpperLeftButton}"
-                                Command="{Binding AddNewArticulationCommand}"
+                                Command="{Binding AddArticulationCommand}"
                                 CommandParameter="{Binding ElementName=ArticulationGrid, Path=SelectedIndex}"
                                 Width="100" />
                         <Button Content="{StaticResource RemoveElement}" 
                                 Style="{StaticResource UpperRightButton}"
-                                Command="{Binding RemoveArticulationsCommand}"
-                                CommandParameter="{Binding ElementName=ArticulationGrid, Path=SelectedItems}"
+                                Command="{Binding RemoveArticulationCommand}"
                                 Width="100" />
                     </StackPanel>
                     <DataGrid ItemsSource="{Binding Articulations}"
@@ -408,6 +397,7 @@
                                                   SelectedValue="{Binding DisplayType, UpdateSourceTrigger=PropertyChanged}"                                                  
                                                   DisplayMemberPath="Value" 
                                                   SelectedValuePath="Key"
+                                                  
                                                   HorizontalContentAlignment="Center"
                                                   VerticalContentAlignment="Center" >
                                             <i:Interaction.Triggers>
@@ -432,7 +422,7 @@
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="DropDownClosed">
                                                     <i:InvokeCommandAction Command="{Binding Path=DataContext.ChangeArticulationTypeCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                                           CommandParameter="{Binding ArticulationType}" />
+                                                                            CommandParameter="{Binding DisplayType}" />
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </ComboBox>
@@ -441,7 +431,8 @@
                             </DataGridTemplateColumn>
                             <DataGridTextColumn Header="Text/Symbol" 
                                                 Width="90" 
-                                                Binding="{Binding SymbolOrText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                Binding="{Binding SymbolOrText}"                                                
+                                                >
                             </DataGridTextColumn>
                             <DataGridTextColumn Header="Description" Width="200" Binding="{Binding Description}"/>
                             <DataGridTemplateColumn Header="Group" Width="50" KeyboardNavigation.IsTabStop="True" >

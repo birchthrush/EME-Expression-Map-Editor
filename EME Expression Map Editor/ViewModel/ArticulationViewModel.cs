@@ -79,6 +79,12 @@ namespace EME_Expression_Map_Editor.ViewModel
 
                 OnPropertyChanged(nameof(SymbolOrText));
 
+                ExpressionMapViewModel.Instance.ArticulationNameChangedHandler(this); 
+
+                //OnPropertyChanged(nameof(ExpressionMapViewModel.Instance.SoundSlots)); 
+                //ExpressionMapViewModel.Instance.RefreshArticulationGroupOptions();
+                //Refresh(); 
+
                 //OnPropertyChanged("SymbolOrText");
                 //ExpressionMapPresenter.Instance.ArticulationNameChanged(_articulation);
             }

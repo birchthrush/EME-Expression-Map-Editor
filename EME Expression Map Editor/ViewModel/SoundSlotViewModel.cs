@@ -96,7 +96,7 @@ namespace EME_Expression_Map_Editor.ViewModel
                     _art4 = ArticulationViewModel.Blank;
                 else
                     _art4 = value;
-                OnPropertyChanged(nameof(Art1));
+                OnPropertyChanged(nameof(Art4));
             }
         }
 

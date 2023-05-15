@@ -54,6 +54,8 @@ namespace EME_Expression_Map_Editor.ViewModel
             set => _articulations = value;
         }
 
+        public int SelectedArticulationIndex { get; set; }
+
 
         public IList<ArticulationViewModel> Group1Options { get => ArticulationGroupOptions(0); }
         public IList<ArticulationViewModel> Group2Options { get => ArticulationGroupOptions(1); }
@@ -68,20 +70,6 @@ namespace EME_Expression_Map_Editor.ViewModel
                     arts.Add(item);
             return arts; 
         }
-
-        /*
-        public IList<Articulation> Group1Options { get => ArticulationGroupOptions(0); }
-        public IList<Articulation> Group2Options { get => ArticulationGroupOptions(1); }
-        public IList<Articulation> Group3Options { get => ArticulationGroupOptions(2); }
-        public IList<Articulation> Group4Options { get => ArticulationGroupOptions(3); }
-
-        public IList<Articulation> ArticulationGroupOptions(int group)
-        {
-            IList<Articulation> arts = _map.ArticulationGroup(group);
-            arts.Insert(0, Articulation.Blank);
-            return arts;
-        }
-        */
 
         #endregion
 
@@ -105,7 +93,41 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         #region Commands relating to Articulations
 
-        public ICommand ChangeArticulationTypeCommand { get; private set; }
+
+        public ICommand AddArticulationCommand { get; private set; }
+        private void AddArticulation(int idx)
+        {
+            ArticulationViewModel art = new ArticulationViewModel(new Articulation());
+
+            if (Articulations.Count == 0)
+                Articulations.Add(art);
+            else
+            {
+                if (idx < 0 || idx >= Articulations.Count)
+                    idx = Articulations.Count - 1;
+
+                art.Group = Articulations[idx].Group;
+                Articulations.Insert(idx + 1, art); 
+            }
+
+            SelectedArticulationIndex = idx + 1; 
+
+            OnPropertyChanged(nameof(Articulations)); 
+            OnPropertyChanged(nameof(SelectedArticulationIndex));
+            RefreshArticulationGroupOptions();
+        }
+
+        public ICommand RemoveArticulationCommand { get; private set; }
+        private void RemoveArticulation()
+        {
+            foreach (var art in Articulations.ToList().Where(art => art.IsSelected))
+                Articulations.Remove(art); 
+
+            OnPropertyChanged(nameof(Articulations));
+            RefreshArticulationGroupOptions();
+        }
+
+        public ICommand ChangeArticulationDisplayTypeCommand { get; private set; }
         private void ChangeArticulationDisplayType(int display_type)
         {
             foreach (var item in Articulations)
@@ -113,7 +135,7 @@ namespace EME_Expression_Map_Editor.ViewModel
                     item.DisplayType = display_type;
         }
 
-        public ICommand ChangeArticulationDisplayTypeCommand { get; private set; }
+        public ICommand ChangeArticulationTypeCommand { get; private set; }
         private void ChangeArticulationType(int art_type)
         {
             foreach (var item in Articulations)
@@ -151,6 +173,25 @@ namespace EME_Expression_Map_Editor.ViewModel
                 pair.Key.SetArticulation(pair.Value);   
         }
 
+        public void ArticulationNameChangedHandler(ArticulationViewModel art)
+        {
+            foreach (var slot in SoundSlots)
+            {
+                // Assigns the same articulation again: doesn't actually change the Slot, but
+                // forces the UI to refresh its displayed name. 
+                if (slot.ContainsArticulation(art))
+                    slot.SetArticulation(art); 
+            }
+        }
+
+        public void RefreshArticulationGroupOptions()
+        {
+            OnPropertyChanged(nameof(Group1Options));
+            OnPropertyChanged(nameof(Group2Options));
+            OnPropertyChanged(nameof(Group3Options));
+            OnPropertyChanged(nameof(Group4Options));
+        }
+
         private void SortArticulationsByGroup()
         {
             ObservableCollection<ArticulationViewModel> sorted = new ObservableCollection<ArticulationViewModel>();
@@ -163,10 +204,7 @@ namespace EME_Expression_Map_Editor.ViewModel
 
             Articulations = sorted;
             OnPropertyChanged(nameof(Articulations));
-            OnPropertyChanged(nameof(Group1Options));
-            OnPropertyChanged(nameof(Group2Options));
-            OnPropertyChanged(nameof(Group3Options));
-            OnPropertyChanged(nameof(Group4Options));
+            RefreshArticulationGroupOptions(); 
         }
 
         private List<T> GetSortedList<T>(List<T> src, IList<T> ordering)
@@ -179,7 +217,10 @@ namespace EME_Expression_Map_Editor.ViewModel
         #endregion
 
 
-        public ExpressionMapViewModel() 
+        private static ExpressionMapViewModel _instance = new ExpressionMapViewModel();
+        public static ExpressionMapViewModel Instance { get { return _instance; } }
+
+        private ExpressionMapViewModel() 
         {
 
             #if DEBUG
@@ -192,6 +233,8 @@ namespace EME_Expression_Map_Editor.ViewModel
             ChangeColorCommand = new CustomCommand<int>(ChangeColor);
 
             // Articulation Grid Commands: 
+            AddArticulationCommand = new CustomCommand<int>(AddArticulation);
+            RemoveArticulationCommand = new NoParameterCommand(RemoveArticulation);
             ChangeArticulationDisplayTypeCommand = new CustomCommand<int>(ChangeArticulationDisplayType);
             ChangeArticulationTypeCommand = new CustomCommand<int>(ChangeArticulationType);
             ChangeGroupCommand = new CustomCommand<int>(ChangeGroup);
