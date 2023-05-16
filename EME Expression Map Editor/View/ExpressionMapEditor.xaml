@@ -349,7 +349,6 @@
                               SelectedIndex="{Binding SelectedArticulationIndex}"
                               Name="ArticulationGrid"
                               SelectionMode="Extended"
-                              SelectionChanged="ArticulationGrid_SelectionChanged"
                               dd:DragDrop.IsDragSource="True"
                               dd:DragDrop.IsDropTarget="True"
                               dd:DragDrop.DropHandler="{Binding ArticulationDropHandler}"

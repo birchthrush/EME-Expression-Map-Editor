@@ -21,26 +21,28 @@ namespace EME_Expression_Map_Editor
     /// </summary>
     public partial class ExpressionMapEditor : Window
     {
+        private ExpressionMapViewModel _vm;
+
         public ExpressionMapEditor()
         {
             InitializeComponent();
-            this.DataContext = ExpressionMapViewModel.Instance;
-        }
-
-        private void ArticulationGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            /*
-            if (_presenter != null)
-                _presenter.SelectedArticulations = ArticulationGrid.SelectedItems;
-            */
+            this._vm = ExpressionMapViewModel.Instance;
+            this.DataContext = _vm;
         }
 
         private void SoundSlotGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            /*
-            if (_presenter != null)
-                _presenter.SelectedSlots = SoundSlotGrid.SelectedItems;
-            */
+            int idx = 0; 
+            foreach (var slot in _vm.SoundSlots)
+            {
+                if (slot.IsSelected)
+                {
+                    _vm.SelectedSlotIndex = idx;
+                    return;
+                }
+                else
+                    ++idx; 
+            }
         }
     }
 }
