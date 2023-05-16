@@ -17,7 +17,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             get => _blank; 
         }
 
-        public bool IsBlank(ArticulationViewModel art)
+        public static bool IsBlank(ArticulationViewModel art)
             => Articulation.IsBlank(art._articulation); 
 
         public string Description

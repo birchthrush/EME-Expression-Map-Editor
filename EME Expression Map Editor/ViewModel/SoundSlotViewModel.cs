@@ -107,12 +107,15 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         public void SetArticulation(ArticulationViewModel art_vm)
         {
-            UnassignArticulation(art_vm); 
+            if (!ArticulationViewModel.IsBlank(art_vm))
+            {
+                UnassignArticulation(art_vm); 
 
-            if (art_vm.Group == 0) Art1 = art_vm;
-            if (art_vm.Group == 1) Art2 = art_vm;
-            if (art_vm.Group == 2) Art3 = art_vm;
-            if (art_vm.Group == 3) Art4 = art_vm;
+                if (art_vm.Group == 0) Art1 = art_vm;
+                if (art_vm.Group == 1) Art2 = art_vm;
+                if (art_vm.Group == 2) Art3 = art_vm;
+                if (art_vm.Group == 3) Art4 = art_vm;
+            }
         }
 
         public void UnassignArticulation(ArticulationViewModel art_vm)
