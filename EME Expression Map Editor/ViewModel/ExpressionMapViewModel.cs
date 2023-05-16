@@ -126,8 +126,8 @@ namespace EME_Expression_Map_Editor.ViewModel
         }
 
 
-        public ICommand ChangeColorCommand { get; private set; }
-        private void ChangeColor(int col)
+        public ICommand SetColorCommand { get; private set; }
+        private void SetColor(int col)
         {
             foreach (var item in SoundSlots)
             {
@@ -140,8 +140,8 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
-        public ICommand AssignArticulationCommand {  get; private set; }
-        private void AssignArticulation(ArticulationViewModel art)
+        public ICommand SetArticulationCommand {  get; private set; }
+        private void SetArticulation(ArticulationViewModel art)
         {
             if (Common.KeyModifiers.CascadeKeyActive() && !art.Equals(ArticulationViewModel.Blank))
             {
@@ -206,24 +206,24 @@ namespace EME_Expression_Map_Editor.ViewModel
             RefreshArticulationGroupOptions();
         }
 
-        public ICommand ChangeArticulationDisplayTypeCommand { get; private set; }
-        private void ChangeArticulationDisplayType(int display_type)
+        public ICommand SetArticulationDisplayTypeCommand { get; private set; }
+        private void SetArticulationDisplayType(int display_type)
         {
             foreach (var item in Articulations)
                 if (item.IsSelected) 
                     item.DisplayType = display_type;
         }
 
-        public ICommand ChangeArticulationTypeCommand { get; private set; }
-        private void ChangeArticulationType(int art_type)
+        public ICommand SetArticulationTypeCommand { get; private set; }
+        private void SetArticulationType(int art_type)
         {
             foreach (var item in Articulations)
                 if (item.IsSelected)
                     item.ArticulationType = art_type;
         }
 
-        public ICommand ChangeGroupCommand { get; private set; }
-        private void ChangeGroup(int group)
+        public ICommand SetGroupCommand { get; private set; }
+        private void SetGroup(int group)
         {
             Dictionary<SoundSlotViewModel, ArticulationViewModel> mapper = new Dictionary<SoundSlotViewModel, ArticulationViewModel>(); 
 
@@ -315,15 +315,15 @@ namespace EME_Expression_Map_Editor.ViewModel
             // SoundSlot Grid Commands: 
             AddSoundSlotCommand = new CustomCommand<int>(AddSoundSlot);
             RemoveSoundSlotCommand = new NoParameterCommand(RemoveSoundSlot);
-            ChangeColorCommand = new CustomCommand<int>(ChangeColor);
-            AssignArticulationCommand = new CustomCommand<ArticulationViewModel>(AssignArticulation);
+            SetColorCommand = new CustomCommand<int>(SetColor);
+            SetArticulationCommand = new CustomCommand<ArticulationViewModel>(SetArticulation);
 
             // Articulation Grid Commands: 
             AddArticulationCommand = new CustomCommand<int>(AddArticulation);
             RemoveArticulationCommand = new NoParameterCommand(RemoveArticulation);
-            ChangeArticulationDisplayTypeCommand = new CustomCommand<int>(ChangeArticulationDisplayType);
-            ChangeArticulationTypeCommand = new CustomCommand<int>(ChangeArticulationType);
-            ChangeGroupCommand = new CustomCommand<int>(ChangeGroup);
+            SetArticulationDisplayTypeCommand = new CustomCommand<int>(SetArticulationDisplayType);
+            SetArticulationTypeCommand = new CustomCommand<int>(SetArticulationType);
+            SetGroupCommand = new CustomCommand<int>(SetGroup);
 
             // Drop handlers: 
             ArticulationDropHandler = new CustomDropHandler(DefaultDragOver, DropArticulations); 
