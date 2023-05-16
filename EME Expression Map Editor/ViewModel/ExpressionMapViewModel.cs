@@ -46,7 +46,17 @@ namespace EME_Expression_Map_Editor.ViewModel
                 OnPropertyChanged(nameof(SelectedSlot));
             }
         }
-        public int SelectedSlotIndex { get; set; }
+
+        private int _selectedSlotIndex; 
+        public int SelectedSlotIndex 
+        {
+            get => _selectedSlotIndex; 
+            set
+            {
+                _selectedSlotIndex = value;
+                OnPropertyChanged(nameof(SelectedSlotIndex));
+            }
+        }
 
         private ObservableCollection<ArticulationViewModel> _articulations = new ObservableCollection<ArticulationViewModel>();
         public ObservableCollection<ArticulationViewModel> Articulations
@@ -55,7 +65,16 @@ namespace EME_Expression_Map_Editor.ViewModel
             set => _articulations = value;
         }
 
-        public int SelectedArticulationIndex { get; set; }
+        private int _selectedArticulationIndex; 
+        public int SelectedArticulationIndex
+        {
+            get => _selectedArticulationIndex;
+            set
+            {
+                _selectedArticulationIndex = value; 
+                OnPropertyChanged(nameof(SelectedArticulationIndex));
+            }
+        }
 
 
         public IList<ArticulationViewModel> Group1Options { get => ArticulationGroupOptions(0); }
@@ -96,7 +115,6 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
 
             OnPropertyChanged(nameof(SoundSlots)); 
-            OnPropertyChanged(nameof(SelectedSlotIndex));
         }
 
         public ICommand RemoveSoundSlotCommand { get; private set; }
@@ -129,11 +147,11 @@ namespace EME_Expression_Map_Editor.ViewModel
         public ICommand AddArticulationCommand { get; private set; }
         private void AddArticulation(int idx)
         {
-            ArticulationViewModel art = new ArticulationViewModel(new Articulation());
 
             if (Articulations.Count == 0)
             {
-                Articulations.Add(art);
+                // Articulation list empty: add new with default parameters
+                Articulations.Add(new ArticulationViewModel(new Articulation()));
                 SelectedArticulationIndex = 0; 
             }
             else
@@ -141,14 +159,16 @@ namespace EME_Expression_Map_Editor.ViewModel
                 if (idx < 0 || idx >= Articulations.Count)
                     idx = Articulations.Count - 1;
 
-                art.Group = Articulations[idx].Group;
-                Articulations.Insert(idx + 1, art); 
+                // Add new Articulation with similar properties as the preceding one: 
+                ArticulationViewModel art_vm = (ArticulationViewModel)Articulations[idx].GetPrototype();
+                art_vm.Group = Articulations[idx].Group;
+
+                Articulations.Insert(idx + 1, art_vm); 
                 SelectedArticulationIndex = idx + 1; 
             }
 
 
             OnPropertyChanged(nameof(Articulations)); 
-            OnPropertyChanged(nameof(SelectedArticulationIndex));
             RefreshArticulationGroupOptions();
         }
 
@@ -157,8 +177,6 @@ namespace EME_Expression_Map_Editor.ViewModel
         {
             foreach (var art in Articulations.ToList().Where(art => art.IsSelected))
                 Articulations.Remove(art); 
-
-            OnPropertyChanged(nameof(Articulations));
             RefreshArticulationGroupOptions();
         }
 
@@ -251,6 +269,10 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         #endregion
 
+        public override ViewModelBase GetPrototype()
+        {
+            throw new NotImplementedException();
+        }
 
         private static ExpressionMapViewModel _instance = new ExpressionMapViewModel();
         public static ExpressionMapViewModel Instance { get { return _instance; } }

@@ -91,6 +91,11 @@ namespace EME_Expression_Map_Editor.ViewModel
             get => _eventTypeOptions; 
         }
 
+        public override ViewModelBase GetPrototype()
+        {
+            throw new NotImplementedException();
+        }
+
         public OutputEventViewModel(OutputEvent oe)
         {
             _event = oe; 

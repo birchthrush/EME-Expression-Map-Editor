@@ -395,6 +395,11 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         #endregion
 
+        public override ViewModelBase GetPrototype()
+        {
+            throw new NotImplementedException();
+        }
+
         public SoundSlotViewModel(SoundSlot slot)
         {
             _art1 = ArticulationViewModel.Blank;

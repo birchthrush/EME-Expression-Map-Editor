@@ -28,6 +28,8 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
+        public abstract ViewModelBase GetPrototype(); 
+
         public ViewModelBase()
         {
 

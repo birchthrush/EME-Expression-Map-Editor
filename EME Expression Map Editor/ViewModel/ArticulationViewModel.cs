@@ -143,6 +143,14 @@ namespace EME_Expression_Map_Editor.ViewModel
         public override string ToString()
             => SymbolOrText.ToString();
 
+        public override ViewModelBase GetPrototype()
+        {
+            ArticulationViewModel art_vm = new ArticulationViewModel(_articulation.Duplicate());
+            art_vm.Description = String.Empty; 
+            art_vm.SymbolOrText= String.Empty;
+            return art_vm; 
+        }
+
         public ArticulationViewModel(Articulation art) 
         {
             _articulation = art; 
