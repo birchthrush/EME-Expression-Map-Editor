@@ -34,15 +34,12 @@
                                 Content="{StaticResource AddElement}" 
                                 Style="{StaticResource UpperLeftButton}" 
                                 Command="{Binding AddSoundSlotCommand}"
-                                CommandParameter="{Binding ElementName=SoundSlotGrid, Path=SelectedIndex}" 
-                                />
+                                CommandParameter="{Binding ElementName=SoundSlotGrid, Path=SelectedIndex}" />
                         <Button Width="100" 
                                 BorderThickness="0 1 1 1"
                                 Content="{StaticResource RemoveElement}" 
                                 Style="{StaticResource UpperRightButton}"
-                                Command="{Binding RemoveSoundSlotCommand}"
-                                CommandParameter="{Binding ElementName=SoundSlotGrid}" 
-                                />
+                                Command="{Binding RemoveSoundSlotCommand}" />
                     </StackPanel>
                     <DataGrid Height="800" 
                               SelectionMode="Extended"
@@ -64,8 +61,7 @@
                               CanUserReorderColumns="False"
                               CanUserSortColumns="False"
                               CanUserResizeRows="False"        
-                              EnableRowVirtualization="False"
-                              >
+                              EnableRowVirtualization="False">
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Insert multiple new slots" Command="{Binding AddMultipleSlotsPopupCommand}" />
@@ -83,12 +79,12 @@
                             <KeyBinding Key="N" Modifiers="Ctrl" 
                                         Command="{Binding AddMultipleSlotsPopupCommand}" />
                             <KeyBinding Key="D" Modifiers="Ctrl" 
-                                         Command="{Binding DuplicateSlotsCommand}"
-                                         />
+                                         Command="{Binding DuplicateSlotsCommand}" />
                             <KeyBinding Key="Delete" Modifiers="Ctrl" 
-                                    Command="{Binding RemoveSlotsCommand}"
-                                    CommandParameter="{Binding ElementName=SoundSlotGrid, Path=SelectedItems}" 
-                                    />
+                                    Command="{Binding RemoveSoundSlotCommand}" />
+                            <KeyBinding Key="Insert" Modifiers="Ctrl" 
+                                    Command="{Binding AddSoundSlotCommand}"
+                                    CommandParameter="{Binding ElementName=SoundSlotGrid, Path=SelectedIndex}" />
                         </DataGrid.InputBindings>
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Remote" Width="50" Binding="{Binding RemoteKey}" />
