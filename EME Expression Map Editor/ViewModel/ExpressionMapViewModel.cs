@@ -235,7 +235,7 @@ namespace EME_Expression_Map_Editor.ViewModel
         public ICommand SetChannelCommand { get; private set; }
         private void SetChannel()
         {
-            if (SoundSlots.Count == 0 || SelectedSlotIndex < 0) 
+            if (SoundSlots.Count == 0 || FirstSelectedSlot == null) 
                 return;
 
             int c_idx = SoundSlotViewModel.ChannelOptions.IndexOf(FirstSelectedSlot.Channel); 
