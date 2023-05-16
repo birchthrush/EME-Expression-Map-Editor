@@ -61,7 +61,6 @@
                               CanUserResizeRows="False" 
                               EnableColumnVirtualization="False"
                               EnableRowVirtualization="False"
-                              SelectionChanged="SoundSlotGrid_SelectionChanged"
                               >
                         <DataGrid.ContextMenu>
                             <ContextMenu>
@@ -97,7 +96,7 @@
                                                   SelectedValue="{Binding Art1, UpdateSourceTrigger=PropertyChanged}" >
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="DropDownClosed">
-                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.SetArticulationCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.SetArticulation1Command, RelativeSource={RelativeSource AncestorType=Window}}"
                                                                            CommandParameter="{Binding Art1}" />
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
@@ -112,7 +111,7 @@
                                                   SelectedValue="{Binding Art2, UpdateSourceTrigger=PropertyChanged}" >
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="DropDownClosed">
-                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.SetArticulationCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.SetArticulation2Command, RelativeSource={RelativeSource AncestorType=Window}}"
                                                                            CommandParameter="{Binding Art2}" />
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
@@ -127,7 +126,7 @@
                                                   SelectedValue="{Binding Art3, UpdateSourceTrigger=PropertyChanged}" >
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="DropDownClosed">
-                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.SetArticulationCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.SetArticulation3Command, RelativeSource={RelativeSource AncestorType=Window}}"
                                                                            CommandParameter="{Binding Art3}" />
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
@@ -142,7 +141,7 @@
                                                   SelectedValue="{Binding Art4, UpdateSourceTrigger=PropertyChanged}" >
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="DropDownClosed">
-                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.SetArticulationCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.SetArticulation4Command, RelativeSource={RelativeSource AncestorType=Window}}"
                                                                            CommandParameter="{Binding Art4}" />
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>

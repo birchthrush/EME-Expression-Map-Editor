@@ -29,10 +29,5 @@ namespace EME_Expression_Map_Editor
             this._vm = ExpressionMapViewModel.Instance;
             this.DataContext = _vm;
         }
-
-        private void SoundSlotGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            _vm.SoundSlotSelectionChangedHandler(); 
-        }
     }
 }

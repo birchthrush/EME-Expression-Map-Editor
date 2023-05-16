@@ -105,34 +105,20 @@ namespace EME_Expression_Map_Editor.ViewModel
         public bool ContainsArticulation(ArticulationViewModel a)
             => Art1.Equals(a) || Art2.Equals(a) || Art3.Equals(a) || Art4.Equals(a); 
 
-        public void SetArticulation(ArticulationViewModel art_vm)
+        public void SetArticulation(ArticulationViewModel art_vm, int group)
         {
-            if (!ArticulationViewModel.IsBlank(art_vm))
-            {
-                UnassignArticulation(art_vm); 
-
-                if (art_vm.Group == 0) Art1 = art_vm;
-                if (art_vm.Group == 1) Art2 = art_vm;
-                if (art_vm.Group == 2) Art3 = art_vm;
-                if (art_vm.Group == 3) Art4 = art_vm;
-            }
+            if (group == 0)
+                Art1 = art_vm;
+            else if (group == 1)
+                Art2 = art_vm;
+            else if (group == 2)
+                Art3 = art_vm;
+            else
+                Art4 = art_vm; 
         }
 
-        public void UnassignArticulation(ArticulationViewModel art_vm)
-        {
-            if (Art1.Equals(art_vm)) Art1 = ArticulationViewModel.Blank;
-            if (Art2.Equals(art_vm)) Art2 = ArticulationViewModel.Blank;
-            if (Art3.Equals(art_vm)) Art3 = ArticulationViewModel.Blank;
-            if (Art4.Equals(art_vm)) Art4 = ArticulationViewModel.Blank;
-        }
-
-        private void UnassignAllArticulations()
-        {
-            Art1 = ArticulationViewModel.Blank;
-            Art2 = ArticulationViewModel.Blank;
-            Art3 = ArticulationViewModel.Blank;
-            Art4 = ArticulationViewModel.Blank;
-        }
+        public void RemoveArticulation(int group)
+            => SetArticulation(ArticulationViewModel.Blank, group); 
 
         public string Name
         {

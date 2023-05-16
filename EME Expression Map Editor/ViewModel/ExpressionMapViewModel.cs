@@ -153,8 +153,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
-        public ICommand SetArticulationCommand {  get; private set; }
-        private void SetArticulation(ArticulationViewModel art)
+        private void SetArticulation(ArticulationViewModel art, int group)
         {
             if (Common.KeyModifiers.CascadeKeyActive() && !art.Equals(ArticulationViewModel.Blank))
             {
@@ -162,7 +161,7 @@ namespace EME_Expression_Map_Editor.ViewModel
                 int idx = art_list.IndexOf(art);
                 foreach (var slot in SoundSlots.Where(x => x.IsSelected))
                 {
-                    slot.SetArticulation(art_list[idx]);
+                    slot.SetArticulation(art_list[idx], group);
 
                     // Increment & wrap around index: skip 0, which is always the blank articulation
                     if (idx == 0 || idx == art_list.Count - 1)
@@ -174,9 +173,14 @@ namespace EME_Expression_Map_Editor.ViewModel
             else
             {
                 foreach (var slot in SoundSlots.Where(x => x.IsSelected))
-                    slot.SetArticulation(art); 
+                    slot.SetArticulation(art, group); 
             }
         }
+
+        public ICommand SetArticulation1Command { get; private set; }
+        public ICommand SetArticulation2Command { get; private set; }
+        public ICommand SetArticulation3Command { get; private set; }
+        public ICommand SetArticulation4Command { get; private set; }
 
         public ICommand SetChannelCommand { get; private set; }
         private void SetChannel()
@@ -266,7 +270,7 @@ namespace EME_Expression_Map_Editor.ViewModel
                         {
                             // SoundSlots affected by the group change will have the pre-change Art set to Blank
                             // Post-change Arts will be applied later after sorting and updating Articulation list
-                            slot.UnassignArticulation(art); 
+                            slot.RemoveArticulation(art.Group); 
                             mapper.Add(slot, art);
                         }
                     }
@@ -277,7 +281,7 @@ namespace EME_Expression_Map_Editor.ViewModel
 
             // Re-assign: 
             foreach (var pair in mapper)
-                pair.Key.SetArticulation(pair.Value);   
+                pair.Key.SetArticulation(pair.Value, pair.Value.Group);   
         }
 
         public void ArticulationNameChangedHandler(ArticulationViewModel art)
@@ -287,7 +291,10 @@ namespace EME_Expression_Map_Editor.ViewModel
                 // Assigns the same articulation again: doesn't actually change the Slot, but
                 // forces the UI to refresh its displayed name. 
                 if (slot.ContainsArticulation(art))
-                    slot.SetArticulation(art); 
+                {
+                    slot.RemoveArticulation(art.Group); 
+                    slot.SetArticulation(art, art.Group); 
+                }
             }
         }
 
@@ -330,21 +337,24 @@ namespace EME_Expression_Map_Editor.ViewModel
         private static ExpressionMapViewModel _instance = new ExpressionMapViewModel();
         public static ExpressionMapViewModel Instance { get { return _instance; } }
 
-        private ExpressionMapViewModel() 
+        private ExpressionMapViewModel()
         {
 
-            #if DEBUG
-                Console.WriteLine("Loading ExpressionMap VM in DEBUG mode: fetching sample data");
-                GenerateTestData();
-                ExtractViewModels();
-            #endif
+#if DEBUG
+            Console.WriteLine("Loading ExpressionMap VM in DEBUG mode: fetching sample data");
+            GenerateTestData();
+            ExtractViewModels();
+#endif
 
             // SoundSlot Grid Commands: 
             AddSoundSlotCommand = new CustomCommand<int>((n) => { SelectedSlotIndex = Common.AddItem(SoundSlots, n, Common.DoNothing); });
-            RemoveSoundSlotCommand = new NoParameterCommand(() => { SelectedSlotIndex = Common.RemoveItem(SoundSlots, SelectedSlotIndex, () => { OnPropertyChanged(nameof(SoundSlots));  }); }); 
-            DuplicateSoundSlotCommand = new NoParameterCommand(DuplicateSoundlot); 
+            RemoveSoundSlotCommand = new NoParameterCommand(() => { SelectedSlotIndex = Common.RemoveItem(SoundSlots, SelectedSlotIndex, () => { OnPropertyChanged(nameof(SoundSlots)); }); });
+            DuplicateSoundSlotCommand = new NoParameterCommand(DuplicateSoundlot);
             SetColorCommand = new CustomCommand<int>(SetColor);
-            SetArticulationCommand = new CustomCommand<ArticulationViewModel>(SetArticulation);
+            SetArticulation1Command = new CustomCommand<ArticulationViewModel>((art_vm) => SetArticulation(art_vm, 0));
+            SetArticulation2Command = new CustomCommand<ArticulationViewModel>((art_vm) => SetArticulation(art_vm, 1));
+            SetArticulation3Command = new CustomCommand<ArticulationViewModel>((art_vm) => SetArticulation(art_vm, 2));
+            SetArticulation4Command = new CustomCommand<ArticulationViewModel>((art_vm) => SetArticulation(art_vm, 3));
             SetChannelCommand = new NoParameterCommand(SetChannel);
 
             // Articulation Grid Commands: 
