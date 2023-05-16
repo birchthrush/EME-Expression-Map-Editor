@@ -169,15 +169,14 @@ namespace EME_Expression_Map_Editor.ViewModel
         public ICommand RemoveSoundSlotCommand { get; private set; }
         public void RemoveSoundSlot()
         {
-            int idx = SelectedSlotIndex;
+            int pre_idx = SelectedSlotIndex;
             if (FirstSelectedSlot != null)
-                idx = SoundSlots.IndexOf(FirstSelectedSlot);
-
+                pre_idx = SoundSlots.IndexOf(FirstSelectedSlot);
 
             foreach (var slot in SoundSlots.ToList().Where(x => x.IsSelected))
                 SoundSlots.Remove(slot);
-            
-            SelectedSlotIndex = (idx - 1) < 0 ? 0 : idx - 1;
+
+            SelectedSlotIndex = Math.Clamp(pre_idx, -1, SoundSlots.Count - 1);
         }
 
         public ICommand DuplicateSoundSlotCommand { get; private set; }
@@ -289,16 +288,14 @@ namespace EME_Expression_Map_Editor.ViewModel
         public ICommand RemoveArticulationCommand { get; private set; }
         private void RemoveArticulation()
         {
-            int pre_idx = -1; 
+            int pre_idx = SelectedArticulationIndex; 
 
             foreach (var art in Articulations.ToList().Where(art => art.IsSelected))
-            {
-                if (pre_idx < 0)
-                    pre_idx = Articulations.IndexOf(art); 
                 Articulations.Remove(art); 
-            }
+
+            SelectedArticulationIndex = Math.Clamp(pre_idx, -1, Articulations.Count - 1); 
+
             RefreshArticulationGroupOptions();
-            SelectedArticulationIndex = (pre_idx - 1) < 0 ? 0 : pre_idx - 1; 
         }
 
         public ICommand RemoveUnusedArticulationsCommand { get; private set; }
