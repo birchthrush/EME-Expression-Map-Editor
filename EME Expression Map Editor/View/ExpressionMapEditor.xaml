@@ -7,7 +7,7 @@
         xmlns:dat="clr-namespace:System.Windows.Data;assembly=PresentationFramework"
         xmlns:local="clr-namespace:EME_Expression_Map_Editor"
         xmlns:viewmodel="clr-namespace:EME_Expression_Map_Editor.ViewModel"
-        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
         xmlns:dd="urn:gong-wpf-dragdrop"
         mc:Ignorable="d"
         ResizeMode="CanMinimize"
