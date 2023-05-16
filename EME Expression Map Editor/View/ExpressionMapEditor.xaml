@@ -80,9 +80,9 @@
                                         Command="{Binding AddMultipleSlotsPopupCommand}" />
                             <KeyBinding Key="D" Modifiers="Ctrl" 
                                          Command="{Binding DuplicateSlotsCommand}" />
-                            <KeyBinding Key="Delete" Modifiers="Ctrl" 
+                            <KeyBinding Key="Delete" 
                                     Command="{Binding RemoveSoundSlotCommand}" />
-                            <KeyBinding Key="Insert" Modifiers="Ctrl" 
+                            <KeyBinding Key="Insert" 
                                     Command="{Binding AddSoundSlotCommand}"
                                     CommandParameter="{Binding ElementName=SoundSlotGrid, Path=SelectedIndex}" />
                         </DataGrid.InputBindings>
@@ -368,11 +368,10 @@
                             <KeyBinding Key="N" Modifiers="Ctrl" 
                                         Command="{Binding AddMultipleArticulationsPopupCommand}" 
                                         />
-                            <KeyBinding Key="Delete" Modifiers="Ctrl" 
+                            <KeyBinding Key="Delete"
                                         Command="{Binding RemoveArticulationCommand}" 
-                                        CommandParameter="{Binding ElementName=ArticulationGrid, Path=SelectedItems}"
-                                        />
-                            <KeyBinding Key="Insert" Modifiers="Ctrl"
+                                        CommandParameter="{Binding ElementName=ArticulationGrid, Path=SelectedItems}"/>
+                            <KeyBinding Key="Insert"
                                         Command="{Binding AddArticulationCommand}"
                                         CommandParameter="{Binding ElementName=ArticulationGrid, Path=SelectedIndex}"
                                         />

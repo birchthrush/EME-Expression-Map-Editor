@@ -224,8 +224,10 @@ namespace EME_Expression_Map_Editor.ViewModel
         public ICommand RemoveArticulationCommand { get; private set; }
         private void RemoveArticulation()
         {
+            int pre_idx = SelectedArticulationIndex;
             foreach (var art in Articulations.ToList().Where(art => art.IsSelected))
                 Articulations.Remove(art); 
+            SelectedArticulationIndex = Math.Clamp(pre_idx, 0, Articulations.Count - 1); 
             RefreshArticulationGroupOptions();
         }
 
