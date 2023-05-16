@@ -41,17 +41,14 @@
                                 Style="{StaticResource UpperRightButton}"
                                 Command="{Binding RemoveSoundSlotCommand}" />
                     </StackPanel>
-                    <!--
-                              SelectedValue="{Binding SelectedSlot}"                     
-                    -->
                     <DataGrid Height="800" 
                               SelectionMode="Extended"
                               Name="SoundSlotGrid"
                               ItemsSource="{Binding SoundSlots}" 
+                              SelectedValue="{Binding SelectedSlot}"                     
                               SelectedIndex="{Binding SelectedSlotIndex}"
                               dd:DragDrop.IsDragSource="True"
                               dd:DragDrop.IsDropTarget="True"
-                              dd:DragDrop.DropHandler="{Binding Path=SlotDropHandler}"          
                               AllowDrop="True"
                               AutoGenerateColumns="False" 
                               Margin="10 0 10 0" 
@@ -230,10 +227,9 @@
                     <DataGrid ItemsSource="{Binding FirstSelectedSlot.OutputEvents}" 
                               SelectedIndex="{Binding FirstSelectedSlot.SelectedEventIndex}"
                               Name="OutputEventsGrid"
-                              SelectionMode="Single"
+                              SelectionMode="Extended"
                               dd:DragDrop.IsDragSource="True"
                               dd:DragDrop.IsDropTarget="True"
-                              dd:DragDrop.DropHandler="{Binding OutputEventDropHandler}"
                               KeyboardNavigation.TabNavigation="None"
                               CanUserDeleteRows="False"
                               CanUserAddRows="False"
