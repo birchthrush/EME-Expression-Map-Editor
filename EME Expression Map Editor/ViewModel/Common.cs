@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,6 +40,29 @@ namespace EME_Expression_Map_Editor.ViewModel
                 result = 0;
                 return false;
             }
+        }
+
+        public static int RemoveItem<T>(ObservableCollection<T> list, int selection_idx, Action post_func) where T : ViewModelBase
+        {
+            var selection = list.Where(x => x.IsSelected).ToList();
+
+            // Empty selection check: 
+            if (selection.Count == 0)
+                return selection_idx;
+
+            int pre_idx = list.IndexOf(selection.First());
+
+            foreach (var item in selection)
+                list.Remove(item);
+
+            post_func();
+
+            return Math.Clamp(pre_idx, -1, list.Count - 1);
+        }
+
+        public static void DoNothing()
+        {
+
         }
 
         static public int FactorToPercentage(double f)

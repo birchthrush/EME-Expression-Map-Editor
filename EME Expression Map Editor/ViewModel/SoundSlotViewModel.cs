@@ -321,8 +321,9 @@ namespace EME_Expression_Map_Editor.ViewModel
                 SelectedEventIndex = idx + 1; 
             }
         }
-
         public ICommand RemoveOutputEventCommand { get; private set; }
+
+        /*
         public void RemoveOutputEvent()
         {
             int pre_idx = SelectedEventIndex;
@@ -330,7 +331,7 @@ namespace EME_Expression_Map_Editor.ViewModel
                 OutputEvents.Remove(item);
             SelectedEventIndex = Math.Clamp(pre_idx, -1, OutputEvents.Count - 1); 
         }
-
+        */
 
         #endregion
 
@@ -356,8 +357,9 @@ namespace EME_Expression_Map_Editor.ViewModel
         {            
             _slot = slot;
 
-            AddOutputEventCommand = new CustomCommand<int>(AddOutputEvent); 
-            RemoveOutputEventCommand = new NoParameterCommand(RemoveOutputEvent);
+            AddOutputEventCommand = new CustomCommand<int>(AddOutputEvent);
+            //RemoveOutputEventCommand = new NoParameterCommand(RemoveOutputEvent);
+            RemoveOutputEventCommand = new NoParameterCommand(() => { SelectedEventIndex = Common.RemoveItem(OutputEvents, SelectedEventIndex, Common.DoNothing); });
         }
     }
 }
