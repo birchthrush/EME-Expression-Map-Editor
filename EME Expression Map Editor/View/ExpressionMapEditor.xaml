@@ -420,7 +420,7 @@
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="DropDownClosed">
                                                     <i:InvokeCommandAction Command="{Binding Path=DataContext.ChangeArticulationTypeCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                                            CommandParameter="{Binding DisplayType}" />
+                                                                            CommandParameter="{Binding ArticulationType}" />
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </ComboBox>
