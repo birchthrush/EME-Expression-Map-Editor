@@ -220,13 +220,12 @@
                         <Button Width="100"
                                 Content="{StaticResource AddElement}" 
                                 Style="{StaticResource UpperLeftButton}"
-                                Command="{Binding FirstSelectedSlot.AddNewOutputEventCommand}"
+                                Command="{Binding FirstSelectedSlot.AddOutputEventCommand}"
                                 CommandParameter="{Binding ElementName=OutputEventsGrid, Path=SelectedIndex}" />
                         <Button Width="100"
                                 Content="{StaticResource RemoveElement}" 
                                 Style="{StaticResource UpperRightButton}"
-                                Command="{Binding FirstSelectedSlot.RemoveOutputEventsCommand}"
-                                CommandParameter="{Binding ElementName=OutputEventsGrid, Path=SelectedItems}" />
+                                Command="{Binding FirstSelectedSlot.RemoveOutputEventCommand}" />
                     </StackPanel>
                     <DataGrid ItemsSource="{Binding FirstSelectedSlot.OutputEvents}" 
                               SelectedIndex="{Binding FirstSelectedSlot.SelectedEventIndex}"

@@ -4,9 +4,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Navigation;
-using EME_Expression_Map_Editor.Model; 
-
+using EME_Expression_Map_Editor.Command;
+using EME_Expression_Map_Editor.Model;
 namespace EME_Expression_Map_Editor.ViewModel
 {
 
@@ -16,21 +17,11 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         private SoundSlot _slot;
 
-        private ObservableCollection<OutputEventViewModel>? _outputEvents; 
-        public ObservableCollection<OutputEventViewModel>? OutputEvents
+        private ObservableCollection<OutputEventViewModel> _outputEvents = new ObservableCollection<OutputEventViewModel>(); 
+        public ObservableCollection<OutputEventViewModel> OutputEvents
         {
-            get
-            {
-                if (_outputEvents == null)
-                {
-                    ObservableCollection<OutputEventViewModel> events = new ObservableCollection<OutputEventViewModel>();
-                    foreach (OutputEvent oe in _slot.OutputEvents)
-                        events.Add(new OutputEventViewModel(oe));
-                    _outputEvents = events;
-                }
-                
-                return _outputEvents;
-            }
+            get => _outputEvents;
+            set => _outputEvents = value;
         }
 
         private OutputEventViewModel? _selectedEvent;
@@ -41,6 +32,17 @@ namespace EME_Expression_Map_Editor.ViewModel
             {
                 _selectedEvent = value;
                 OnPropertyChanged(nameof(SelectedEvent));
+            }
+        }
+
+        private int _selectedEventIndex;
+        public int SelectedEventIndex
+        {
+            get => _selectedEventIndex;
+            set
+            {
+                _selectedEventIndex = value;
+                OnPropertyChanged(nameof(SelectedEventIndex));
             }
         }
 
@@ -300,6 +302,38 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         #endregion
 
+        #region Commands and related functions
+
+        public ICommand AddOutputEventCommand { get; private set; }
+        public void AddOutputEvent(int idx)
+        {
+            if (OutputEvents.Count == 0)
+            {
+                OutputEvents.Add(new OutputEventViewModel(new OutputEvent()));
+                SelectedEventIndex = 0; 
+            }
+            else
+            {
+                idx = Math.Clamp(idx, 0, OutputEvents.Count - 1);
+                var event_vm = (OutputEventViewModel)OutputEvents[idx].GetPrototype(); 
+
+                OutputEvents.Insert(idx + 1, event_vm);
+                SelectedEventIndex = idx + 1; 
+            }
+        }
+
+        public ICommand RemoveOutputEventCommand { get; private set; }
+        public void RemoveOutputEvent()
+        {
+            int pre_idx = SelectedEventIndex;
+            foreach (var item in OutputEvents.ToList().Where(x => x.IsSelected))
+                OutputEvents.Remove(item);
+            SelectedEventIndex = Math.Clamp(pre_idx, -1, OutputEvents.Count - 1); 
+        }
+
+
+        #endregion
+
         public override ViewModelBase GetPrototype()
         {
             var slot_vm = new SoundSlotViewModel(new SoundSlot()); 
@@ -321,6 +355,9 @@ namespace EME_Expression_Map_Editor.ViewModel
         public SoundSlotViewModel(SoundSlot slot)
         {            
             _slot = slot;
+
+            AddOutputEventCommand = new CustomCommand<int>(AddOutputEvent); 
+            RemoveOutputEventCommand = new NoParameterCommand(RemoveOutputEvent);
         }
     }
 }

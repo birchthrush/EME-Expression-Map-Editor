@@ -92,9 +92,7 @@ namespace EME_Expression_Map_Editor.ViewModel
         }
 
         public override ViewModelBase GetPrototype()
-        {
-            throw new NotImplementedException();
-        }
+            => new OutputEventViewModel(_event.Duplicate()); 
 
         public OutputEventViewModel(OutputEvent oe)
         {

@@ -412,7 +412,6 @@ namespace EME_Expression_Map_Editor.ViewModel
             return src; 
         }
 
-
         #endregion
 
         private void DoNothing()
@@ -498,6 +497,9 @@ namespace EME_Expression_Map_Editor.ViewModel
                 slot_vm.Art2 = art_map[slot.Articulations[1]];
                 slot_vm.Art3 = art_map[slot.Articulations[2]];
                 slot_vm.Art4 = art_map[slot.Articulations[3]];
+
+                foreach (var oe in slot.OutputEvents)
+                    slot_vm.OutputEvents.Add(new OutputEventViewModel(oe)); 
 
                 SoundSlots.Add(slot_vm); 
             }
