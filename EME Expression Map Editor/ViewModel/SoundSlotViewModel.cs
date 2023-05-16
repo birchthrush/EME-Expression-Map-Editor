@@ -306,6 +306,18 @@ namespace EME_Expression_Map_Editor.ViewModel
             return slot_vm;
         }
 
+        public SoundSlotViewModel Duplicate()
+        {
+            var slot_vm = new SoundSlotViewModel(_slot.Duplicate());
+            
+            slot_vm.Art1 = this.Art1;
+            slot_vm.Art2 = this.Art2; 
+            slot_vm.Art3 = this.Art3;
+            slot_vm.Art4 = this.Art4;
+            
+            return slot_vm;
+        }
+        
         public SoundSlotViewModel(SoundSlot slot)
         {            
             _slot = slot;

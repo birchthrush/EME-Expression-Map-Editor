@@ -180,6 +180,17 @@ namespace EME_Expression_Map_Editor.ViewModel
             SelectedSlotIndex = (idx - 1) < 0 ? 0 : idx - 1;
         }
 
+        public ICommand DuplicateSoundSlotCommand { get; private set; }
+        public void DuplicateSoundlot()
+        {
+            var selection = SoundSlots.Where(x => x.IsSelected).ToList();
+            if (selection.Any())
+            {
+                int idx = SoundSlots.IndexOf(selection.Last()) + 1;
+                foreach (var slot in selection)
+                    SoundSlots.Insert(idx++, slot.Duplicate()); 
+            }
+        }
 
 
         public ICommand SetColorCommand { get; private set; }
@@ -429,6 +440,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             AddSoundSlotCommand = new CustomCommand<int>(AddSoundSlot);
             RemoveSoundSlotCommand = new NoParameterCommand(RemoveSoundSlot);
             //RemoveSoundSlotCommand = new NoParameterCommand(() => { SelectedSlotIndex = RemoveItem(SoundSlots, SelectedSlotIndex, () => { OnPropertyChanged(nameof(SoundSlots));  }); }); 
+            DuplicateSoundSlotCommand = new NoParameterCommand(DuplicateSoundlot); 
             SetColorCommand = new CustomCommand<int>(SetColor);
             SetArticulationCommand = new CustomCommand<ArticulationViewModel>(SetArticulation);
             SetChannelCommand = new NoParameterCommand(SetChannel); 

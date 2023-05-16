@@ -69,7 +69,7 @@
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Insert multiple new slots" Command="{Binding AddMultipleSlotsPopupCommand}" />
-                                <MenuItem Header="Duplicate selected slots" Command="{Binding DuplicateSlotsCommand}" />
+                                <MenuItem Header="Duplicate selected slots" Command="{Binding DuplicateSoundSlotCommand}" />
                                 <Separator />
                                 <MenuItem Header="Copy and auto-increment Remote Keys from first selected slot" Command="{Binding PropagateRemoteKeysCommand}" />
                                 <Separator />
@@ -83,7 +83,7 @@
                             <KeyBinding Key="N" Modifiers="Ctrl" 
                                         Command="{Binding AddMultipleSlotsPopupCommand}" />
                             <KeyBinding Key="D" Modifiers="Ctrl" 
-                                         Command="{Binding DuplicateSlotsCommand}" />
+                                         Command="{Binding DuplicateSoundSlotCommand}" />
                             <KeyBinding Key="Delete" 
                                     Command="{Binding RemoveSoundSlotCommand}" />
                             <KeyBinding Key="Insert" 
