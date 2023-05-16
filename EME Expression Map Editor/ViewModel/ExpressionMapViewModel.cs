@@ -238,7 +238,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             if (SoundSlots.Count == 0 || SelectedSlotIndex < 0) 
                 return;
 
-            int c_idx = SoundSlotViewModel.ChannelOptions.IndexOf(SoundSlots[SelectedSlotIndex].Channel); 
+            int c_idx = SoundSlotViewModel.ChannelOptions.IndexOf(FirstSelectedSlot.Channel); 
 
             foreach (var slot in SoundSlots.Where(x => x.IsSelected))
             {
@@ -250,7 +250,6 @@ namespace EME_Expression_Map_Editor.ViewModel
                     if (c_idx >= SoundSlotViewModel.ChannelOptions.Count)
                         c_idx = 1; 
                 }
-
             }
         }
 
