@@ -244,6 +244,13 @@
                               Height="200"
                               Margin="10 0 10 10"
                               AutoGenerateColumns="False">
+                        <DataGrid.InputBindings>
+                            <KeyBinding Key="Delete"
+                                        Command="{Binding FirstSelectedSlot.RemoveOutputEventCommand}" />
+                            <KeyBinding Key="Insert"
+                                        Command="{Binding FirstSelectedSlot.AddOutputEventCommand}" 
+                                        CommandParameter="{Binding ElementName=OutputEventsGrid, Path=SelectedIndex}" />
+                        </DataGrid.InputBindings>
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Increment Data1 nth Event On All Selected Slots" 
