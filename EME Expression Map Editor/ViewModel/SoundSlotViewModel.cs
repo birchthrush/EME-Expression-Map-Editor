@@ -397,7 +397,8 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         public override ViewModelBase GetPrototype()
         {
-            throw new NotImplementedException();
+            var slot_vm = new SoundSlotViewModel(new SoundSlot()); 
+            return slot_vm;
         }
 
         public SoundSlotViewModel(SoundSlot slot)

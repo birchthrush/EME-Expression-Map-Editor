@@ -98,10 +98,10 @@ namespace EME_Expression_Map_Editor.ViewModel
         public ICommand AddSoundSlotCommand { get; private set; }
         public void AddSoundSlot(int idx)
         {
-            var slot_vm = new SoundSlotViewModel(new SoundSlot()); 
             if (SoundSlots.Count == 0)
             {
-                SoundSlots.Add(slot_vm);
+                // List is empty: add new slot with default parameters
+                SoundSlots.Add(new SoundSlotViewModel(new SoundSlot()));
                 SelectedSlotIndex = 0; 
             }
             else
@@ -109,6 +109,7 @@ namespace EME_Expression_Map_Editor.ViewModel
                 if (idx < 0 || idx >= SoundSlots.Count - 1)
                     idx = SoundSlots.Count - 1;
 
+                var slot_vm = (SoundSlotViewModel)SoundSlots[idx].GetPrototype(); 
                 slot_vm.Color = SoundSlot.GetNextColor(SoundSlots[idx].Color); 
                 SoundSlots.Insert(idx + 1, slot_vm);
                 SelectedSlotIndex = idx + 1; 

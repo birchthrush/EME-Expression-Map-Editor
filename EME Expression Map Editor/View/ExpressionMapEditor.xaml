@@ -68,13 +68,18 @@
                               CanUserDeleteRows="False"
                               CanUserReorderColumns="False"
                               CanUserSortColumns="False"
-                              CanUserResizeRows="False"                              
+                              CanUserResizeRows="False"        
+                              EnableRowVirtualization="False"
+                              >
+                        <!-- 
                               VirtualizingStackPanel.IsVirtualizing="True"
                               EnableRowVirtualization="True"
                               EnableColumnVirtualization="True"
                               VirtualizingStackPanel.VirtualizationMode="Recycling"
                               VirtualizingPanel.IsVirtualizingWhenGrouping="True"                              
-                              >
+                        
+                        -->
+                        
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Insert multiple new slots" Command="{Binding AddMultipleSlotsPopupCommand}" />
