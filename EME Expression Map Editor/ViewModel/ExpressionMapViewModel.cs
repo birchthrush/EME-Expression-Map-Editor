@@ -65,9 +65,18 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         public SoundSlotViewModel? FirstSelectedSlot
         {
-            get => SoundSlots.Where(x => x.IsSelected).First(); 
-        }
+            get
+            {
+                if (SoundSlots.Count == 0) 
+                    return null;
 
+                var selection = SoundSlots.Where(x => x.IsSelected);
+                if (selection.Any())
+                    return selection.First();
+                else
+                    return null; 
+            }
+        }
 
         public void SoundSlotSelectionChangedHandler()
         {
@@ -162,10 +171,15 @@ namespace EME_Expression_Map_Editor.ViewModel
         public ICommand RemoveSoundSlotCommand { get; private set; }
         public void RemoveSoundSlot()
         {
-            int pre_idx = SelectedSlotIndex; 
+            int idx = SelectedSlotIndex;
+            if (FirstSelectedSlot != null)
+                idx = SoundSlots.IndexOf(FirstSelectedSlot);
+
+
             foreach (var slot in SoundSlots.ToList().Where(x => x.IsSelected))
                 SoundSlots.Remove(slot);
-            SelectedSlotIndex = (pre_idx - 1) < 0 ? 0 : pre_idx - 1;
+            
+            SelectedSlotIndex = (idx - 1) < 0 ? 0 : idx - 1;
         }
 
 

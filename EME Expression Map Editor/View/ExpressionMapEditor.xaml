@@ -41,11 +41,13 @@
                                 Style="{StaticResource UpperRightButton}"
                                 Command="{Binding RemoveSoundSlotCommand}" />
                     </StackPanel>
+                    <!--
+                              SelectedValue="{Binding SelectedSlot}"                     
+                    -->
                     <DataGrid Height="800" 
                               SelectionMode="Extended"
                               Name="SoundSlotGrid"
                               ItemsSource="{Binding SoundSlots}" 
-                              SelectedValue="{Binding SelectedSlot}" 
                               SelectedIndex="{Binding SelectedSlotIndex}"
                               dd:DragDrop.IsDragSource="True"
                               dd:DragDrop.IsDropTarget="True"
@@ -59,7 +61,11 @@
                               CanUserDeleteRows="False"
                               CanUserReorderColumns="False"
                               CanUserSortColumns="False"
-                              CanUserResizeRows="False" SelectionChanged="SoundSlotGrid_SelectionChanged">
+                              CanUserResizeRows="False" 
+                              EnableColumnVirtualization="False"
+                              EnableRowVirtualization="False"
+                              SelectionChanged="SoundSlotGrid_SelectionChanged"
+                              >
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Insert multiple new slots" Command="{Binding AddMultipleSlotsPopupCommand}" />
@@ -214,12 +220,12 @@
                         <Button Width="100"
                                 Content="{StaticResource AddElement}" 
                                 Style="{StaticResource UpperLeftButton}"
-                                Command="{Binding SelectedSlot.AddNewOutputEventCommand}"
+                                Command="{Binding FirstSelectedSlot.AddNewOutputEventCommand}"
                                 CommandParameter="{Binding ElementName=OutputEventsGrid, Path=SelectedIndex}" />
                         <Button Width="100"
                                 Content="{StaticResource RemoveElement}" 
                                 Style="{StaticResource UpperRightButton}"
-                                Command="{Binding SelectedSlot.RemoveOutputEventsCommand}"
+                                Command="{Binding FirstSelectedSlot.RemoveOutputEventsCommand}"
                                 CommandParameter="{Binding ElementName=OutputEventsGrid, Path=SelectedItems}" />
                     </StackPanel>
                     <DataGrid ItemsSource="{Binding FirstSelectedSlot.OutputEvents}" 
@@ -243,16 +249,16 @@
                             <ContextMenu>
                                 <MenuItem Header="Increment Data1 nth Event On All Selected Slots" 
                                           Command="{Binding CascadeOutputEventCommand}" 
-                                          CommandParameter="{Binding SelectedSlot.SelectedEventIndex}"  />
+                                          CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}"  />
                                 <MenuItem Header="Copy Event To All Selected Slots" 
                                           Command="{Binding CopyOutputEventCommand}"
-                                          CommandParameter="{Binding SelectedSlot.SelectedEventIndex}" />
+                                          CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}" />
                                 <MenuItem Header="Copy Event To All Selected Slots And Increment Data1" 
                                           Command="{Binding CopyOutputEventIncrementData1Command}"
-                                          CommandParameter="{Binding SelectedSlot.SelectedEventIndex}" />
+                                          CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}" />
                                 <MenuItem Header="Copy Event To All Selected Slots And Increment Data2" 
                                           Command="{Binding CopyOutputEventIncrementData2Command}"
-                                          CommandParameter="{Binding SelectedSlot.SelectedEventIndex}" />
+                                          CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}" />
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                         <DataGrid.Columns>
@@ -302,8 +308,8 @@
                             <TextBlock Grid.Column="2" Grid.Row="3" Style="{StaticResource BrighterTextBlock}" Padding="10 0 0 0">Max Velocity</TextBlock>
                             <ComboBox Foreground="{StaticResource DefaultForegroundColor}"
                                 Grid.Column="1" Grid.Row="0" BorderThickness="0 1 0 0"
-                                ItemsSource="{Binding SelectedSlot.ChannelOptions}" 
-                                SelectedValue="{Binding SelectedSlot.Channel}">
+                                ItemsSource="{Binding FirstSelectedSlot.ChannelOptions}" 
+                                SelectedValue="{Binding FirstSelectedSlot.Channel}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="DropDownClosed">
                                         <i:InvokeCommandAction 
@@ -312,13 +318,13 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </ComboBox>
-                            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding SelectedSlot.LengthFactor}" />
-                            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding SelectedSlot.Transpose}" />
-                            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding SelectedSlot.VelocityFactor}" />
-                            <TextBox Grid.Column="3" Grid.Row="0" Text="{Binding SelectedSlot.MinPitch}" />
-                            <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding SelectedSlot.MaxPitch}" />
-                            <TextBox Grid.Column="3" Grid.Row="2" Text="{Binding SelectedSlot.MinVelocity}" />
-                            <TextBox Grid.Column="3" Grid.Row="3" Text="{Binding SelectedSlot.MaxVelocity}" />
+                            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding FirstSelectedSlot.LengthFactor}" />
+                            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding FirstSelectedSlot.Transpose}" />
+                            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding FirstSelectedSlot.VelocityFactor}" />
+                            <TextBox Grid.Column="3" Grid.Row="0" Text="{Binding FirstSelectedSlot.MinPitch}" />
+                            <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding FirstSelectedSlot.MaxPitch}" />
+                            <TextBox Grid.Column="3" Grid.Row="2" Text="{Binding FirstSelectedSlot.MinVelocity}" />
+                            <TextBox Grid.Column="3" Grid.Row="3" Text="{Binding FirstSelectedSlot.MaxVelocity}" />
                         </Grid>
                     </Border>
                 </StackPanel>
