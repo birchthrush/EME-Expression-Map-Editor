@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Xml;
 using EME_Expression_Map_Editor.Command;
@@ -59,6 +62,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
+
         private ObservableCollection<ArticulationViewModel> _articulations = new ObservableCollection<ArticulationViewModel>();
         public ObservableCollection<ArticulationViewModel> Articulations
         {
@@ -94,6 +98,30 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         #endregion
 
+        #region Generic commands
+
+        private int RemoveItem<T>(ObservableCollection<T> list, int selection_idx, Action post_func) where T : ViewModelBase
+        {
+            int pre_idx = selection_idx;
+            var removals = new List<T>();
+
+            foreach (var item in list.Where(x => x.IsSelected))
+                removals.Add(item);
+
+            foreach (var item in removals)
+                list.Remove(item);
+
+            post_func();
+
+            if (list.Count == 0)
+                return -1;
+            else
+                return Math.Clamp(pre_idx - 1, 0, list.Count - 1);
+        }
+
+
+        #endregion
+
         #region Commands relating to SoundSlots
 
         public ICommand AddSoundSlotCommand { get; private set; }
@@ -111,7 +139,7 @@ namespace EME_Expression_Map_Editor.ViewModel
                     idx = SoundSlots.Count - 1;
 
                 var slot_vm = (SoundSlotViewModel)SoundSlots[idx].GetPrototype();
-                slot_vm.Color = SoundSlot.GetNextColor(SoundSlots[idx].Color);
+                slot_vm.Color = (SoundSlots[idx].Color + 1) % 15; 
                 SoundSlots.Insert(idx + 1, slot_vm);
                 SelectedSlotIndex = idx + 1;
             }
@@ -122,9 +150,13 @@ namespace EME_Expression_Map_Editor.ViewModel
         public ICommand RemoveSoundSlotCommand { get; private set; }
         public void RemoveSoundSlot()
         {
+            //int pre_idx = SelectedSlotIndex; 
             foreach (var slot in SoundSlots.ToList().Where(x => x.IsSelected))
-                SoundSlots.Remove(slot); 
+                SoundSlots.Remove(slot);
+            //OnPropertyChanged(nameof(SoundSlots));
+            //SelectedSlotIndex = (pre_idx - 1) < 0 ? 0 : pre_idx - 1;
         }
+
 
 
         public ICommand SetColorCommand { get; private set; }
@@ -227,8 +259,8 @@ namespace EME_Expression_Map_Editor.ViewModel
             int pre_idx = SelectedArticulationIndex;
             foreach (var art in Articulations.ToList().Where(art => art.IsSelected))
                 Articulations.Remove(art); 
-            SelectedArticulationIndex = Math.Clamp(pre_idx, 0, Articulations.Count - 1); 
             RefreshArticulationGroupOptions();
+            SelectedArticulationIndex = (pre_idx - 1) < 0 ? 0 : pre_idx - 1; 
         }
 
         public ICommand RemoveUnusedArticulationsCommand { get; private set; }
@@ -246,7 +278,6 @@ namespace EME_Expression_Map_Editor.ViewModel
                         unused = false;
                         break; 
                     }
-
                 }
 
                 if (unused)
@@ -346,6 +377,9 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         #endregion
 
+        private void DoNothing()
+        { }
+
         public override ViewModelBase GetPrototype()
         {
             throw new NotImplementedException();
@@ -366,6 +400,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             // SoundSlot Grid Commands: 
             AddSoundSlotCommand = new CustomCommand<int>(AddSoundSlot);
             RemoveSoundSlotCommand = new NoParameterCommand(RemoveSoundSlot);
+            //RemoveSoundSlotCommand = new NoParameterCommand(() => { SelectedSlotIndex = RemoveItem(SoundSlots, SelectedSlotIndex, () => { OnPropertyChanged(nameof(SoundSlots));  }); }); 
             SetColorCommand = new CustomCommand<int>(SetColor);
             SetArticulationCommand = new CustomCommand<ArticulationViewModel>(SetArticulation);
             SetChannelCommand = new NoParameterCommand(SetChannel); 
@@ -373,6 +408,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             // Articulation Grid Commands: 
             AddArticulationCommand = new CustomCommand<int>(AddArticulation);
             RemoveArticulationCommand = new NoParameterCommand(RemoveArticulation);
+            //RemoveArticulationCommand = new NoParameterCommand(() => { SelectedArticulationIndex = RemoveItem(Articulations, SelectedArticulationIndex, RefreshArticulationGroupOptions); } );
             RemoveUnusedArticulationsCommand = new NoParameterCommand(RemoveUnusedArticulations); 
             SetArticulationDisplayTypeCommand = new CustomCommand<int>(SetArticulationDisplayType);
             SetArticulationTypeCommand = new CustomCommand<int>(SetArticulationType);
