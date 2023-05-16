@@ -374,8 +374,12 @@
                                         Command="{Binding AddMultipleArticulationsPopupCommand}" 
                                         />
                             <KeyBinding Key="Delete" Modifiers="Ctrl" 
-                                        Command="{Binding RemoveArticulationsCommand}" 
+                                        Command="{Binding RemoveArticulationCommand}" 
                                         CommandParameter="{Binding ElementName=ArticulationGrid, Path=SelectedItems}"
+                                        />
+                            <KeyBinding Key="Insert" Modifiers="Ctrl"
+                                        Command="{Binding AddArticulationCommand}"
+                                        CommandParameter="{Binding ElementName=ArticulationGrid, Path=SelectedIndex}"
                                         />
                         </DataGrid.InputBindings>
                         <DataGrid.Columns>
