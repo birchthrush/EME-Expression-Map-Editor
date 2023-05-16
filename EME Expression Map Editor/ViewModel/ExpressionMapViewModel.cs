@@ -79,9 +79,8 @@ namespace EME_Expression_Map_Editor.ViewModel
         }
 
         public void SoundSlotSelectionChangedHandler()
-        {
-            OnPropertyChanged(nameof(FirstSelectedSlot)); 
-        }
+            => OnPropertyChanged(nameof(FirstSelectedSlot)); 
+
 
 
         private ObservableCollection<ArticulationViewModel> _articulations = new ObservableCollection<ArticulationViewModel>();
@@ -101,7 +100,6 @@ namespace EME_Expression_Map_Editor.ViewModel
                 OnPropertyChanged(nameof(SelectedArticulationIndex));
             }
         }
-
 
         public IList<ArticulationViewModel> Group1Options { get => ArticulationGroupOptions(0); }
         public IList<ArticulationViewModel> Group2Options { get => ArticulationGroupOptions(1); }
@@ -281,9 +279,14 @@ namespace EME_Expression_Map_Editor.ViewModel
         public ICommand RemoveArticulationCommand { get; private set; }
         private void RemoveArticulation()
         {
-            int pre_idx = SelectedArticulationIndex;
+            int pre_idx = -1; 
+
             foreach (var art in Articulations.ToList().Where(art => art.IsSelected))
+            {
+                if (pre_idx < 0)
+                    pre_idx = Articulations.IndexOf(art); 
                 Articulations.Remove(art); 
+            }
             RefreshArticulationGroupOptions();
             SelectedArticulationIndex = (pre_idx - 1) < 0 ? 0 : pre_idx - 1; 
         }

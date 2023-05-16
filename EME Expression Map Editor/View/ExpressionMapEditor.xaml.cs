@@ -34,23 +34,5 @@ namespace EME_Expression_Map_Editor
         {
             _vm.SoundSlotSelectionChangedHandler(); 
         }
-
-
-        /*
-        private void SoundSlotGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            int idx = 0; 
-            foreach (var slot in _vm.SoundSlots)
-            {
-                if (slot.IsSelected)
-                {
-                    _vm.SelectedSlotIndex = idx;
-                    return;
-                }
-                else
-                    ++idx; 
-            }
-        }
-        */
     }
 }
