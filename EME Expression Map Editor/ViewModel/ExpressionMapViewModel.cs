@@ -49,7 +49,8 @@ namespace EME_Expression_Map_Editor.ViewModel
                 _selectedSlot = value;
                 OnPropertyChanged(nameof(SelectedSlot));
             }
-        }        
+        } 
+
 
         private int _selectedSlotIndex;
         public int SelectedSlotIndex
@@ -60,6 +61,17 @@ namespace EME_Expression_Map_Editor.ViewModel
                 _selectedSlotIndex = value;
                 OnPropertyChanged(nameof(SelectedSlotIndex));
             }
+        }
+
+        public SoundSlotViewModel? FirstSelectedSlot
+        {
+            get => SoundSlots.Where(x => x.IsSelected).First(); 
+        }
+
+
+        public void SoundSlotSelectionChangedHandler()
+        {
+            OnPropertyChanged(nameof(FirstSelectedSlot)); 
         }
 
 

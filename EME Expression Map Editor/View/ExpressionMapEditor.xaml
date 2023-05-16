@@ -59,7 +59,7 @@
                               CanUserDeleteRows="False"
                               CanUserReorderColumns="False"
                               CanUserSortColumns="False"
-                              CanUserResizeRows="False">
+                              CanUserResizeRows="False" SelectionChanged="SoundSlotGrid_SelectionChanged">
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Insert multiple new slots" Command="{Binding AddMultipleSlotsPopupCommand}" />
@@ -222,8 +222,8 @@
                                 Command="{Binding SelectedSlot.RemoveOutputEventsCommand}"
                                 CommandParameter="{Binding ElementName=OutputEventsGrid, Path=SelectedItems}" />
                     </StackPanel>
-                    <DataGrid ItemsSource="{Binding SelectedSlot.OutputEvents}" 
-                              SelectedIndex="{Binding SelectedSlot.SelectedEventIndex}"
+                    <DataGrid ItemsSource="{Binding FirstSelectedSlot.OutputEvents}" 
+                              SelectedIndex="{Binding FirstSelectedSlot.SelectedEventIndex}"
                               Name="OutputEventsGrid"
                               SelectionMode="Single"
                               dd:DragDrop.IsDragSource="True"
