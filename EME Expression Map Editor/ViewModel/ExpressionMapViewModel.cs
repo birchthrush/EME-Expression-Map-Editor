@@ -49,7 +49,7 @@ namespace EME_Expression_Map_Editor.ViewModel
                 _selectedSlot = value;
                 OnPropertyChanged(nameof(SelectedSlot));
             }
-        }
+        }        
 
         private int _selectedSlotIndex;
         public int SelectedSlotIndex
@@ -150,11 +150,10 @@ namespace EME_Expression_Map_Editor.ViewModel
         public ICommand RemoveSoundSlotCommand { get; private set; }
         public void RemoveSoundSlot()
         {
-            //int pre_idx = SelectedSlotIndex; 
+            int pre_idx = SelectedSlotIndex; 
             foreach (var slot in SoundSlots.ToList().Where(x => x.IsSelected))
                 SoundSlots.Remove(slot);
-            //OnPropertyChanged(nameof(SoundSlots));
-            //SelectedSlotIndex = (pre_idx - 1) < 0 ? 0 : pre_idx - 1;
+            SelectedSlotIndex = (pre_idx - 1) < 0 ? 0 : pre_idx - 1;
         }
 
 
