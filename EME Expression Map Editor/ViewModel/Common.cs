@@ -42,6 +42,24 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
+        public static int AddItem<T>(ObservableCollection<T> list, int idx, Action post_func) where T : ViewModelBase, new()
+        {
+            if (list.Count == 0)
+            {
+                list.Add(new T());
+                post_func();
+                return 0;
+            }
+            else
+            {
+                idx = Math.Clamp(idx, 0, list.Count - 1);
+                T item = (T)list[idx].GetPrototype(list[idx]);
+                list.Insert(idx + 1, item);
+                post_func();
+                return idx + 1;
+            }
+        }
+
         public static int RemoveItem<T>(ObservableCollection<T> list, int selection_idx, Action post_func) where T : ViewModelBase
         {
             var selection = list.Where(x => x.IsSelected).ToList();

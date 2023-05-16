@@ -13,9 +13,9 @@ namespace EME_Expression_Map_Editor.ViewModel
 
     internal class SoundSlotViewModel : ViewModelBase
     {
-        private static readonly string AnyChannelLabel = "Any"; 
+        private static readonly string AnyChannelLabel = "Any";
 
-        private SoundSlot _slot;
+        private SoundSlot _slot = new SoundSlot();
 
         private ObservableCollection<OutputEventViewModel> _outputEvents = new ObservableCollection<OutputEventViewModel>(); 
         public ObservableCollection<OutputEventViewModel> OutputEvents
@@ -304,41 +304,22 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         #region Commands and related functions
 
-        public ICommand AddOutputEventCommand { get; private set; }
-        public void AddOutputEvent(int idx)
-        {
-            if (OutputEvents.Count == 0)
-            {
-                OutputEvents.Add(new OutputEventViewModel(new OutputEvent()));
-                SelectedEventIndex = 0; 
-            }
-            else
-            {
-                idx = Math.Clamp(idx, 0, OutputEvents.Count - 1);
-                var event_vm = (OutputEventViewModel)OutputEvents[idx].GetPrototype(); 
+        public ICommand? AddOutputEventCommand { get; private set; } 
 
-                OutputEvents.Insert(idx + 1, event_vm);
-                SelectedEventIndex = idx + 1; 
-            }
-        }
-        public ICommand RemoveOutputEventCommand { get; private set; }
-
-        /*
-        public void RemoveOutputEvent()
-        {
-            int pre_idx = SelectedEventIndex;
-            foreach (var item in OutputEvents.ToList().Where(x => x.IsSelected))
-                OutputEvents.Remove(item);
-            SelectedEventIndex = Math.Clamp(pre_idx, -1, OutputEvents.Count - 1); 
-        }
-        */
+        public ICommand? RemoveOutputEventCommand { get; private set; }
 
         #endregion
 
-        public override ViewModelBase GetPrototype()
-        {
-            var slot_vm = new SoundSlotViewModel(new SoundSlot()); 
-            return slot_vm;
+        public override ViewModelBase GetPrototype(ViewModelBase prototype)
+        {            
+            var slot_vm = new SoundSlotViewModel(new SoundSlot());
+            if (prototype != null)
+            {
+                var pt = (prototype as SoundSlotViewModel);
+                if (pt != null)
+                    slot_vm.Color = (pt.Color + 1) % 15; 
+            }
+            return slot_vm; 
         }
 
         public SoundSlotViewModel Duplicate()
@@ -352,14 +333,22 @@ namespace EME_Expression_Map_Editor.ViewModel
             
             return slot_vm;
         }
+
+        private void InitCommands()
+        {
+            AddOutputEventCommand = new CustomCommand<int>((n) => { SelectedEventIndex = Common.AddItem(OutputEvents, SelectedEventIndex, Common.DoNothing); });
+            RemoveOutputEventCommand = new NoParameterCommand(() => { SelectedEventIndex = Common.RemoveItem(OutputEvents, SelectedEventIndex, Common.DoNothing); });
+        }
         
+        public SoundSlotViewModel()
+        {
+            InitCommands(); 
+        }
+
         public SoundSlotViewModel(SoundSlot slot)
         {            
             _slot = slot;
-
-            AddOutputEventCommand = new CustomCommand<int>(AddOutputEvent);
-            //RemoveOutputEventCommand = new NoParameterCommand(RemoveOutputEvent);
-            RemoveOutputEventCommand = new NoParameterCommand(() => { SelectedEventIndex = Common.RemoveItem(OutputEvents, SelectedEventIndex, Common.DoNothing); });
+            InitCommands();
         }
     }
 }

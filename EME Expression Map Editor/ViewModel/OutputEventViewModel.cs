@@ -9,7 +9,7 @@ namespace EME_Expression_Map_Editor.ViewModel
 {
     internal class OutputEventViewModel : ViewModelBase
     {
-        private OutputEvent _event;
+        private OutputEvent _event = new OutputEvent(); 
 
         public string Data1
         {
@@ -91,8 +91,13 @@ namespace EME_Expression_Map_Editor.ViewModel
             get => _eventTypeOptions; 
         }
 
-        public override ViewModelBase GetPrototype()
+        public override ViewModelBase GetPrototype(ViewModelBase prototype)
             => new OutputEventViewModel(_event.Duplicate()); 
+
+        public OutputEventViewModel()
+        {
+            
+        }
 
         public OutputEventViewModel(OutputEvent oe)
         {

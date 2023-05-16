@@ -125,72 +125,7 @@ namespace EME_Expression_Map_Editor.ViewModel
         #region Commands relating to SoundSlots
 
         public ICommand AddSoundSlotCommand { get; private set; }
-        public void AddSoundSlot(int idx)
-        {
-            if (SoundSlots.Count == 0)
-            {
-                // List is empty: add new slot with default parameters
-                SoundSlots.Add(new SoundSlotViewModel(new SoundSlot()));
-                SelectedSlotIndex = 0;
-            }
-            else
-            {
-                if (idx < 0 || idx >= SoundSlots.Count - 1)
-                    idx = SoundSlots.Count - 1;
-
-                var slot_vm = (SoundSlotViewModel)SoundSlots[idx].GetPrototype();
-                slot_vm.Color = (SoundSlots[idx].Color + 1) % 15; 
-                SoundSlots.Insert(idx + 1, slot_vm);
-                SelectedSlotIndex = idx + 1;
-            }
-
-            OnPropertyChanged(nameof(SoundSlots));
-        }
-
         public ICommand RemoveSoundSlotCommand { get; private set; }
-        /*
-        public void RemoveSoundSlot()
-        {
-            int pre_idx = SelectedSlotIndex;
-            if (FirstSelectedSlot != null)
-                pre_idx = SoundSlots.IndexOf(FirstSelectedSlot);
-
-            foreach (var slot in SoundSlots.ToList().Where(x => x.IsSelected))
-                SoundSlots.Remove(slot);
-
-            SelectedSlotIndex = Math.Clamp(pre_idx, -1, SoundSlots.Count - 1);
-        }
-        */
-        private int RemoveItem<T>(ObservableCollection<T> list, int selection_idx, Action pre_func, Action post_func) where T : ViewModelBase
-        {
-            var selection = list.Where(x => x.IsSelected).ToList();
-
-            // Empty selection check: 
-            if (selection.Count == 0)
-                return selection_idx;
-
-            int pre_idx = list.IndexOf(selection.First());
-
-            foreach (var item in selection)
-                list.Remove(item);
-
-            /*
-            var removals = new List<T>();
-
-            pre_func(); 
-
-            foreach (var item in list.Where(x => x.IsSelected))
-                removals.Add(item);
-
-            foreach (var item in removals)
-                list.Remove(item);
-            */
-
-            post_func();
-
-            return Math.Clamp(pre_idx, -1, list.Count - 1);
-        }
-
         public ICommand DuplicateSoundSlotCommand { get; private set; }
         public void DuplicateSoundlot()
         {
@@ -269,48 +204,10 @@ namespace EME_Expression_Map_Editor.ViewModel
         #region Commands relating to Articulations
 
 
+
+
         public ICommand AddArticulationCommand { get; private set; }
-        private void AddArticulation(int idx)
-        {
-
-            if (Articulations.Count == 0)
-            {
-                // Articulation list empty: add new with default parameters
-                Articulations.Add(new ArticulationViewModel(new Articulation()));
-                SelectedArticulationIndex = 0; 
-            }
-            else
-            {
-                if (idx < 0 || idx >= Articulations.Count)
-                    idx = Articulations.Count - 1;
-
-                // Add new Articulation with similar properties as the preceding one: 
-                ArticulationViewModel art_vm = (ArticulationViewModel)Articulations[idx].GetPrototype();
-                art_vm.Group = Articulations[idx].Group;
-
-                Articulations.Insert(idx + 1, art_vm); 
-                SelectedArticulationIndex = idx + 1; 
-            }
-
-
-            OnPropertyChanged(nameof(Articulations)); 
-            RefreshArticulationGroupOptions();
-        }
-
         public ICommand RemoveArticulationCommand { get; private set; }
-        /*
-        private void RemoveArticulation()
-        {
-            int pre_idx = SelectedArticulationIndex; 
-
-            foreach (var art in Articulations.ToList().Where(art => art.IsSelected))
-                Articulations.Remove(art); 
-
-            SelectedArticulationIndex = Math.Clamp(pre_idx, -1, Articulations.Count - 1); 
-
-            RefreshArticulationGroupOptions();
-        }
-        */
 
         public ICommand RemoveUnusedArticulationsCommand { get; private set; }
         private void RemoveUnusedArticulations()
@@ -425,7 +322,7 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         #endregion
 
-        public override ViewModelBase GetPrototype()
+        public override ViewModelBase GetPrototype(ViewModelBase prototype)
         {
             throw new NotImplementedException();
         }
@@ -443,17 +340,15 @@ namespace EME_Expression_Map_Editor.ViewModel
             #endif
 
             // SoundSlot Grid Commands: 
-            AddSoundSlotCommand = new CustomCommand<int>(AddSoundSlot);
-            //RemoveSoundSlotCommand = new NoParameterCommand(RemoveSoundSlot);
+            AddSoundSlotCommand = new CustomCommand<int>((n) => { SelectedSlotIndex = Common.AddItem(SoundSlots, n, Common.DoNothing); });
             RemoveSoundSlotCommand = new NoParameterCommand(() => { SelectedSlotIndex = Common.RemoveItem(SoundSlots, SelectedSlotIndex, () => { OnPropertyChanged(nameof(SoundSlots));  }); }); 
             DuplicateSoundSlotCommand = new NoParameterCommand(DuplicateSoundlot); 
             SetColorCommand = new CustomCommand<int>(SetColor);
             SetArticulationCommand = new CustomCommand<ArticulationViewModel>(SetArticulation);
-            SetChannelCommand = new NoParameterCommand(SetChannel); 
+            SetChannelCommand = new NoParameterCommand(SetChannel);
 
             // Articulation Grid Commands: 
-            AddArticulationCommand = new CustomCommand<int>(AddArticulation);
-            //RemoveArticulationCommand = new NoParameterCommand(RemoveArticulation);
+            AddArticulationCommand = new CustomCommand<int>((n) => { SelectedArticulationIndex = Common.AddItem(Articulations, n, Common.DoNothing); }); 
             RemoveArticulationCommand = new NoParameterCommand(() => { SelectedArticulationIndex = Common.RemoveItem(Articulations, SelectedArticulationIndex, RefreshArticulationGroupOptions); } );
             RemoveUnusedArticulationsCommand = new NoParameterCommand(RemoveUnusedArticulations); 
             SetArticulationDisplayTypeCommand = new CustomCommand<int>(SetArticulationDisplayType);
