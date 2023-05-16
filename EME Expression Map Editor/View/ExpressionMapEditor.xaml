@@ -100,7 +100,7 @@
                                                   SelectedValue="{Binding Art1, UpdateSourceTrigger=PropertyChanged}" >
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="DropDownClosed">
-                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.AssignArticulation1Command, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.AssignArticulationCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                                            CommandParameter="{Binding Art1}" />
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
@@ -115,7 +115,7 @@
                                                   SelectedValue="{Binding Art2, UpdateSourceTrigger=PropertyChanged}" >
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="DropDownClosed">
-                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.AssignArticulation2Command, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.AssignArticulationCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                                            CommandParameter="{Binding Art2}" />
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
@@ -130,7 +130,7 @@
                                                   SelectedValue="{Binding Art3, UpdateSourceTrigger=PropertyChanged}" >
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="DropDownClosed">
-                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.AssignArticulation3Command, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.AssignArticulationCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                                            CommandParameter="{Binding Art3}" />
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
@@ -145,7 +145,7 @@
                                                   SelectedValue="{Binding Art4, UpdateSourceTrigger=PropertyChanged}" >
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="DropDownClosed">
-                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.AssignArticulation4Command, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.AssignArticulationCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                                            CommandParameter="{Binding Art4}" />
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>

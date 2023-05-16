@@ -23,7 +23,7 @@ namespace EME_Expression_Map_Editor.ViewModel
         #region ExpressionMap Properties
 
         private string _name = string.Empty;
-        public string Name 
+        public string Name
         {
             get => _name;
             set => _name = value;
@@ -32,11 +32,11 @@ namespace EME_Expression_Map_Editor.ViewModel
         private ObservableCollection<SoundSlotViewModel> _soundSlots = new ObservableCollection<SoundSlotViewModel>();
         public ObservableCollection<SoundSlotViewModel> SoundSlots
         {
-            get => _soundSlots; 
-            set => _soundSlots = value; 
+            get => _soundSlots;
+            set => _soundSlots = value;
         }
 
-        private SoundSlotViewModel? _selectedSlot; 
+        private SoundSlotViewModel? _selectedSlot;
         public SoundSlotViewModel? SelectedSlot
         {
             get => _selectedSlot;
@@ -47,10 +47,10 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
-        private int _selectedSlotIndex; 
-        public int SelectedSlotIndex 
+        private int _selectedSlotIndex;
+        public int SelectedSlotIndex
         {
-            get => _selectedSlotIndex; 
+            get => _selectedSlotIndex;
             set
             {
                 _selectedSlotIndex = value;
@@ -65,13 +65,13 @@ namespace EME_Expression_Map_Editor.ViewModel
             set => _articulations = value;
         }
 
-        private int _selectedArticulationIndex; 
+        private int _selectedArticulationIndex;
         public int SelectedArticulationIndex
         {
             get => _selectedArticulationIndex;
             set
             {
-                _selectedArticulationIndex = value; 
+                _selectedArticulationIndex = value;
                 OnPropertyChanged(nameof(SelectedArticulationIndex));
             }
         }
@@ -88,7 +88,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             foreach (var item in Articulations)
                 if (item.Group == group)
                     arts.Add(item);
-            return arts; 
+            return arts;
         }
 
         #endregion
@@ -102,20 +102,20 @@ namespace EME_Expression_Map_Editor.ViewModel
             {
                 // List is empty: add new slot with default parameters
                 SoundSlots.Add(new SoundSlotViewModel(new SoundSlot()));
-                SelectedSlotIndex = 0; 
+                SelectedSlotIndex = 0;
             }
             else
             {
                 if (idx < 0 || idx >= SoundSlots.Count - 1)
                     idx = SoundSlots.Count - 1;
 
-                var slot_vm = (SoundSlotViewModel)SoundSlots[idx].GetPrototype(); 
-                slot_vm.Color = SoundSlot.GetNextColor(SoundSlots[idx].Color); 
+                var slot_vm = (SoundSlotViewModel)SoundSlots[idx].GetPrototype();
+                slot_vm.Color = SoundSlot.GetNextColor(SoundSlots[idx].Color);
                 SoundSlots.Insert(idx + 1, slot_vm);
-                SelectedSlotIndex = idx + 1; 
+                SelectedSlotIndex = idx + 1;
             }
 
-            OnPropertyChanged(nameof(SoundSlots)); 
+            OnPropertyChanged(nameof(SoundSlots));
         }
 
         public ICommand RemoveSoundSlotCommand { get; private set; }
@@ -137,6 +137,31 @@ namespace EME_Expression_Map_Editor.ViewModel
                     if (Common.KeyModifiers.CascadeKeyActive())
                         col = SoundSlot.GetNextColor(col);
                 }
+            }
+        }
+
+        public ICommand AssignArticulationCommand {  get; private set; }
+        private void AssignArticulation(ArticulationViewModel art)
+        {
+            if (Common.KeyModifiers.CascadeKeyActive() && !art.Equals(ArticulationViewModel.Blank))
+            {
+                var art_list = ArticulationGroupOptions(art.Group);
+                int idx = art_list.IndexOf(art);
+                foreach (var slot in SoundSlots.Where(x => x.IsSelected))
+                {
+                    slot.SetArticulation(art_list[idx]);
+
+                    // Increment & wrap around index: skip 0, which is always the blank articulation
+                    if (idx == 0 || idx == art_list.Count - 1)
+                        idx = 1;
+                    else
+                        ++idx; 
+                }
+            }
+            else
+            {
+                foreach (var slot in SoundSlots.Where(x => x.IsSelected))
+                    slot.SetArticulation(art); 
             }
         }
 
@@ -291,6 +316,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             AddSoundSlotCommand = new CustomCommand<int>(AddSoundSlot);
             RemoveSoundSlotCommand = new NoParameterCommand(RemoveSoundSlot);
             ChangeColorCommand = new CustomCommand<int>(ChangeColor);
+            AssignArticulationCommand = new CustomCommand<ArticulationViewModel>(AssignArticulation);
 
             // Articulation Grid Commands: 
             AddArticulationCommand = new CustomCommand<int>(AddArticulation);
