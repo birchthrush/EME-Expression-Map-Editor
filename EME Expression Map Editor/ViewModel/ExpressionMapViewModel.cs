@@ -229,6 +229,32 @@ namespace EME_Expression_Map_Editor.ViewModel
             RefreshArticulationGroupOptions();
         }
 
+        public ICommand RemoveUnusedArticulationsCommand { get; private set; }
+        private void RemoveUnusedArticulations()
+        {
+            List<ArticulationViewModel> removals = new List<ArticulationViewModel>(); 
+            foreach (var art in Articulations)
+            {
+                bool unused = true; 
+
+                foreach (var slot in SoundSlots)
+                {
+                    if (slot.ContainsArticulation(art))
+                    {
+                        unused = false;
+                        break; 
+                    }
+
+                }
+
+                if (unused)
+                    removals.Add(art); 
+            }
+
+            foreach (var art in removals)
+                Articulations.Remove(art); 
+        }
+
         public ICommand SetArticulationDisplayTypeCommand { get; private set; }
         private void SetArticulationDisplayType(int display_type)
         {
@@ -345,6 +371,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             // Articulation Grid Commands: 
             AddArticulationCommand = new CustomCommand<int>(AddArticulation);
             RemoveArticulationCommand = new NoParameterCommand(RemoveArticulation);
+            RemoveUnusedArticulationsCommand = new NoParameterCommand(RemoveUnusedArticulations); 
             SetArticulationDisplayTypeCommand = new CustomCommand<int>(SetArticulationDisplayType);
             SetArticulationTypeCommand = new CustomCommand<int>(SetArticulationType);
             SetGroupCommand = new CustomCommand<int>(SetGroup);
