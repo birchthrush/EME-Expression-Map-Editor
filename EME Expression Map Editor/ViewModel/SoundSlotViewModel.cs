@@ -173,7 +173,7 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         // Read-only property with human-readable Midi Channel options for UI display
         // Options are channel 1-16 or 'Any'
-        public ObservableCollection<string> ChannelOptions
+        public static ObservableCollection<string> ChannelOptions
         {
             get
             {

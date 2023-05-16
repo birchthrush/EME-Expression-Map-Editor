@@ -313,7 +313,7 @@
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="DropDownClosed">
                                         <i:InvokeCommandAction 
-                                            Command="{Binding Path=DataContext.ChangeChannelsCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                            Command="{Binding Path=DataContext.SetChannelCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                             />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>

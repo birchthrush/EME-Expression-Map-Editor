@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -165,6 +166,28 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
+        public ICommand SetChannelCommand { get; private set; }
+        private void SetChannel()
+        {
+            if (SoundSlots.Count == 0 || SelectedSlotIndex < 0) 
+                return;
+
+            int c_idx = SoundSlotViewModel.ChannelOptions.IndexOf(SoundSlots[SelectedSlotIndex].Channel); 
+
+            foreach (var slot in SoundSlots.Where(x => x.IsSelected))
+            {
+                slot.Channel = SoundSlotViewModel.ChannelOptions[c_idx];
+
+                if (Common.KeyModifiers.CascadeKeyActive() && c_idx > 0)
+                {
+                    ++c_idx;
+                    if (c_idx >= SoundSlotViewModel.ChannelOptions.Count)
+                        c_idx = 1; 
+                }
+
+            }
+        }
+
         #endregion
 
         #region Commands relating to Articulations
@@ -317,6 +340,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             RemoveSoundSlotCommand = new NoParameterCommand(RemoveSoundSlot);
             SetColorCommand = new CustomCommand<int>(SetColor);
             SetArticulationCommand = new CustomCommand<ArticulationViewModel>(SetArticulation);
+            SetChannelCommand = new NoParameterCommand(SetChannel); 
 
             // Articulation Grid Commands: 
             AddArticulationCommand = new CustomCommand<int>(AddArticulation);
