@@ -13,11 +13,6 @@
         ResizeMode="CanMinimize"
         WindowStyle="SingleBorderWindow"
         Title="{StaticResource ApplicationTitle}" Height="960" Width="1107">
-    <!--
-    <Window.DataContext>
-        <viewmodel:ExpressionMapViewModel />
-    </Window.DataContext>
-    -->
     <Window.InputBindings>
         <!--
         <KeyBinding Key="H" Modifiers="Ctrl" Command="{Binding OutputEventReplacementCommand}" />
@@ -71,15 +66,6 @@
                               CanUserResizeRows="False"        
                               EnableRowVirtualization="False"
                               >
-                        <!-- 
-                              VirtualizingStackPanel.IsVirtualizing="True"
-                              EnableRowVirtualization="True"
-                              EnableColumnVirtualization="True"
-                              VirtualizingStackPanel.VirtualizationMode="Recycling"
-                              VirtualizingPanel.IsVirtualizingWhenGrouping="True"                              
-                        
-                        -->
-                        
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Insert multiple new slots" Command="{Binding AddMultipleSlotsPopupCommand}" />
