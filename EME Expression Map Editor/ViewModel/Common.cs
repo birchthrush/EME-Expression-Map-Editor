@@ -8,20 +8,21 @@ using System.Windows.Input;
 
 namespace EME_Expression_Map_Editor.ViewModel
 {
+    public enum WindowReturnCode
+    {
+        OK,
+        CANCEL,
+        DELETE
+    };
+
+    public enum PopupType
+    {
+        NUMBER_INPUT,
+        OUTPUT_EVENT_REPLACEMENT
+    }
+
     public static class Common
     {
-        public enum WindowReturnCode
-        {
-            OK,
-            CANCEL,
-            DELETE
-        };
-
-        public enum PopupType
-        {
-            NUMBER_INPUT,
-            OUTPUT_EVENT_REPLACEMENT
-        }
 
         public static int AddItem<T>(ObservableCollection<T> list, int idx, Action<T, T> copy_func) where T : ViewModelBase, new()
         {
@@ -64,6 +65,11 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         // Blank dummy function for when post_func above are not needed
         public static void DoNothing<T>(T src, T dest)
+        {
+
+        }
+
+        public static void DoNothing<T>(T src)
         {
 
         }

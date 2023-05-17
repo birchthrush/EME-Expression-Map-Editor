@@ -9,13 +9,16 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Xml;
 using EME_Expression_Map_Editor.Command;
 using EME_Expression_Map_Editor.Model;
 using EME_Expression_Map_Editor.Model.XmlFileManagement;
+using ExpMapUI;
 using GongSolutions.Wpf.DragDrop;
 
 namespace EME_Expression_Map_Editor.ViewModel
@@ -117,8 +120,67 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         #endregion
 
-        #region Generic commands
+        #region Commands and functions relating to popup windows
 
+        private void CreatePopupWindow(PopupType type, Action<Window> pre_function, Action<Window> post_function)
+        {
+            Window prev_main = Application.Current.MainWindow;
+            Window? popup = null;
+            //string? property_to_refresh = null; 
+            if (type == PopupType.NUMBER_INPUT)
+            {
+                popup = new NumberInputWindow();
+            }
+            else if (type == PopupType.OUTPUT_EVENT_REPLACEMENT)
+            {
+                // do other stuff
+            }
+            else
+                throw new Exception("Attempting to create undefined window type");
+
+            // Redundant null check to suppress warnings
+            if (popup == null)
+                return; 
+
+            popup.Owner = prev_main;
+            popup.WindowStartupLocation = WindowStartupLocation.CenterOwner; 
+            Application.Current.MainWindow = popup;
+
+            // Perform initializer functions
+
+            pre_function(popup);
+
+            popup.ShowDialog(); 
+
+            // Teardown function
+            post_function(popup);
+
+            Application.Current.MainWindow = prev_main; 
+            //if (property_to_refresh != null)
+            //    OnPropertyChanged(property_to_refresh);
+        }
+
+        public ICommand AddSlotsPopupCommand { get; private set; }
+        private void AddSlotsPopup_Post(Window win)
+        {
+            var data = win.DataContext as NumberInputViewModel; 
+            if (data != null && data.WindowStatus == WindowReturnCode.OK)
+            {
+                for (int i = 0; i < data.Number; ++i)
+                    SelectedSlotIndex = Common.AddItem(SoundSlots, SelectedSlotIndex, AddSoundSlotPost);
+            }
+        }
+
+        public ICommand AddArticulationsPopupCommand { get; private set; }
+        private void AddArticulationsPopup_Post(Window win)
+        {
+            var data = win.DataContext as NumberInputViewModel;
+            if (data != null && data.WindowStatus == WindowReturnCode.OK)
+            {
+                for (int i = 0; i < data.Number; ++i)
+                    SelectedArticulationIndex = Common.AddItem(Articulations, SelectedArticulationIndex, AddArticulationPost); 
+            }
+        }
 
         #endregion
 
@@ -388,6 +450,11 @@ namespace EME_Expression_Map_Editor.ViewModel
             ExtractViewModels();
 #endif
 
+            // Popup Window Commands: 
+            AddSlotsPopupCommand = new NoParameterCommand(() => { CreatePopupWindow(PopupType.NUMBER_INPUT, Common.DoNothing, AddSlotsPopup_Post); });
+            AddArticulationsPopupCommand = new NoParameterCommand(() => { CreatePopupWindow(PopupType.NUMBER_INPUT, Common.DoNothing, AddArticulationsPopup_Post); }); 
+
+
             // SoundSlot Grid Commands: 
             AddSoundSlotCommand = new CustomCommand<int>((n) => { SelectedSlotIndex = Common.AddItem(SoundSlots, n, AddSoundSlotPost); });
             RemoveSoundSlotCommand = new NoParameterCommand(() => { SelectedSlotIndex = Common.RemoveItem(SoundSlots, SelectedSlotIndex, (n) => n.IsSelected, () => { OnPropertyChanged(nameof(SoundSlots)); }); });
@@ -414,6 +481,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             CopyOutputEventCommand = new CustomCommand<int>((n) => { CopyOutputEvent(n, false, false); });
             CopyOutputEventIncrementData1Command = new CustomCommand<int>((n) => { CopyOutputEvent(n, true, false); });
             CopyOutputEventIncrementData2Command = new CustomCommand<int>((n) => { CopyOutputEvent(n, false, true); });
+
 
             // Drop handlers: 
             ArticulationDropHandler = new CustomDropHandler(DefaultDragOver, DropArticulations); 

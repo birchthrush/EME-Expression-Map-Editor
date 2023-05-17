@@ -9,6 +9,8 @@ namespace EME_Expression_Map_Editor.ViewModel
 {
     public abstract class ViewModelBase : INotifyPropertyChanged, ICloneable
     {
+
+
         public event PropertyChangedEventHandler? PropertyChanged = null; 
         protected void OnPropertyChanged (string property_name)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property_name));

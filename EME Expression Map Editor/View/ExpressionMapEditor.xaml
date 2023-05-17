@@ -65,7 +65,7 @@
                               >
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Insert multiple new slots (Ctrl+N)" Command="{Binding AddMultipleSlotsPopupCommand}" />
+                                <MenuItem Header="Insert multiple new slots (Ctrl+N)" Command="{Binding AddSlotsPopupCommand}" />
                                 <MenuItem Header="Duplicate selected slots (Ctrl+D)" Command="{Binding DuplicateSoundSlotCommand}" />
                                 <Separator />
                                 <MenuItem Header="Copy and auto-increment Remote Keys from first selected slot" Command="{Binding PropagateRemoteKeysCommand}" />
@@ -78,7 +78,7 @@
                         </DataGrid.ContextMenu>
                         <DataGrid.InputBindings>
                             <KeyBinding Key="N" Modifiers="Ctrl" 
-                                        Command="{Binding AddMultipleSlotsPopupCommand}" />
+                                        Command="{Binding AddSlotsPopupCommand}" />
                             <KeyBinding Key="D" Modifiers="Ctrl" 
                                          Command="{Binding DuplicateSoundSlotCommand}" />
                             <KeyBinding Key="H" Modifiers="Ctrl"
@@ -374,13 +374,13 @@
                               EnableRowVirtualization="False">
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Insert multiple new articulation" Command="{Binding AddMultipleArticulationsPopupCommand}" />
+                                <MenuItem Header="Insert multiple new articulation" Command="{Binding AddArticulationsPopupCommand}" />
                                 <MenuItem Header="Remove unused articulations" Command="{Binding RemoveUnusedArticulationsCommand}" />
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                         <DataGrid.InputBindings>
                             <KeyBinding Key="N" Modifiers="Ctrl" 
-                                        Command="{Binding AddMultipleArticulationsPopupCommand}" 
+                                        Command="{Binding AddArticulationsPopupCommand}" 
                                         />
                             <KeyBinding Key="Delete"
                                         Command="{Binding RemoveArticulationCommand}" 
