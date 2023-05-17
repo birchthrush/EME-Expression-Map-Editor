@@ -396,12 +396,6 @@ namespace EME_Expression_Map_Editor.ViewModel
             RefreshArticulationGroupOptions();
         }
 
-        private List<T> GetSortedList<T>(List<T> src, IList<T> ordering)
-        {
-            src.Sort((x, y) => ordering.IndexOf(x).CompareTo(ordering.IndexOf(y)));
-            return src; 
-        }
-
         #endregion
 
         #region Commands relating to OutputEvents
