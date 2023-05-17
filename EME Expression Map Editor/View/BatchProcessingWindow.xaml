@@ -45,7 +45,9 @@
                             CanUserResizeColumns="False"
                             Height="300"
                             Margin="10 10 10 10"
-                            AutoGenerateColumns="False">
+                            AutoGenerateColumns="False"
+                            EnableColumnVirtualization="False"
+                            EnableRowVirtualization="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Type" Width="142" Binding="{Binding EventTypeAsString, Mode=OneWay}" />
                             <DataGridTextColumn Header="Data 1" Width="70" Binding="{Binding Data1, Mode=OneWay}"/>
