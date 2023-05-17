@@ -10,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace ExpMapUI
+namespace EME_ExpressionMapEditor
 {
     /// <summary>
     /// Interaction logic for NumberInputWindow.xaml

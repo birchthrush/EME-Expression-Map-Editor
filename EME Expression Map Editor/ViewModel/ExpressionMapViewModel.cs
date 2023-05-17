@@ -18,7 +18,7 @@ using System.Xml;
 using EME_Expression_Map_Editor.Command;
 using EME_Expression_Map_Editor.Model;
 using EME_Expression_Map_Editor.Model.XmlFileManagement;
-using ExpMapUI;
+using EME_ExpressionMapEditor;
 using GongSolutions.Wpf.DragDrop;
 
 namespace EME_Expression_Map_Editor.ViewModel
