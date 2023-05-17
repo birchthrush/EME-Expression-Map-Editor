@@ -55,7 +55,8 @@ namespace EME_Expression_Map_Editor.ViewModel
             else
             {
                 idx = Math.Clamp(idx, 0, list.Count - 1);
-                T item = (T)list[idx].GetPrototype(list[idx]);
+                //T item = (T)list[idx].GetPrototype(list[idx]);
+                T item = (T)list[idx].Clone(); 
                 list.Insert(idx + 1, item);
                 post_func();
                 return idx + 1;

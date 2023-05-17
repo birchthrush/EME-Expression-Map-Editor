@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EME_Expression_Map_Editor.ViewModel
 {
-    public abstract class ViewModelBase : INotifyPropertyChanged
+    public abstract class ViewModelBase : INotifyPropertyChanged, ICloneable
     {
         public event PropertyChangedEventHandler? PropertyChanged = null; 
         protected void OnPropertyChanged (string property_name)
@@ -28,8 +28,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
-        // Returns a new copy based on the parameter type with certain properties incremented
-        public abstract ViewModelBase GetPrototype(ViewModelBase prototype);
+        public abstract object Clone(); 
 
         public ViewModelBase()
         {

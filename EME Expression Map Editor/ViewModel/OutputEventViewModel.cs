@@ -91,8 +91,8 @@ namespace EME_Expression_Map_Editor.ViewModel
             get => _eventTypeOptions; 
         }
 
-        public override ViewModelBase GetPrototype(ViewModelBase prototype)
-            => new OutputEventViewModel(_event.Duplicate()); 
+        public override object Clone()
+            => new OutputEventViewModel(_event.Duplicate());
 
         public OutputEventViewModel()
         {

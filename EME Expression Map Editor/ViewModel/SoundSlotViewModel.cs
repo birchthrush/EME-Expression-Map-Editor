@@ -299,27 +299,15 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         #endregion
 
-        public override ViewModelBase GetPrototype(ViewModelBase prototype)
-        {            
-            var slot_vm = new SoundSlotViewModel(new SoundSlot());
-            if (prototype != null)
-            {
-                var pt = (prototype as SoundSlotViewModel);
-                if (pt != null)
-                    slot_vm.Color = (pt.Color + 1) % 15; 
-            }
-            return slot_vm; 
-        }
-
-        public SoundSlotViewModel Duplicate()
+        public override object Clone()
         {
             var slot_vm = new SoundSlotViewModel(_slot.Duplicate());
-            
+
             slot_vm.Art1 = this.Art1;
-            slot_vm.Art2 = this.Art2; 
+            slot_vm.Art2 = this.Art2;
             slot_vm.Art3 = this.Art3;
             slot_vm.Art4 = this.Art4;
-            
+
             return slot_vm;
         }
 

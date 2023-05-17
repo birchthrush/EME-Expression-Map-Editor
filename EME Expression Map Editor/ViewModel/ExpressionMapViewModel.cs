@@ -134,7 +134,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             {
                 int idx = SoundSlots.IndexOf(selection.Last()) + 1;
                 foreach (var slot in selection)
-                    SoundSlots.Insert(idx++, slot.Duplicate()); 
+                    SoundSlots.Insert(idx++, (SoundSlotViewModel)slot.Clone()); 
             }
         }
 
@@ -216,7 +216,8 @@ namespace EME_Expression_Map_Editor.ViewModel
                 {
                     slot.OutputEvents.Clear();
                     foreach (var e in source.OutputEvents)
-                        slot.OutputEvents.Add((OutputEventViewModel)e.GetPrototype(e as ViewModelBase));                        
+                        slot.OutputEvents.Add((OutputEventViewModel)e.Clone()); 
+                        //slot.OutputEvents.Add((OutputEventViewModel)e.GetPrototype(e as ViewModelBase));                        
                 }
             }
         }
@@ -331,10 +332,11 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         #endregion
 
-        public override ViewModelBase GetPrototype(ViewModelBase prototype)
+        public override object Clone()
         {
             throw new NotImplementedException();
         }
+
 
         private static ExpressionMapViewModel _instance = new ExpressionMapViewModel();
         public static ExpressionMapViewModel Instance { get { return _instance; } }
