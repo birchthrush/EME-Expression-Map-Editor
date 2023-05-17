@@ -142,16 +142,6 @@ namespace EME_Expression_Map_Editor.ViewModel
         public ICommand SetColorCommand { get; private set; }
         private void SetColor(int col)
         {
-            /*
-            foreach (var item in SoundSlots)
-            {
-                if (item.IsSelected)
-                {
-                    item.Color = col; 
-                    if (Common.KeyModifiers.CascadeKeyActive())
-                        col = SoundSlot.GetNextColor(col);
-                }
-            }*/
             foreach (var item in SoundSlots.Where(x => x.IsSelected).ToList())
             {
                 item.Color = col;
