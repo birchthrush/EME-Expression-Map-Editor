@@ -14,9 +14,7 @@
         WindowStyle="SingleBorderWindow"
         Title="{StaticResource ApplicationTitle}" Height="960" Width="1107">
     <Window.InputBindings>
-        <!--
-        <KeyBinding Key="H" Modifiers="Ctrl" Command="{Binding OutputEventReplacementCommand}" />
-        -->
+        <KeyBinding Key="H" Modifiers="Ctrl" Command="{Binding BatchProcessingPopupCommand}" />
     </Window.InputBindings>
     <Grid Background="{StaticResource WindowBackgroundColor}">
         <Grid.ColumnDefinitions>
@@ -72,7 +70,7 @@
                                 <Separator />
                                 <MenuItem Header="Generate slot names from articulations" Command="{Binding GenerateNamesFromArticulationsCommand}" />
                                 <Separator />
-                                <MenuItem Header="Search-and-Replace ouptut events in selected slots (Ctrl+H)" Command="{Binding OutputEventReplacementCommand}" />
+                                <MenuItem Header="Search-and-Replace ouptut events in selected slots (Ctrl+H)" Command="{Binding BatchProcessingPopupCommand}" />
                                 <MenuItem Header="Copy output mapping from selected slot (Ctrl+O)" Command="{Binding PropagateOutputMappingCommand}" />
                             </ContextMenu>
                         </DataGrid.ContextMenu>
@@ -81,8 +79,6 @@
                                         Command="{Binding AddSlotsPopupCommand}" />
                             <KeyBinding Key="D" Modifiers="Ctrl" 
                                          Command="{Binding DuplicateSoundSlotCommand}" />
-                            <KeyBinding Key="H" Modifiers="Ctrl"
-                                        Command="{Binding OutputEventReplacementCommand}" />
                             <KeyBinding Key="O" Modifiers="Ctrl"
                                         Command="{Binding PropagateOutputMappingCommand}" />
                             <KeyBinding Key="Delete" 

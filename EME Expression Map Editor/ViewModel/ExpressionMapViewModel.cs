@@ -18,6 +18,7 @@ using System.Xml;
 using EME_Expression_Map_Editor.Command;
 using EME_Expression_Map_Editor.Model;
 using EME_Expression_Map_Editor.Model.XmlFileManagement;
+using EME_Expression_Map_Editor.View;
 using EME_ExpressionMapEditor;
 using GongSolutions.Wpf.DragDrop;
 
@@ -133,7 +134,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
             else if (type == PopupType.OUTPUT_EVENT_REPLACEMENT)
             {
-                // do other stuff
+                popup = new BatchProcessingWindow(); 
             }
             else
                 throw new Exception("Attempting to create undefined window type");
@@ -179,6 +180,35 @@ namespace EME_Expression_Map_Editor.ViewModel
             {
                 for (int i = 0; i < data.Number; ++i)
                     SelectedArticulationIndex = Common.AddItem(Articulations, SelectedArticulationIndex, AddArticulationPost); 
+            }
+        }
+
+        public ICommand BatchProcessingPopupCommand { get; private set; }
+        private void BatchProcessingPopup_Pre(Window win)
+        {
+            var data = win.DataContext as BatchProcessingViewModel;
+            if (data != null && data.WindowStatus == WindowReturnCode.OK)
+                data.Initialize(SoundSlots.Where(x => x.IsSelected).ToList()); 
+        }
+        private void BatchProcessingPopup_Post(Window win)
+        {
+            var data = win.DataContext as BatchProcessingViewModel;
+            if (data != null && data.WindowStatus != WindowReturnCode.CANCEL)
+            {
+                foreach (var src_oe in data.OutputEvents.Where(x => x.IsSelected).ToList())
+                    foreach (var slot in SoundSlots.Where(x => x.IsSelected).ToList()) 
+                        foreach (var oe in slot.OutputEvents.ToList())
+                            if (oe.EventType == src_oe.EventType && oe.Data1 == src_oe.Data1 && oe.Data2 == src_oe.Data2)
+                            {
+                                if (data.WindowStatus == WindowReturnCode.DELETE)
+                                    slot.OutputEvents.Remove(oe);
+                                else if (data.WindowStatus == WindowReturnCode.OK && data.ReplacementEvent != null)
+                                {
+                                    oe.EventType = data.ReplacementEvent.EventType;
+                                    oe.Data1 = data.ReplacementEvent.Data1;
+                                    oe.Data2 = data.ReplacementEvent.Data2;
+                                }
+                            }
             }
         }
 
@@ -466,8 +496,8 @@ namespace EME_Expression_Map_Editor.ViewModel
 
             // Popup Window Commands: 
             AddSlotsPopupCommand = new NoParameterCommand(() => { CreatePopupWindow(PopupType.NUMBER_INPUT, Common.DoNothing, AddSlotsPopup_Post); });
-            AddArticulationsPopupCommand = new NoParameterCommand(() => { CreatePopupWindow(PopupType.NUMBER_INPUT, Common.DoNothing, AddArticulationsPopup_Post); }); 
-
+            AddArticulationsPopupCommand = new NoParameterCommand(() => { CreatePopupWindow(PopupType.NUMBER_INPUT, Common.DoNothing, AddArticulationsPopup_Post); });
+            BatchProcessingPopupCommand = new NoParameterCommand(() => { CreatePopupWindow(PopupType.OUTPUT_EVENT_REPLACEMENT, BatchProcessingPopup_Pre, BatchProcessingPopup_Post); });
 
             // SoundSlot Grid Commands: 
             AddSoundSlotCommand = new CustomCommand<int>((n) => { SelectedSlotIndex = Common.AddItem(SoundSlots, n, AddSoundSlotPost); });

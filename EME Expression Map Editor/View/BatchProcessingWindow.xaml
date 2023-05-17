@@ -47,7 +47,7 @@
                             Margin="10 10 10 10"
                             AutoGenerateColumns="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Type" Width="142" Binding="{Binding EventTypeAsString, Mode=OneWay}" />
+                            <DataGridTextColumn Header="Type" Width="142" Binding="{Binding EventType, Mode=OneWay}" />
                             <DataGridTextColumn Header="Data 1" Width="70" Binding="{Binding Data1, Mode=OneWay}"/>
                             <DataGridTextColumn Header="Data 2" Width="70" Binding="{Binding Data2, Mode=OneWay}"/>
                         </DataGrid.Columns>
