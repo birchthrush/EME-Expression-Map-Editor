@@ -15,6 +15,9 @@ namespace EME_Expression_Map_Editor.Model
         public static readonly int MinColor = 1;
         public static readonly int MaxColor = 16;
 
+		public static readonly double MinFactor = 0.2;
+		public static readonly double MaxFactor = 2.0; 
+
         public static int GetNextColor(int c)
             => (c + 1) > MaxColor ? MinColor : c + 1;
 
@@ -30,7 +33,7 @@ namespace EME_Expression_Map_Editor.Model
         public int RemoteKey
 		{
 			get => _remoteKey;
-			set => _remoteKey = ExpressionMap.Common.ConstrainToRange(value, -1, 127);
+            set => _remoteKey = Math.Clamp(value, -1, 127); 
 		}
 
 		// Channels are numbered 0-15: slots set to 'any' channel represented as Channel = -1
@@ -38,57 +41,57 @@ namespace EME_Expression_Map_Editor.Model
         public int Channel
 		{
 			get => _channel;
-			set => _channel = ExpressionMap.Common.ConstrainToRange(value, AnyChannel, 15); 
+			set => _channel = Math.Clamp(value, AnyChannel, 15); 
 		}
 
         private double _velocityFactor;
         public double VelocityFactor
 		{
 			get => _velocityFactor;
-			set => _velocityFactor = ExpressionMap.Common.ConstrainToRange(value, 0.2f, 2.0f);
+			set => _velocityFactor = Math.Clamp(value, MinFactor, MaxFactor); 
 		}
 
         private double _lengthFactor;
         public double LengthFactor
 		{
 			get => _lengthFactor;
-			set => _lengthFactor = ExpressionMap.Common.ConstrainToRange(value, 0.2f, 2.0f);
-		}
+            set => _lengthFactor = Math.Clamp(value, MinFactor, MaxFactor);
+        }
 
         private int _minVelocity;
         public int MinVelocity
 		{
 			get => _minVelocity;
-			set => _minVelocity = ExpressionMap.Common.ConstrainToRange(value, 0, 127);
+			set => _minVelocity = Math.Clamp(0, Common.DATA_MIN, Common.DATA_MAX); 
 		}
 
         private int _maxVelocity;
         public int MaxVelocity
 		{
 			get => _maxVelocity;
-			set => _maxVelocity = ExpressionMap.Common.ConstrainToRange(value, 0, 127);
-		}
+			set => _maxVelocity = Math.Clamp(0, Common.DATA_MIN, Common.DATA_MAX);
+        }
 
         private int _transpose;
         public int Transpose
 		{
 			get => _transpose;
-			set => _transpose = ExpressionMap.Common.ConstrainToRange(value, -48, 48);
-		}
+			set => _transpose = Math.Clamp(0, -48, 48);
+        }
 
         private int _minPitch;
         public int MinPitch
 		{
 			get => _minPitch;
-			set => _minPitch = ExpressionMap.Common.ConstrainToRange(value, 0, 127);
-		}
+			set => _minPitch = Math.Clamp(0, Common.DATA_MIN, Common.DATA_MAX);
+        }
 
         private int _maxPitch;
         public int MaxPitch
 		{
 			get => _maxPitch;
-			set => _maxPitch = ExpressionMap.Common.ConstrainToRange(value, 0, 127);
-		}
+			set => _maxPitch = Math.Clamp(0, Common.DATA_MIN, Common.DATA_MAX);
+        }
 
 		private string _name = ""; 
 		public string Name
@@ -102,7 +105,7 @@ namespace EME_Expression_Map_Editor.Model
         public int Color
 		{
 			get => _color;
-			set => _color = ExpressionMap.Common.ConstrainToRange(value, MinColor, MaxColor);
+			set => _color = Math.Clamp(value, MinColor, MaxColor); 
 		}
 
         private List<Articulation> _articulations = new List<Articulation>();

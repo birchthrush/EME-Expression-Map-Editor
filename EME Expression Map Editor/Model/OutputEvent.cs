@@ -29,15 +29,15 @@ namespace EME_Expression_Map_Editor.Model
         public int Data1
 		{
 			get => _data1;
-			set => _data1 = ExpressionMap.Common.ConstrainToRange(value);
+			set => _data1 = Math.Clamp(value, Common.DATA_MIN, Common.DATA_MAX); 
 		}
 
 		private int _data2;
 		public int Data2
 		{
 			get => _data2;
-			set => _data2 = ExpressionMap.Common.ConstrainToRange(value);
-		}
+			set => _data2 = Math.Clamp(value, Common.DATA_MIN, Common.DATA_MAX);
+        }
 
 		public OutputEvent()
 		{

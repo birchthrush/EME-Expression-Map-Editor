@@ -1,9 +1,84 @@
-﻿namespace EME_Expression_Map_Editor.Model
+﻿using System;
+using System.Collections.Generic;
+
+namespace EME_Expression_Map_Editor.Model
 {
 	public class Articulation
 	{
-		// TEMPORARY: 
-		private static Articulation _blank = new Articulation();
+        public static Dictionary<string, string> Abbreviations = new Dictionary<string, string>()
+        {
+            { "s", "Short" },
+            { "m", "Medium" },
+            { "l", "Long" },
+            { "f", "Fast" },
+            { "sl", "Slow" },
+            { "tr", "Trills" },
+            { "stac", "Staccato" },
+            { "trem", "Tremolo" },
+            { "det", "Detaché" },
+            { "marc", "Marcato" },
+            { "msrd", "Measured" },
+            { "leg", "Legato" },
+            { "cresc", "Crescendo" },
+            { "dim", "Diminuendo" },
+            { "port", "Portato" },
+            { "flaut", "Flautando" },
+            { "cs", "Con Sordino" },
+            { "ss", "Senza Sordino" },
+            { "sus", "Sustains" },
+            { "espr", "Espressivo" },
+            { "acc", "Accented" },
+            { "fp", "Fortepiano" },
+            { "dbl", "Double" },
+            { "trpl", "Triple" },
+            { "spic", "Spiccato" },
+            { "norm", "Normal" },
+            { "nat", "Natural" },
+            { "pizz", "Pizzicato" },
+            { "rep", "Repetitions" },
+            { "gliss", "Glissando" },
+            { "sp", "Sul Ponticello" },
+            { "st", "Sul Tasto" },
+            { "pp", "Pianissimo" },
+            { "ff", "Fortissimo" },
+            { "nv", "Non-Vibrato" },
+            { "v", "Vibrato" },
+            { "mv", "Molto Vibrato" },
+            { "sv", "Strong Vibrato" },
+            { "pv", "Progressive Vibrato" },
+            { "xf", "Crossfade" },
+        };
+
+        public static string TextToDescription(string text)
+        {
+            string[] words = text.Split(' ');
+            List<string> descriptors = new List<string>();
+
+            string CapitalizeFirstLetter(string str) => str.Length > 0 ?
+                str.Substring(0, 1).ToUpper() + str.Substring(1) :
+                str;
+
+            foreach (String word in words)
+            {
+                if (Abbreviations.ContainsKey(word.ToLower()))
+                    descriptors.Add(Abbreviations[word.ToLower()]);
+                else
+                    descriptors.Add(CapitalizeFirstLetter(word.ToLower()));
+            }
+
+            string description = string.Empty;
+            foreach (string s in descriptors)
+            {
+                if (description.Length > 0)
+                    description += ' ';
+                description += s;
+            }
+
+            return description;
+        }
+
+
+        private static Articulation _blank = new Articulation();
 		public static Articulation Blank
 		{
 			get => _blank; 
@@ -76,7 +151,7 @@
 		public int Group
 		{
 			get => _group;
-			set => _group = ExpressionMap.Common.ConstrainToRange(value, MinGroup, MaxGroup);
+			set => _group = Math.Clamp(value, MinGroup, MaxGroup); 
 		}
 
 		public Articulation()

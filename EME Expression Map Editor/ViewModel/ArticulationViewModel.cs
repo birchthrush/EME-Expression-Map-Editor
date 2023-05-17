@@ -74,7 +74,7 @@ namespace EME_Expression_Map_Editor.ViewModel
                     if (Common.KeyModifiers.AlternativeInputKeyActive())
                         Description = value;
                     else
-                        Description = ExpressionMapCommon.TextToDescription(value);
+                        Description = Articulation.TextToDescription(value);
                 }
 
                 OnPropertyChanged(nameof(SymbolOrText));
