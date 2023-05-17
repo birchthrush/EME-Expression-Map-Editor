@@ -62,9 +62,9 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
-        public static int RemoveItem<T>(ObservableCollection<T> list, int selection_idx, Action post_func) where T : ViewModelBase
+        public static int RemoveItem<T>(ObservableCollection<T> list, int selection_idx, Func<T, bool> predicate, Action post_func) where T : ViewModelBase
         {
-            var selection = list.Where(x => x.IsSelected).ToList();
+            var selection = list.Where(predicate).ToList();
 
             // Empty selection check: 
             if (selection.Count == 0)

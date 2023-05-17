@@ -207,36 +207,20 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         #region Commands relating to Articulations
 
-
-
-
         public ICommand AddArticulationCommand { get; private set; }
         public ICommand RemoveArticulationCommand { get; private set; }
-
         public ICommand RemoveUnusedArticulationsCommand { get; private set; }
-        private void RemoveUnusedArticulations()
+
+        private bool ArticulationIsUsed(ArticulationViewModel art_vm)
         {
-            List<ArticulationViewModel> removals = new List<ArticulationViewModel>(); 
-            foreach (var art in Articulations)
-            {
-                bool unused = true; 
-
-                foreach (var slot in SoundSlots)
-                {
-                    if (slot.ContainsArticulation(art))
-                    {
-                        unused = false;
-                        break; 
-                    }
-                }
-
-                if (unused)
-                    removals.Add(art); 
-            }
-
-            foreach (var art in removals)
-                Articulations.Remove(art); 
+            foreach (var slot in SoundSlots)
+                if (slot.ContainsArticulation(art_vm))
+                    return true;
+            return false;
         }
+
+        private bool ArticulationIsUnused(ArticulationViewModel art_vm)
+            => !ArticulationIsUsed(art_vm);
 
         public ICommand SetArticulationDisplayTypeCommand { get; private set; }
         private void SetArticulationDisplayType(int display_type)
@@ -348,7 +332,7 @@ namespace EME_Expression_Map_Editor.ViewModel
 
             // SoundSlot Grid Commands: 
             AddSoundSlotCommand = new CustomCommand<int>((n) => { SelectedSlotIndex = Common.AddItem(SoundSlots, n, Common.DoNothing); });
-            RemoveSoundSlotCommand = new NoParameterCommand(() => { SelectedSlotIndex = Common.RemoveItem(SoundSlots, SelectedSlotIndex, () => { OnPropertyChanged(nameof(SoundSlots)); }); });
+            RemoveSoundSlotCommand = new NoParameterCommand(() => { SelectedSlotIndex = Common.RemoveItem(SoundSlots, SelectedSlotIndex, (n) => n.IsSelected, () => { OnPropertyChanged(nameof(SoundSlots)); }); });
             DuplicateSoundSlotCommand = new NoParameterCommand(DuplicateSoundlot);
             SetColorCommand = new CustomCommand<int>(SetColor);
             SetArticulation1Command = new CustomCommand<ArticulationViewModel>((art_vm) => SetArticulation(art_vm, 0));
@@ -359,8 +343,8 @@ namespace EME_Expression_Map_Editor.ViewModel
 
             // Articulation Grid Commands: 
             AddArticulationCommand = new CustomCommand<int>((n) => { SelectedArticulationIndex = Common.AddItem(Articulations, n, Common.DoNothing); }); 
-            RemoveArticulationCommand = new NoParameterCommand(() => { SelectedArticulationIndex = Common.RemoveItem(Articulations, SelectedArticulationIndex, RefreshArticulationGroupOptions); } );
-            RemoveUnusedArticulationsCommand = new NoParameterCommand(RemoveUnusedArticulations); 
+            RemoveArticulationCommand = new NoParameterCommand(() => { SelectedArticulationIndex = Common.RemoveItem(Articulations, SelectedArticulationIndex, (n) =>  n.IsSelected, RefreshArticulationGroupOptions); });
+            RemoveUnusedArticulationsCommand = new NoParameterCommand(() => { SelectedArticulationIndex = Common.RemoveItem(Articulations, SelectedArticulationIndex, ArticulationIsUnused, RefreshArticulationGroupOptions); });
             SetArticulationDisplayTypeCommand = new CustomCommand<int>(SetArticulationDisplayType);
             SetArticulationTypeCommand = new CustomCommand<int>(SetArticulationType);
             SetGroupCommand = new CustomCommand<int>(SetGroup);
@@ -368,6 +352,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             // Drop handlers: 
             ArticulationDropHandler = new CustomDropHandler(DefaultDragOver, DropArticulations); 
         }
+
 
         #region Drag-And-Drop Handlers
         private DefaultDropHandler _defaultDropHandler = new DefaultDropHandler();

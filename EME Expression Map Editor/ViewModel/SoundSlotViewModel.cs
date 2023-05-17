@@ -326,7 +326,7 @@ namespace EME_Expression_Map_Editor.ViewModel
         private void InitCommands()
         {
             AddOutputEventCommand = new CustomCommand<int>((n) => { SelectedEventIndex = Common.AddItem(OutputEvents, SelectedEventIndex, Common.DoNothing); });
-            RemoveOutputEventCommand = new NoParameterCommand(() => { SelectedEventIndex = Common.RemoveItem(OutputEvents, SelectedEventIndex, Common.DoNothing); });
+            RemoveOutputEventCommand = new NoParameterCommand(() => { SelectedEventIndex = Common.RemoveItem(OutputEvents, SelectedEventIndex, (n) => n.IsSelected, Common.DoNothing); });
         }
         
         public SoundSlotViewModel()
