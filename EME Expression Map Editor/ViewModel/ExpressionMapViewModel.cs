@@ -142,6 +142,7 @@ namespace EME_Expression_Map_Editor.ViewModel
         public ICommand SetColorCommand { get; private set; }
         private void SetColor(int col)
         {
+            /*
             foreach (var item in SoundSlots)
             {
                 if (item.IsSelected)
@@ -150,6 +151,12 @@ namespace EME_Expression_Map_Editor.ViewModel
                     if (Common.KeyModifiers.CascadeKeyActive())
                         col = SoundSlot.GetNextColor(col);
                 }
+            }*/
+            foreach (var item in SoundSlots.Where(x => x.IsSelected).ToList())
+            {
+                item.Color = col;
+                if (Common.KeyModifiers.CascadeKeyActive())
+                    col = SoundSlot.GetNextColor(col);
             }
         }
 
@@ -216,8 +223,7 @@ namespace EME_Expression_Map_Editor.ViewModel
                 {
                     slot.OutputEvents.Clear();
                     foreach (var e in source.OutputEvents)
-                        slot.OutputEvents.Add((OutputEventViewModel)e.Clone()); 
-                        //slot.OutputEvents.Add((OutputEventViewModel)e.GetPrototype(e as ViewModelBase));                        
+                        slot.OutputEvents.Add((OutputEventViewModel)e.Clone());               
                 }
             }
         }
@@ -379,6 +385,8 @@ namespace EME_Expression_Map_Editor.ViewModel
             dest.ArticulationType = src.ArticulationType;
             dest.DisplayType = src.DisplayType;
             dest.Group = src.Group;
+
+            RefreshArticulationGroupOptions(); 
         }
 
         private void AddSoundSlotPost(SoundSlotViewModel src, SoundSlotViewModel dest)

@@ -60,7 +60,8 @@
                               CanUserSortColumns="False"
                               CanUserResizeRows="False" 
                               EnableColumnVirtualization="False"
-                              EnableRowVirtualization="False" SelectionChanged="SoundSlotGrid_SelectionChanged"
+                              EnableRowVirtualization="False" 
+                              SelectionChanged="SoundSlotGrid_SelectionChanged"
                               >
                         <DataGrid.ContextMenu>
                             <ContextMenu>
