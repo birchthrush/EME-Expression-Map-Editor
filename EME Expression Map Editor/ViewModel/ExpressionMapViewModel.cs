@@ -203,6 +203,24 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
+        public ICommand PropagateOutputMappingCommand { get; private set; }
+        public void PropagateOutputMapping()
+        {
+            var source = FirstSelectedSlot; 
+            if (source == null) 
+                return; 
+
+            foreach (var slot in SoundSlots.Where(x => x.IsSelected))
+            {
+                if (!slot.Equals(source))
+                {
+                    slot.OutputEvents.Clear();
+                    foreach (var e in source.OutputEvents)
+                        slot.OutputEvents.Add((OutputEventViewModel)e.GetPrototype(e as ViewModelBase));                        
+                }
+            }
+        }
+
         #endregion
 
         #region Commands relating to Articulations
@@ -340,6 +358,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             SetArticulation3Command = new CustomCommand<ArticulationViewModel>((art_vm) => SetArticulation(art_vm, 2));
             SetArticulation4Command = new CustomCommand<ArticulationViewModel>((art_vm) => SetArticulation(art_vm, 3));
             SetChannelCommand = new NoParameterCommand(SetChannel);
+            PropagateOutputMappingCommand = new NoParameterCommand(PropagateOutputMapping);
 
             // Articulation Grid Commands: 
             AddArticulationCommand = new CustomCommand<int>((n) => { SelectedArticulationIndex = Common.AddItem(Articulations, n, Common.DoNothing); }); 

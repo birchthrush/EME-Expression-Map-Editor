@@ -28,7 +28,8 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
-        public abstract ViewModelBase GetPrototype(ViewModelBase prototype); 
+        // Returns a new copy based on the parameter type with certain properties incremented
+        public abstract ViewModelBase GetPrototype(ViewModelBase prototype);
 
         public ViewModelBase()
         {
