@@ -137,8 +137,10 @@ namespace EME_Expression_Map_Editor.ViewModel
             => SymbolOrText.ToString();
 
         public override object Clone()
-            => new ArticulationViewModel(_articulation.Duplicate()); 
+            => new ArticulationViewModel(_articulation.Duplicate());
 
+        public Articulation UnpackModel()
+            => _articulation.Duplicate(); 
 
         public ArticulationViewModel()
         {

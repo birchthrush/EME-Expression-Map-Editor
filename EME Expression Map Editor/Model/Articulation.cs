@@ -116,6 +116,9 @@
 
 		public Articulation Duplicate()
 		{
+			if (IsBlank(this))
+				return Articulation.Blank; 
+
 			Articulation copy = new Articulation();
 
 			copy.DisplayType = this.DisplayType;

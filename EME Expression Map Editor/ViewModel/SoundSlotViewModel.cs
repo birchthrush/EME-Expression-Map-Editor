@@ -323,6 +323,11 @@ namespace EME_Expression_Map_Editor.ViewModel
             return slot_vm;
         }
 
+        public SoundSlot UnpackModel()
+        {
+            return _slot.Duplicate(); 
+        }
+
         private void AddOutputEventPost(OutputEventViewModel src, OutputEventViewModel dest)
         {
             dest.EventType = src.EventType;

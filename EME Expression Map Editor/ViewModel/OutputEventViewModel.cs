@@ -90,6 +90,12 @@ namespace EME_Expression_Map_Editor.ViewModel
         {
             get => _eventTypeOptions; 
         }
+        
+        // Convenience property for the Batch Processing window: returns Event Type in string form
+        public string EventTypeAsString
+        {
+            get => EventTypeOptions[EventType]; 
+        }
 
         public void Increment(bool data1, bool data2)
         {
@@ -101,6 +107,9 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         public override object Clone()
             => new OutputEventViewModel(_event.Duplicate());
+
+        public OutputEvent UnpackModel()
+            => _event.Duplicate(); 
 
         public OutputEventViewModel()
         {

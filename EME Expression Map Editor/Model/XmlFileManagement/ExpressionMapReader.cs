@@ -2,7 +2,7 @@
 using static EME_Expression_Map_Editor.Model.Articulation;
 using System.Xml;
 
-namespace EME_Expression_Map_Editor.Model.XmlFileManagement
+namespace EME_Expression_Map_Editor.Model
 {
     public static class ExpressionMapReader
     {

@@ -17,17 +17,15 @@ using System.Windows.Input;
 using System.Xml;
 using EME_Expression_Map_Editor.Command;
 using EME_Expression_Map_Editor.Model;
-using EME_Expression_Map_Editor.Model.XmlFileManagement;
 using EME_Expression_Map_Editor.View;
 using EME_ExpressionMapEditor;
 using GongSolutions.Wpf.DragDrop;
+using Microsoft.Win32;
 
 namespace EME_Expression_Map_Editor.ViewModel
 {
     internal class ExpressionMapViewModel : ViewModelBase
     {
-        ExpressionMap _map = new ExpressionMap();
-
         #region ExpressionMap Properties
 
         private string _name = string.Empty;
@@ -477,14 +475,21 @@ namespace EME_Expression_Map_Editor.ViewModel
         private static ExpressionMapViewModel _instance = new ExpressionMapViewModel();
         public static ExpressionMapViewModel Instance { get { return _instance; } }
 
+
         private ExpressionMapViewModel()
         {
 
 #if DEBUG
             Console.WriteLine("Loading ExpressionMap VM in DEBUG mode: fetching sample data");
-            GenerateTestData();
-            ExtractViewModels();
+            ExpressionMap? map = GenerateTestData();
+            if (map != null)
+                ExtractViewModels(map);
 #endif
+
+            
+            ExpressionMap unpacked = CreateExpressionMapFromViewModels();
+            Reset();
+            ExtractViewModels(unpacked); 
 
             // Popup Window Commands: 
             AddSlotsPopupCommand = new NoParameterCommand(() => { CreatePopupWindow(PopupType.NUMBER_INPUT, Common.DoNothing, AddSlotsPopup_Post); });
@@ -518,9 +523,12 @@ namespace EME_Expression_Map_Editor.ViewModel
             CopyOutputEventIncrementData1Command = new CustomCommand<int>((n) => { CopyOutputEvent(n, true, false); });
             CopyOutputEventIncrementData2Command = new CustomCommand<int>((n) => { CopyOutputEvent(n, false, true); });
 
-
             // Drop handlers: 
-            ArticulationDropHandler = new CustomDropHandler(DefaultDragOver, DropArticulations); 
+            ArticulationDropHandler = new CustomDropHandler(DefaultDragOver, DropArticulations);
+
+            // File I/O: 
+            LoadFileCommand = new NoParameterCommand(LoadFile);
+            SaveFileCommand = new NoParameterCommand(SaveFile); 
         }
 
 
@@ -542,16 +550,86 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         #endregion
 
+        #region Commands and functions related to File I/O and translation to/from Model Layer
 
-        private void ExtractViewModels()
+        public ICommand LoadFileCommand { get; private set; }
+        public void LoadFile()
         {
-            Name = _map.Name;
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.DefaultExt = XmlConstants.FileExtension;
+            ofd.Filter = "ExpressionMap Files|*" + XmlConstants.FileExtension;
+
+            Nullable<bool> result = ofd.ShowDialog(); 
+
+            if (result == true)
+            {
+                using (XmlReader reader = ExpressionMapReader.CreateStandardXmlReader(ofd.FileName))
+                {
+                    try
+                    {
+                        ExpressionMap map = new ExpressionMap();
+                        ExpressionMapReader.ReadExpressionMap(reader, map);
+                        Reset(); 
+                        ExtractViewModels(map); 
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error occurred when reading " + ofd.FileName + ":\n" + ex.Message);
+                    }
+                    finally
+                    {
+                        Refresh(); 
+                    }
+                }
+            }
+        }
+
+        public ICommand SaveFileCommand { get; private set; }
+        public void SaveFile()
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.DefaultExt = XmlConstants.FileExtension;
+            sfd.Filter = "ExpressionMap Files|*" + XmlConstants.FileExtension;
+
+            Nullable<bool> result = sfd.ShowDialog();
+
+            if (result == true)
+            {
+                using (var writer = ExpressionMapWriter.CreateStandardXmlWriter(sfd.FileName))
+                {
+                    try
+                    {
+                        ExpressionMap map = CreateExpressionMapFromViewModels();
+                        ExpressionMapWriter.WriteExpressionMap(writer, map); 
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error occurred when writing " + sfd.FileName + ":\n" + ex.Message); 
+                    }
+                    finally
+                    {
+
+                    }                
+                }
+            }
+        }
+        
+        private void Reset()
+        {
+            Name = string.Empty;
+            Articulations.Clear();
+            SoundSlots.Clear(); 
+        }
+
+        private void ExtractViewModels(ExpressionMap map)
+        {
+            Name = map.Name;
 
             Dictionary<Articulation, ArticulationViewModel> art_map = new Dictionary<Articulation, ArticulationViewModel>();
             art_map.Add(Articulation.Blank, ArticulationViewModel.Blank); 
 
             _articulations.Clear(); 
-            foreach (var art in _map.Articulations)
+            foreach (var art in map.Articulations)
             {
                 ArticulationViewModel art_vm = new ArticulationViewModel(art);
                 Articulations.Add(art_vm); 
@@ -559,7 +637,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
 
             _soundSlots.Clear();
-            foreach (var slot in _map.SoundSlots)
+            foreach (var slot in map.SoundSlots)
             {
                 SoundSlotViewModel slot_vm = new SoundSlotViewModel(slot);
 
@@ -575,7 +653,39 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
-        private void GenerateTestData()
+        private ExpressionMap CreateExpressionMapFromViewModels()
+        {
+            ExpressionMap map = new ExpressionMap();
+            map.Name = this.Name;
+
+            foreach (var art_vm in Articulations)
+            {
+                map.Articulations.Add(art_vm.UnpackModel()); 
+            }
+
+            foreach (var slot_vm in SoundSlots)
+            {
+                var slot = slot_vm.UnpackModel();
+
+                slot.Articulations[0] = slot_vm.Art1.UnpackModel();
+                slot.Articulations[1] = slot_vm.Art2.UnpackModel();
+                slot.Articulations[2] = slot_vm.Art3.UnpackModel();
+                slot.Articulations[3] = slot_vm.Art4.UnpackModel();
+
+                slot.OutputEvents.Clear();
+
+                foreach (var oe in slot_vm.OutputEvents)
+                    slot.OutputEvents.Add(oe.UnpackModel()); 
+
+                map.SoundSlots.Add(slot); 
+            }
+
+            map.RemapArticulations(); 
+
+            return map; 
+        }
+
+        private ExpressionMap? GenerateTestData()
         {
             try
             {
@@ -592,7 +702,7 @@ namespace EME_Expression_Map_Editor.ViewModel
                 {
                     XmlReader reader = ExpressionMapReader.CreateStandardXmlReader(dir.FullName + "\\SampleTestData\\MSB Horn - All Variations.expressionmap");
                     ExpressionMapReader.ReadExpressionMap(reader, xm);
-                    _map = xm;
+                    return xm; 
                 }
                 else
                     throw new Exception("Failed to access project directory with test data"); 
@@ -602,7 +712,11 @@ namespace EME_Expression_Map_Editor.ViewModel
                 Console.WriteLine("*** Error when reading file:");
                 Console.WriteLine(ex);
             }
+
+            return null; 
         }
+
+        #endregion
     }
 
 }

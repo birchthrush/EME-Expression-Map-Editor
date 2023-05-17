@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EME_Expression_Map_Editor.Model.XmlFileManagement
+namespace EME_Expression_Map_Editor.Model
 {
     public static class XmlConstants
     {
