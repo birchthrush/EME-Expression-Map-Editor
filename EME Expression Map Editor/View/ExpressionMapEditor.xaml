@@ -253,12 +253,6 @@
                         </DataGrid.InputBindings>
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Increment Data1 nth Event On All Selected Slots" 
-                                          Command="{Binding IncrementData1NthOutputEventCommand}" 
-                                          CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}"  />
-                                <MenuItem Header="Increment Data2 nth Event On All Selected Slots" 
-                                          Command="{Binding IncrementData2NthOutputEventCommand}" 
-                                          CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}"  />
                                 <MenuItem Header="Copy Event To All Selected Slots" 
                                           Command="{Binding CopyOutputEventCommand}"
                                           CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}" />
@@ -268,6 +262,13 @@
                                 <MenuItem Header="Copy Event To All Selected Slots And Increment Data2" 
                                           Command="{Binding CopyOutputEventIncrementData2Command}"
                                           CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}" />
+                                <Separator />
+                                <MenuItem Header="Ascending increment of Data1 nth Event On All Selected Slots" 
+                                          Command="{Binding IncrementData1NthOutputEventCommand}" 
+                                          CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}"  />
+                                <MenuItem Header="Ascending increment ofData2 nth Event On All Selected Slots" 
+                                          Command="{Binding IncrementData2NthOutputEventCommand}" 
+                                          CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}"  />
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                         <DataGrid.Columns>
