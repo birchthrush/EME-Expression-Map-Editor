@@ -105,7 +105,7 @@ namespace EME_Expression_Map_Editor.Model
                 {
                     OutputEvent output_event = new OutputEvent();
                     ReadOutputEvent(reader, output_event);
-                    slot.AddOutputEvent(output_event);
+                    slot.OutputEvents.Add(output_event); 
                     reader.Read();
                 } while (reader.Name.Equals("obj"));
 

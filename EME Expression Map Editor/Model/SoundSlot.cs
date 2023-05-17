@@ -134,14 +134,16 @@ namespace EME_Expression_Map_Editor.Model
 			MinPitch = 0;
 			MaxPitch = 127;
 			Color = 1;
-			Version = DefaultVersion; 
+			Version = DefaultVersion;
 
-			_articulations = new List<Articulation>();
-			_articulations.Add(Articulation.Blank);
-			_articulations.Add(Articulation.Blank);
-			_articulations.Add(Articulation.Blank);
-			_articulations.Add(Articulation.Blank);
-		}
+            _articulations = new List<Articulation>
+            {
+                Articulation.Blank,
+                Articulation.Blank,
+                Articulation.Blank,
+                Articulation.Blank
+            };
+        }
 
 		public SoundSlot Duplicate()
 		{
@@ -180,12 +182,9 @@ namespace EME_Expression_Map_Editor.Model
 		{
 			if (!IsValidGroup(art, group))
 				return false;
-			/*
-			if (group < 0 || group > 3 || art.Group != group)
-				return false;
-			*/
-
+			
 			_articulations[group] = art;
+
 			return true;
 		}
 
@@ -193,10 +192,6 @@ namespace EME_Expression_Map_Editor.Model
 		{
 			if (!IsValidGroup(group))
 				return false; 
-			/*
-			if (group < 0 || group > 3)
-				return false;
-			*/
 
 			_articulations[group] = Articulation.Blank;
 			return true;
@@ -214,25 +209,6 @@ namespace EME_Expression_Map_Editor.Model
             }
 
 			return false; 
-        }
-
-		public void AddOutputEvent(OutputEvent output_event)
-		{
-			_outputEvents.Add(output_event);
-		}
-
-		public bool RemoveOutputEvent(int idx)
-		{
-			if (idx < 0 || idx >= _outputEvents.Count)
-				return false;
-
-			_outputEvents.RemoveAt(idx);
-			return true;
-		}
-
-		public void MoveOutputEvents(List<OutputEvent> src, int tgt_idx)
-        {
-			ExpressionMapCommon.MoveElements(src, tgt_idx, _outputEvents); 
         }
 	}
 }

@@ -68,21 +68,5 @@ namespace EME_Expression_Map_Editor.Model
 			Data1 = 60;
 			Data2 = 120;
 		}
-
-		/*
-		public override bool Equals(Object obj)
-		{
-			OutputEvent other = obj as OutputEvent;
-			if (other == null)
-				return false; 
-			else
-				return this.EventType == other.EventType 
-					&& this.Data1 == other.Data1 
-					&& this.Data2 == other.Data2; 
-		}
-
-        public override int GetHashCode()
-			=> HashCode.Combine(EventType, Data1, Data2);	
-		*/
     }
 }
