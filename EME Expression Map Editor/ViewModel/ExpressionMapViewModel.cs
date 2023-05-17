@@ -280,6 +280,11 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
+        private void AddSoundSlotPost(SoundSlotViewModel src, SoundSlotViewModel dest)
+        {
+            dest.Color = (src.Color + 1) % 15;
+        }
+
         #endregion
 
         #region Commands relating to Articulations
@@ -380,6 +385,15 @@ namespace EME_Expression_Map_Editor.ViewModel
             Articulations = sorted;
             OnPropertyChanged(nameof(Articulations));
             RefreshArticulationGroupOptions(); 
+        }
+
+        private void AddArticulationPost(ArticulationViewModel src, ArticulationViewModel dest)
+        {
+            dest.ArticulationType = src.ArticulationType;
+            dest.DisplayType = src.DisplayType;
+            dest.Group = src.Group;
+
+            RefreshArticulationGroupOptions();
         }
 
         private List<T> GetSortedList<T>(List<T> src, IList<T> ordering)
@@ -487,19 +501,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             ArticulationDropHandler = new CustomDropHandler(DefaultDragOver, DropArticulations); 
         }
 
-        private void AddArticulationPost(ArticulationViewModel src, ArticulationViewModel dest)
-        {
-            dest.ArticulationType = src.ArticulationType;
-            dest.DisplayType = src.DisplayType;
-            dest.Group = src.Group;
 
-            RefreshArticulationGroupOptions(); 
-        }
-
-        private void AddSoundSlotPost(SoundSlotViewModel src, SoundSlotViewModel dest)
-        {
-            dest.Color = (src.Color + 1) % 15; 
-        }
 
 
         #region Drag-And-Drop Handlers
