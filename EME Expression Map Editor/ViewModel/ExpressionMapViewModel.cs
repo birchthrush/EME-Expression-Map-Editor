@@ -127,15 +127,10 @@ namespace EME_Expression_Map_Editor.ViewModel
         {
             Window prev_main = Application.Current.MainWindow;
             Window? popup = null;
-            //string? property_to_refresh = null; 
             if (type == PopupType.NUMBER_INPUT)
-            {
                 popup = new NumberInputWindow();
-            }
             else if (type == PopupType.OUTPUT_EVENT_REPLACEMENT)
-            {
                 popup = new BatchProcessingWindow(); 
-            }
             else
                 throw new Exception("Attempting to create undefined window type");
 
@@ -148,7 +143,6 @@ namespace EME_Expression_Map_Editor.ViewModel
             Application.Current.MainWindow = popup;
 
             // Perform initializer functions
-
             pre_function(popup);
 
             popup.ShowDialog(); 
@@ -157,8 +151,6 @@ namespace EME_Expression_Map_Editor.ViewModel
             post_function(popup);
 
             Application.Current.MainWindow = prev_main; 
-            //if (property_to_refresh != null)
-            //    OnPropertyChanged(property_to_refresh);
         }
 
         public ICommand AddSlotsPopupCommand { get; private set; }
