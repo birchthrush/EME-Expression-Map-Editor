@@ -1,6 +1,7 @@
 ﻿using System;
 using static EME_Expression_Map_Editor.Model.Articulation;
 using System.Xml;
+using System.Globalization;
 
 namespace EME_Expression_Map_Editor.Model
 {
@@ -29,8 +30,9 @@ namespace EME_Expression_Map_Editor.Model
 
         public static double NextFloat(XmlReader reader)
         {
+
             reader.ReadToFollowing(XmlConstants.FloatTypename);
-            Double.TryParse(reader.GetAttribute(XmlConstants.Value), out double val);
+            Double.TryParse(reader.GetAttribute(XmlConstants.Value), NumberStyles.Float, new CultureInfo(XmlConstants.DefaultCultureInfo), out double val); 
             reader.Read();
             return val;
         }

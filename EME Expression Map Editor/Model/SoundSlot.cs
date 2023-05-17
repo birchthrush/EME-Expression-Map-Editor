@@ -62,35 +62,35 @@ namespace EME_Expression_Map_Editor.Model
         public int MinVelocity
 		{
 			get => _minVelocity;
-			set => _minVelocity = Math.Clamp(0, Common.DATA_MIN, Common.DATA_MAX); 
+			set => _minVelocity = Math.Clamp(value, Common.DATA_MIN, Common.DATA_MAX); 
 		}
 
         private int _maxVelocity;
         public int MaxVelocity
 		{
 			get => _maxVelocity;
-			set => _maxVelocity = Math.Clamp(0, Common.DATA_MIN, Common.DATA_MAX);
+			set => _maxVelocity = Math.Clamp(value, Common.DATA_MIN, Common.DATA_MAX);
         }
 
         private int _transpose;
         public int Transpose
 		{
 			get => _transpose;
-			set => _transpose = Math.Clamp(0, -48, 48);
+			set => _transpose = Math.Clamp(value, -48, 48);
         }
 
         private int _minPitch;
         public int MinPitch
 		{
 			get => _minPitch;
-			set => _minPitch = Math.Clamp(0, Common.DATA_MIN, Common.DATA_MAX);
+			set => _minPitch = Math.Clamp(value, Common.DATA_MIN, Common.DATA_MAX);
         }
 
         private int _maxPitch;
         public int MaxPitch
 		{
 			get => _maxPitch;
-			set => _maxPitch = Math.Clamp(0, Common.DATA_MIN, Common.DATA_MAX);
+			set => _maxPitch = Math.Clamp(value, Common.DATA_MIN, Common.DATA_MAX);
         }
 
 		private string _name = ""; 
