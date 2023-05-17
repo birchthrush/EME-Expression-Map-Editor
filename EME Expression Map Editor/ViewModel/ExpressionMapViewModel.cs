@@ -328,6 +328,48 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         #endregion
 
+        #region Commands relating to OutputEvents
+        
+        public ICommand IncrementData1NthOutputEventCommand { get; private set; }
+        public ICommand IncrementData2NthOutputEventCommand { get; private set; }
+        private void IncrementNthOutputEvent(int n, bool inc_data1, bool inc_data2)
+        {
+            int times = 1; 
+            foreach (var slot in SoundSlots.Where(x => x.IsSelected))
+            {
+                if (!slot.Equals(FirstSelectedSlot) && n < slot.OutputEvents.Count)
+                {
+                    for (int i = 0; i < times; ++i)
+                        slot.OutputEvents[n].Increment(inc_data1, inc_data2);
+                    ++times; 
+                }
+            }
+        }
+
+        public ICommand CopyOutputEventCommand { get; private set; }
+        public ICommand CopyOutputEventIncrementData1Command { get; private set; }
+        public ICommand CopyOutputEventIncrementData2Command { get; private set; }
+        private void CopyOutputEvent(int idx, bool inc_data1, bool inc_data2)
+        {
+            var src = FirstSelectedSlot;
+            if (src == null || idx >= src.OutputEvents.Count)
+                return;
+
+            var prototype = (OutputEventViewModel) src.OutputEvents[idx].Clone();         
+            
+            foreach (var slot in SoundSlots.Where(x => x.IsSelected))
+            {
+                if (!slot.Equals(src))
+                {
+                    prototype.Increment(inc_data1, inc_data2); 
+                    slot.OutputEvents.Add((OutputEventViewModel)prototype.Clone());
+                }
+            }
+        }
+
+        #endregion
+
+
         public override object Clone()
         {
             throw new NotImplementedException();
@@ -365,6 +407,13 @@ namespace EME_Expression_Map_Editor.ViewModel
             SetArticulationDisplayTypeCommand = new CustomCommand<int>(SetArticulationDisplayType);
             SetArticulationTypeCommand = new CustomCommand<int>(SetArticulationType);
             SetGroupCommand = new CustomCommand<int>(SetGroup);
+
+            // OutputEvent Grid Commands
+            IncrementData1NthOutputEventCommand = new CustomCommand<int>((n) => { IncrementNthOutputEvent(n, true, false); });
+            IncrementData2NthOutputEventCommand = new CustomCommand<int>((n) => { IncrementNthOutputEvent(n, false, true); });
+            CopyOutputEventCommand = new CustomCommand<int>((n) => { CopyOutputEvent(n, false, false); });
+            CopyOutputEventIncrementData1Command = new CustomCommand<int>((n) => { CopyOutputEvent(n, true, false); });
+            CopyOutputEventIncrementData2Command = new CustomCommand<int>((n) => { CopyOutputEvent(n, false, true); });
 
             // Drop handlers: 
             ArticulationDropHandler = new CustomDropHandler(DefaultDragOver, DropArticulations); 

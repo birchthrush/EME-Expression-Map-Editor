@@ -91,6 +91,14 @@ namespace EME_Expression_Map_Editor.ViewModel
             get => _eventTypeOptions; 
         }
 
+        public void Increment(bool data1, bool data2)
+        {
+            if (data1)
+                _event.Data1++;
+            if (data2)
+                _event.Data2++; 
+        }
+
         public override object Clone()
             => new OutputEventViewModel(_event.Duplicate());
 

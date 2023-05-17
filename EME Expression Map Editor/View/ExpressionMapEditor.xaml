@@ -254,7 +254,10 @@
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Increment Data1 nth Event On All Selected Slots" 
-                                          Command="{Binding CascadeOutputEventCommand}" 
+                                          Command="{Binding IncrementData1NthOutputEventCommand}" 
+                                          CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}"  />
+                                <MenuItem Header="Increment Data2 nth Event On All Selected Slots" 
+                                          Command="{Binding IncrementData2NthOutputEventCommand}" 
                                           CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}"  />
                                 <MenuItem Header="Copy Event To All Selected Slots" 
                                           Command="{Binding CopyOutputEventCommand}"
