@@ -351,7 +351,7 @@ namespace EME_Expression_Map_Editor.ViewModel
 #endif
 
             // SoundSlot Grid Commands: 
-            AddSoundSlotCommand = new CustomCommand<int>((n) => { SelectedSlotIndex = Common.AddItem(SoundSlots, n, Common.DoNothing); });
+            AddSoundSlotCommand = new CustomCommand<int>((n) => { SelectedSlotIndex = Common.AddItem(SoundSlots, n, AddSoundSlotPost); });
             RemoveSoundSlotCommand = new NoParameterCommand(() => { SelectedSlotIndex = Common.RemoveItem(SoundSlots, SelectedSlotIndex, (n) => n.IsSelected, () => { OnPropertyChanged(nameof(SoundSlots)); }); });
             DuplicateSoundSlotCommand = new NoParameterCommand(DuplicateSoundlot);
             SetColorCommand = new CustomCommand<int>(SetColor);
@@ -363,8 +363,8 @@ namespace EME_Expression_Map_Editor.ViewModel
             PropagateOutputMappingCommand = new NoParameterCommand(PropagateOutputMapping);
 
             // Articulation Grid Commands: 
-            AddArticulationCommand = new CustomCommand<int>((n) => { SelectedArticulationIndex = Common.AddItem(Articulations, n, Common.DoNothing); }); 
-            RemoveArticulationCommand = new NoParameterCommand(() => { SelectedArticulationIndex = Common.RemoveItem(Articulations, SelectedArticulationIndex, (n) =>  n.IsSelected, RefreshArticulationGroupOptions); });
+            AddArticulationCommand = new CustomCommand<int>((n) => { SelectedArticulationIndex = Common.AddItem(Articulations, n, AddArticulationPost); }); 
+            RemoveArticulationCommand = new NoParameterCommand(() => { SelectedArticulationIndex = Common.RemoveItem(Articulations, SelectedArticulationIndex, (n) => n.IsSelected, RefreshArticulationGroupOptions); });
             RemoveUnusedArticulationsCommand = new NoParameterCommand(() => { SelectedArticulationIndex = Common.RemoveItem(Articulations, SelectedArticulationIndex, ArticulationIsUnused, RefreshArticulationGroupOptions); });
             SetArticulationDisplayTypeCommand = new CustomCommand<int>(SetArticulationDisplayType);
             SetArticulationTypeCommand = new CustomCommand<int>(SetArticulationType);
@@ -372,6 +372,18 @@ namespace EME_Expression_Map_Editor.ViewModel
 
             // Drop handlers: 
             ArticulationDropHandler = new CustomDropHandler(DefaultDragOver, DropArticulations); 
+        }
+
+        private void AddArticulationPost(ArticulationViewModel src, ArticulationViewModel dest)
+        {
+            dest.ArticulationType = src.ArticulationType;
+            dest.DisplayType = src.DisplayType;
+            dest.Group = src.Group;
+        }
+
+        private void AddSoundSlotPost(SoundSlotViewModel src, SoundSlotViewModel dest)
+        {
+            dest.Color = (src.Color + 1) % 15; 
         }
 
 

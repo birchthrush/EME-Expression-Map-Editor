@@ -120,6 +120,14 @@ namespace EME_Expression_Map_Editor.ViewModel
         public void RemoveArticulation(int group)
             => SetArticulation(ArticulationViewModel.Blank, group); 
 
+        public void RemoveAllArticulations()
+        {
+            RemoveArticulation(0);
+            RemoveArticulation(1);
+            RemoveArticulation(2);
+            RemoveArticulation(3);
+        }
+
         public string Name
         {
             get => _slot.Name;
@@ -303,6 +311,10 @@ namespace EME_Expression_Map_Editor.ViewModel
         {
             var slot_vm = new SoundSlotViewModel(_slot.Duplicate());
 
+            // Create VM for cloned OutputEvents
+            foreach (var e in slot_vm._slot.OutputEvents)
+                slot_vm.OutputEvents.Add(new OutputEventViewModel(e)); 
+
             slot_vm.Art1 = this.Art1;
             slot_vm.Art2 = this.Art2;
             slot_vm.Art3 = this.Art3;
@@ -311,9 +323,16 @@ namespace EME_Expression_Map_Editor.ViewModel
             return slot_vm;
         }
 
+        private void AddOutputEventPost(OutputEventViewModel src, OutputEventViewModel dest)
+        {
+            dest.EventType = src.EventType;
+            dest.Data1 = src.Data1;
+            dest.Data2 = src.Data2; 
+        }
+
         private void InitCommands()
         {
-            AddOutputEventCommand = new CustomCommand<int>((n) => { SelectedEventIndex = Common.AddItem(OutputEvents, SelectedEventIndex, Common.DoNothing); });
+            AddOutputEventCommand = new CustomCommand<int>((n) => { SelectedEventIndex = Common.AddItem(OutputEvents, SelectedEventIndex, AddOutputEventPost); });
             RemoveOutputEventCommand = new NoParameterCommand(() => { SelectedEventIndex = Common.RemoveItem(OutputEvents, SelectedEventIndex, (n) => n.IsSelected, Common.DoNothing); });
         }
         

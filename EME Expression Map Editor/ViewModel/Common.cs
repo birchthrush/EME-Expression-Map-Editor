@@ -44,6 +44,7 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         // Add/remove functions - parameters: collection to be operated on, current selection index, an optional post-insertion/deletion function to be executed
         // Returns index to new selected element after operation is finished
+        /*
         public static int AddItem<T>(ObservableCollection<T> list, int idx, Action post_func) where T : ViewModelBase, new()
         {
             if (list.Count == 0)
@@ -59,6 +60,27 @@ namespace EME_Expression_Map_Editor.ViewModel
                 T item = (T)list[idx].Clone(); 
                 list.Insert(idx + 1, item);
                 post_func();
+                return idx + 1;
+            }
+        }
+        */
+
+        public static int AddItem<T>(ObservableCollection<T> list, int idx, Action<T, T> copy_func) where T : ViewModelBase, new()
+        {
+            if (list.Count == 0)
+            {
+                T item = new T(); 
+                //copy_func(item);
+                list.Add(item);
+                return 0;
+            }
+            else
+            {
+                idx = Math.Clamp(idx, 0, list.Count - 1);
+                //T item = (T)list[idx].Clone();
+                T item = new T(); 
+                list.Insert(idx + 1, item);
+                copy_func(list[idx], item);
                 return idx + 1;
             }
         }
@@ -81,7 +103,13 @@ namespace EME_Expression_Map_Editor.ViewModel
             return Math.Clamp(pre_idx, -1, list.Count - 1);
         }
 
+
         // Blank dummy function for when post_func above are not needed
+        public static void DoNothing<T>(T src, T dest)
+        {
+
+        }
+
         public static void DoNothing()
         {
 
