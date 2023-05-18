@@ -188,7 +188,7 @@ namespace EME_Expression_Map_Editor.ViewModel
                 foreach (var src_oe in data.OutputEvents.Where(x => x.IsSelected).ToList())
                     foreach (var slot in SoundSlots.Where(x => x.IsSelected).ToList()) 
                         foreach (var oe in slot.OutputEvents.ToList())
-                            if (oe.EventType == src_oe.EventType && oe.Data1 == src_oe.Data1 && oe.Data2 == src_oe.Data2)
+                            if (oe.SameDataAs(src_oe))
                             {
                                 if (data.WindowStatus == WindowReturnCode.DELETE)
                                     slot.OutputEvents.Remove(oe);

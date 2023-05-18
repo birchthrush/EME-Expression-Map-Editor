@@ -95,7 +95,12 @@ namespace EME_Expression_Map_Editor.ViewModel
             => new OutputEventViewModel(_event.Duplicate());
 
         public OutputEvent UnpackModel()
-            => _event.Duplicate(); 
+            => _event.Duplicate();
+
+        public bool SameDataAs(OutputEventViewModel e)
+            => _event.EventType == e._event.EventType 
+            && _event.Data1 == e._event.Data1 
+            && _event.Data2 == e._event.Data2; 
 
         public OutputEventViewModel()
         {
