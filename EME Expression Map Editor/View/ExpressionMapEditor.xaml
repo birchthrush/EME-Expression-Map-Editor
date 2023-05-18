@@ -65,14 +65,12 @@
                             <ContextMenu>
                                 <MenuItem Header="Insert multiple new slots (Ctrl+N)" Command="{Binding AddSlotsPopupCommand}" />
                                 <MenuItem Header="Duplicate selected slots (Ctrl+D)" Command="{Binding DuplicateSoundSlotCommand}" />
+                                <MenuItem Header="Copy output mapping from selected slot (Ctrl+O)" Command="{Binding PropagateOutputMappingCommand}" />
+                                <MenuItem Header="Search-and-Replace ouptut events in selected slots (Ctrl+H)" Command="{Binding BatchProcessingPopupCommand}" />
+                                <Separator />
+                                <MenuItem Header="Generate slot names from articulations" Command="{Binding GenerateSlotNamesCommand}" />
                                 <Separator />
                                 <MenuItem Header="Copy and auto-increment Remote Keys from first selected slot" Command="{Binding IncrementRemoteKeysCommand}" />
-                                <Separator />
-                                <MenuItem Header="Generate slot names from articulations" Command="{Binding GenerateNamesFromArticulationsCommand}" />
-                                <Separator />
-                                <MenuItem Header="Search-and-Replace ouptut events in selected slots (Ctrl+H)" Command="{Binding BatchProcessingPopupCommand}" />
-                                <MenuItem Header="Copy output mapping from selected slot (Ctrl+O)" Command="{Binding PropagateOutputMappingCommand}" />
-                                <Separator />
                                 <MenuItem Header="Toggle showing Remote Keys as note values or program changes" Command="{Binding ChangeRemoteKeysDisplayTypeCommand }" />
                             </ContextMenu>
                         </DataGrid.ContextMenu>

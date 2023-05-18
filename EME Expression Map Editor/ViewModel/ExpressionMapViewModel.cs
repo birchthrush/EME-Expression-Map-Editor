@@ -320,6 +320,24 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
+        public ICommand GenerateSlotNamesCommand { get; private set;  }
+        private void GenerateSlotNames()
+        {
+            foreach (var slot in SoundSlots.Where(x => x.IsSelected))
+            {
+                string n = string.Empty; 
+                if (!ArticulationViewModel.IsBlank(slot.Art1))
+                    n += slot.Art1.Description + " "; 
+                if (!ArticulationViewModel.IsBlank(slot.Art2))
+                    n += slot.Art2.Description + " ";
+                if (!ArticulationViewModel.IsBlank(slot.Art3))
+                    n += slot.Art3.Description + " ";
+                if (!ArticulationViewModel.IsBlank(slot.Art4))
+                    n += slot.Art4.Description;
+                slot.Name = n.Trim(); 
+            }
+        }
+
         private void AddSoundSlotPost(SoundSlotViewModel src, SoundSlotViewModel dest)
         {
             dest.Color = (src.Color + 1) % 15;
@@ -529,6 +547,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             PropagateOutputMappingCommand = new NoParameterCommand(PropagateOutputMapping);
             ChangeRemoteKeysDisplayTypeCommand = new NoParameterCommand(ChangeRemoteKeysDisplayType);
             IncrementRemoteKeysCommand = new NoParameterCommand(IncrementRemoteKeys);
+            GenerateSlotNamesCommand = new NoParameterCommand(GenerateSlotNames); 
 
             // Articulation Grid Commands: 
             AddArticulationCommand = new CustomCommand<int>((n) => { SelectedArticulationIndex = Common.AddItem(Articulations, n, AddArticulationPost); }); 
