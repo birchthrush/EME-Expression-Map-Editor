@@ -326,6 +326,10 @@ namespace EME_Expression_Map_Editor.ViewModel
         {
             var slot_vm = new SoundSlotViewModel(_slot.Duplicate());
 
+            slot_vm.OutputEvents.Clear();
+            foreach (var e in OutputEvents)
+                slot_vm.OutputEvents.Add((OutputEventViewModel)e.Clone()); 
+
             slot_vm.Art1 = this.Art1;
             slot_vm.Art2 = this.Art2;
             slot_vm.Art3 = this.Art3;
