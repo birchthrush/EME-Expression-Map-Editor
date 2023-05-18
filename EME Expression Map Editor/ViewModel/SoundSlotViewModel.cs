@@ -151,17 +151,11 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
             set
             {
-                if (Int32.TryParse(value, out int n))
+                int n = MidiNote.TryParse(value);
+                if (n >= 0)
                     _slot.RemoteKey = n;
-                else if (value.Equals("-") || value.Equals(string.Empty))
-                    _slot.RemoteKey = SoundSlot.NoRemoteKey; 
                 else
-                {
-                    int note = MidiNote.NoteNameToMidi(value);
-                    if (note >= 0)
-                        _slot.RemoteKey = note; 
-                }
-
+                    _slot.RemoteKey = SoundSlot.NoRemoteKey; 
                 OnPropertyChanged(nameof(RemoteKey)); 
             }
         }

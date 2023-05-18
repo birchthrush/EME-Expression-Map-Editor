@@ -22,21 +22,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
             set
             {
-                if (_event.EventType == OutputEvent.NoteEvent)
-                {
-                    int note_value = MidiNote.NoteNameToMidi(value);
-
-                    // Return value of -1 indicates parsing failed; then check if instead value was entered as a numeric value. 
-
-                    if (note_value >= 0)
-                        _event.Data1 = note_value; 
-                    else if (Int32.TryParse(value, out int n))
-                        _event.Data1 = n;
-
-                }
-                else if (Int32.TryParse(value, out int n))
-                    _event.Data1 = n;
-
+                _event.Data1 =  MidiNote.TryParse(value); 
                 OnPropertyChanged(nameof(Data1));
             }
         }

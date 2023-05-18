@@ -66,7 +66,7 @@
                                 <MenuItem Header="Insert multiple new slots (Ctrl+N)" Command="{Binding AddSlotsPopupCommand}" />
                                 <MenuItem Header="Duplicate selected slots (Ctrl+D)" Command="{Binding DuplicateSoundSlotCommand}" />
                                 <Separator />
-                                <MenuItem Header="Copy and auto-increment Remote Keys from first selected slot" Command="{Binding PropagateRemoteKeysCommand}" />
+                                <MenuItem Header="Copy and auto-increment Remote Keys from first selected slot" Command="{Binding IncrementRemoteKeysCommand}" />
                                 <Separator />
                                 <MenuItem Header="Generate slot names from articulations" Command="{Binding GenerateNamesFromArticulationsCommand}" />
                                 <Separator />

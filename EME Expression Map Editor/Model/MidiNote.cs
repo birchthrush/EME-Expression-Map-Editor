@@ -128,5 +128,14 @@ namespace EME_Expression_Map_Editor.Model
             }
             return true;
         }
+
+        public static int TryParse(string str)
+        {
+            int n;
+            if (Int32.TryParse(str, out n))
+                return n;
+            else
+                return NoteNameToMidi(str); 
+        }
     }
 }

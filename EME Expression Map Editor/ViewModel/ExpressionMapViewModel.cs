@@ -308,6 +308,18 @@ namespace EME_Expression_Map_Editor.ViewModel
                 slot.RemoteKey = slot.RemoteKey; 
         }
 
+        public ICommand IncrementRemoteKeysCommand { get; private set; }
+        private void IncrementRemoteKeys()
+        {
+            if (FirstSelectedSlot != null)
+            {
+                int n = MidiNote.TryParse(FirstSelectedSlot.RemoteKey);
+                foreach (var slot in SoundSlots.Where(x => x.IsSelected))
+                    if (!slot.Equals(FirstSelectedSlot))
+                        slot.RemoteKey = (++n).ToString(); 
+            }
+        }
+
         private void AddSoundSlotPost(SoundSlotViewModel src, SoundSlotViewModel dest)
         {
             dest.Color = (src.Color + 1) % 15;
@@ -516,6 +528,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             SetChannelCommand = new NoParameterCommand(SetChannel);
             PropagateOutputMappingCommand = new NoParameterCommand(PropagateOutputMapping);
             ChangeRemoteKeysDisplayTypeCommand = new NoParameterCommand(ChangeRemoteKeysDisplayType);
+            IncrementRemoteKeysCommand = new NoParameterCommand(IncrementRemoteKeys);
 
             // Articulation Grid Commands: 
             AddArticulationCommand = new CustomCommand<int>((n) => { SelectedArticulationIndex = Common.AddItem(Articulations, n, AddArticulationPost); }); 
