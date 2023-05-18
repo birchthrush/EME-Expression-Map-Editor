@@ -326,10 +326,6 @@ namespace EME_Expression_Map_Editor.ViewModel
         {
             var slot_vm = new SoundSlotViewModel(_slot.Duplicate());
 
-            // Create VM for cloned OutputEvents
-            foreach (var e in slot_vm._slot.OutputEvents)
-                slot_vm.OutputEvents.Add(new OutputEventViewModel(e.Duplicate())); 
-
             slot_vm.Art1 = this.Art1;
             slot_vm.Art2 = this.Art2;
             slot_vm.Art3 = this.Art3;
@@ -364,6 +360,10 @@ namespace EME_Expression_Map_Editor.ViewModel
         public SoundSlotViewModel(SoundSlot slot)
         {            
             _slot = slot;
+
+            foreach (var e in slot.OutputEvents)
+                OutputEvents.Add(new OutputEventViewModel(e)); 
+
             InitCommands();
         }
     }
