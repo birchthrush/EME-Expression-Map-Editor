@@ -12,7 +12,7 @@
         mc:Ignorable="d"
         ResizeMode="CanMinimize"
         WindowStyle="SingleBorderWindow"
-        Title="{StaticResource ApplicationTitle}" Height="960" Width="1107">
+        Title="{StaticResource ApplicationTitle}" Height="960" Width="1120">
     <Window.InputBindings>
         <KeyBinding Key="H" Modifiers="Ctrl" Command="{Binding BatchProcessingPopupCommand}" />
     </Window.InputBindings>
@@ -60,6 +60,7 @@
                               EnableColumnVirtualization="False"
                               EnableRowVirtualization="False" 
                               SelectionChanged="SoundSlotGrid_SelectionChanged"
+                              ScrollViewer.VerticalScrollBarVisibility="Visible"
                               >
                         <DataGrid.ContextMenu>
                             <ContextMenu>
@@ -237,6 +238,7 @@
                               CanUserResizeRows="False"
                               CanUserSortColumns="False"
                               CanUserResizeColumns="False"
+                              ScrollViewer.VerticalScrollBarVisibility="Visible"
                               Height="200"
                               Margin="10 0 10 10"
                               AutoGenerateColumns="False">
@@ -367,7 +369,8 @@
                               CanUserResizeRows="False"
                               CanUserResizeColumns="False"        
                               CanUserSortColumns="False"
-                              EnableRowVirtualization="False">
+                              ScrollViewer.VerticalScrollBarVisibility="Visible"
+                              EnableRowVirtualization="False">                        
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Insert multiple new articulation" Command="{Binding AddArticulationsPopupCommand}" />
