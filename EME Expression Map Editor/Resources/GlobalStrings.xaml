@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=System.Runtime">
-    <sys:String x:Key="ApplicationTitle">Expression Map Editor EME (0.01)</sys:String>
+    <sys:String x:Key="ApplicationTitle">Expression Map Editor EME (0.3b)</sys:String>
     <sys:String x:Key="AddElement">+</sys:String>
     <sys:String x:Key="RemoveElement">-</sys:String>
     <sys:String x:Key="CascadeData">+</sys:String>
