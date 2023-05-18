@@ -140,16 +140,37 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         public string RemoteKey
         {
-            get => _slot.RemoteKey == SoundSlot.NoRemoteKey ? "-" : _slot.RemoteKey.ToString(); 
+            get
+            {
+                if (_slot.RemoteKey == SoundSlot.NoRemoteKey)
+                    return "-";
+                else if (DisplayRemoteKeyAsNoteValue)
+                    return MidiNote.MidiNoteToString(_slot.RemoteKey);
+                else
+                    return _slot.RemoteKey.ToString(); 
+            }
             set
             {
                 if (Int32.TryParse(value, out int n))
                     _slot.RemoteKey = n;
                 else if (value.Equals("-") || value.Equals(string.Empty))
-                    _slot.RemoteKey = SoundSlot.NoRemoteKey;
+                    _slot.RemoteKey = SoundSlot.NoRemoteKey; 
+                else
+                {
+                    int note = MidiNote.NoteNameToMidi(value);
+                    if (note >= 0)
+                        _slot.RemoteKey = note; 
+                }
 
-                OnPropertyChanged("RemoteKey");
+                OnPropertyChanged(nameof(RemoteKey)); 
             }
+        }
+
+        private static volatile bool _displayRemoteAsNoteValue = true; 
+        public static  bool DisplayRemoteKeyAsNoteValue
+        {
+            get => _displayRemoteAsNoteValue;
+            set => _displayRemoteAsNoteValue = value; 
         }
 
         // Slot's midi channel: displayed as 1-16 on UI for readability

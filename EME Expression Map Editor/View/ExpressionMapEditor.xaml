@@ -72,6 +72,8 @@
                                 <Separator />
                                 <MenuItem Header="Search-and-Replace ouptut events in selected slots (Ctrl+H)" Command="{Binding BatchProcessingPopupCommand}" />
                                 <MenuItem Header="Copy output mapping from selected slot (Ctrl+O)" Command="{Binding PropagateOutputMappingCommand}" />
+                                <Separator />
+                                <MenuItem Header="Toggle showing Remote Keys as note values or program changes" Command="{Binding ChangeRemoteKeysDisplayTypeCommand }" />
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                         <DataGrid.InputBindings>

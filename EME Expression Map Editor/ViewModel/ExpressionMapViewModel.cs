@@ -300,6 +300,14 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
+        public ICommand ChangeRemoteKeysDisplayTypeCommand { get; private set; }
+        private void ChangeRemoteKeysDisplayType()
+        {
+            SoundSlotViewModel.DisplayRemoteKeyAsNoteValue = !SoundSlotViewModel.DisplayRemoteKeyAsNoteValue;
+            foreach (var slot in SoundSlots)
+                slot.RemoteKey = slot.RemoteKey; 
+        }
+
         private void AddSoundSlotPost(SoundSlotViewModel src, SoundSlotViewModel dest)
         {
             dest.Color = (src.Color + 1) % 15;
@@ -507,6 +515,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             SetArticulation4Command = new CustomCommand<ArticulationViewModel>((art_vm) => SetArticulation(art_vm, 3));
             SetChannelCommand = new NoParameterCommand(SetChannel);
             PropagateOutputMappingCommand = new NoParameterCommand(PropagateOutputMapping);
+            ChangeRemoteKeysDisplayTypeCommand = new NoParameterCommand(ChangeRemoteKeysDisplayType);
 
             // Articulation Grid Commands: 
             AddArticulationCommand = new CustomCommand<int>((n) => { SelectedArticulationIndex = Common.AddItem(Articulations, n, AddArticulationPost); }); 
