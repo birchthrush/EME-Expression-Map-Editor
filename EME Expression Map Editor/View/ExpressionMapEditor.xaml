@@ -10,7 +10,7 @@
         xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
         xmlns:dd="urn:gong-wpf-dragdrop"
         mc:Ignorable="d"
-        ResizeMode="CanMinimize"
+        ResizeMode="CanResize"
         WindowStyle="SingleBorderWindow"
         Title="{StaticResource ApplicationTitle}" Height="960" Width="1120">
     <Window.InputBindings>
@@ -18,158 +18,175 @@
     </Window.InputBindings>
     <Grid Background="{StaticResource WindowBackgroundColor}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="0.6*" />
+            <ColumnDefinition Width="0.4*" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
             <Border Style="{StaticResource ElementBorder}" Margin="5 5 3 5">
-                <StackPanel>
-                    <Border BorderThickness="0 0 0 1" CornerRadius="10 10 0 0" Padding="10" Style="{StaticResource ElementBorder}">
-                        <TextBlock Style="{StaticResource SectionHeader}" HorizontalAlignment="Center" Text="Sound Slots" />
-                    </Border>
-                    <StackPanel Orientation="Horizontal" Margin="10 10 10 0">
-                        <Button Width="100" 
-                                Content="{StaticResource AddElement}" 
-                                Style="{StaticResource UpperLeftButton}" 
-                                Command="{Binding AddSoundSlotCommand}"
-                                CommandParameter="{Binding ElementName=SoundSlotGrid, Path=SelectedIndex}" />
-                        <Button Width="100" 
-                                BorderThickness="0 1 1 1"
-                                Content="{StaticResource RemoveElement}" 
-                                Style="{StaticResource UpperRightButton}"
-                                Command="{Binding RemoveSoundSlotCommand}" />
-                    </StackPanel>
-                    <DataGrid Height="800" 
-                              SelectionMode="Extended"
-                              Name="SoundSlotGrid"
-                              ItemsSource="{Binding SoundSlots}" 
-                              SelectedValue="{Binding SelectedSlot}"                     
-                              SelectedIndex="{Binding SelectedSlotIndex}"
-                              dd:DragDrop.IsDragSource="True"
-                              dd:DragDrop.IsDropTarget="True"
-                              AllowDrop="True"
-                              AutoGenerateColumns="False" 
-                              Margin="10 0 10 0" 
-                              VerticalScrollBarVisibility="Visible"
-                              CanUserResizeColumns="False"
-                              CanUserAddRows="False"
-                              CanUserDeleteRows="False"
-                              CanUserReorderColumns="False"
-                              CanUserSortColumns="False"
-                              CanUserResizeRows="False" 
-                              EnableColumnVirtualization="False"
-                              EnableRowVirtualization="False" 
-                              SelectionChanged="SoundSlotGrid_SelectionChanged"
-                              ScrollViewer.VerticalScrollBarVisibility="Visible"
-                              >
-                        <DataGrid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Insert multiple new slots (Ctrl+N)" Command="{Binding AddSlotsPopupCommand}" />
-                                <MenuItem Header="Duplicate selected slots (Ctrl+D)" Command="{Binding DuplicateSoundSlotCommand}" />
-                                <MenuItem Header="Copy output mapping from selected slot (Ctrl+O)" Command="{Binding PropagateOutputMappingCommand}" />
-                                <MenuItem Header="Search-and-Replace ouptut events in selected slots (Ctrl+H)" Command="{Binding BatchProcessingPopupCommand}" />
-                                <Separator />
-                                <MenuItem Header="Generate slot names from articulations" Command="{Binding GenerateSlotNamesCommand}" />
-                                <Separator />
-                                <MenuItem Header="Ascending assignment of Remote Keys from first selected slot" Command="{Binding IncrementRemoteKeysCommand}" />
-                                <MenuItem Header="Show remote keys as program changes" IsCheckable="True" IsChecked="{Binding ShowRemoteKeysAsProgramChanges}" />
-                            </ContextMenu>
-                        </DataGrid.ContextMenu>
-                        <DataGrid.InputBindings>
-                            <KeyBinding Key="N" Modifiers="Ctrl" 
-                                        Command="{Binding AddSlotsPopupCommand}" />
-                            <KeyBinding Key="D" Modifiers="Ctrl" 
-                                         Command="{Binding DuplicateSoundSlotCommand}" />
-                            <KeyBinding Key="O" Modifiers="Ctrl"
-                                        Command="{Binding PropagateOutputMappingCommand}" />
-                            <KeyBinding Key="Delete" 
-                                    Command="{Binding RemoveSoundSlotCommand}" />
-                            <KeyBinding Key="Insert" 
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="50" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Border BorderThickness="0 0 0 1" CornerRadius="10 10 0 0" Padding="10" Style="{StaticResource ElementBorder}">
+                            <TextBlock Style="{StaticResource SectionHeader}" HorizontalAlignment="Center" Text="Sound Slots" />
+                        </Border>                        
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <StackPanel Orientation="Horizontal" Margin="10 10 10 0">
+                            <Button Width="100" 
+                                    Content="{StaticResource AddElement}" 
+                                    Style="{StaticResource UpperLeftButton}" 
                                     Command="{Binding AddSoundSlotCommand}"
                                     CommandParameter="{Binding ElementName=SoundSlotGrid, Path=SelectedIndex}" />
-                        </DataGrid.InputBindings>
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Remote" Width="50" Binding="{Binding RemoteKey}" />
-                            <DataGridTextColumn Header="Name" Width="250" Binding="{Binding Name}" />
-                            <DataGridTemplateColumn Header="Art.1" Width="50">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ComboBox ItemsSource="{Binding Path=DataContext.Group1Options, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                  SelectedValue="{Binding Art1, UpdateSourceTrigger=PropertyChanged}" >
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="DropDownClosed">
-                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.SetArticulation1Command, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                                           CommandParameter="{Binding Art1}" />
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
-                                        </ComboBox>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="Art.2" Width="50">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ComboBox ItemsSource="{Binding Path=DataContext.Group2Options, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                  SelectedValue="{Binding Art2, UpdateSourceTrigger=PropertyChanged}" >
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="DropDownClosed">
-                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.SetArticulation2Command, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                                           CommandParameter="{Binding Art2}" />
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
-                                        </ComboBox>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="Art.3" Width="50">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ComboBox ItemsSource="{Binding Path=DataContext.Group3Options, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                  SelectedValue="{Binding Art3, UpdateSourceTrigger=PropertyChanged}" >
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="DropDownClosed">
-                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.SetArticulation3Command, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                                           CommandParameter="{Binding Art3}" />
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
-                                        </ComboBox>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="Art.4" Width="50">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ComboBox ItemsSource="{Binding Path=DataContext.Group4Options, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                  SelectedValue="{Binding Art4, UpdateSourceTrigger=PropertyChanged}" >
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="DropDownClosed">
-                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.SetArticulation4Command, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                                           CommandParameter="{Binding Art4}" />
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
-                                        </ComboBox>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="Color" Width="50" CanUserResize="False">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ComboBox ItemsSource="{StaticResource DefaultColorOptions}" 
-                                             ItemTemplate="{StaticResource ColorPicker}"      
-                                             SelectedIndex="{Binding Color, UpdateSourceTrigger=PropertyChanged}" >
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="DropDownClosed">
-                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.SetColorCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                                           CommandParameter="{Binding Color}" />
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
-                                        </ComboBox>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                    <Grid Margin="10 15 10 0">
+                            <Button Width="100" 
+                                    BorderThickness="0 1 1 1"
+                                    Content="{StaticResource RemoveElement}" 
+                                    Style="{StaticResource UpperRightButton}"
+                                    Command="{Binding RemoveSoundSlotCommand}" />
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <DataGrid 
+                            SelectionMode="Extended"
+                            Name="SoundSlotGrid"
+                            Height="auto" 
+                            Margin="10 0 10 0" 
+                            ItemsSource="{Binding SoundSlots}" 
+                            SelectedValue="{Binding SelectedSlot}"                     
+                            SelectedIndex="{Binding SelectedSlotIndex}"
+                            dd:DragDrop.IsDragSource="True"
+                            dd:DragDrop.IsDropTarget="True"
+                            AllowDrop="True"
+                            AutoGenerateColumns="False" 
+                            VerticalScrollBarVisibility="Visible"
+                            CanUserResizeColumns="False"
+                            CanUserAddRows="False"
+                            CanUserDeleteRows="False"
+                            CanUserReorderColumns="False"
+                            CanUserSortColumns="False"
+                            CanUserResizeRows="False" 
+                            EnableColumnVirtualization="False"
+                            EnableRowVirtualization="False" 
+                            SelectionChanged="SoundSlotGrid_SelectionChanged"
+                            ScrollViewer.VerticalScrollBarVisibility="Visible"
+                            >
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Insert multiple new slots (Ctrl+N)" Command="{Binding AddSlotsPopupCommand}" />
+                                    <MenuItem Header="Duplicate selected slots (Ctrl+D)" Command="{Binding DuplicateSoundSlotCommand}" />
+                                    <MenuItem Header="Copy output mapping from selected slot (Ctrl+O)" Command="{Binding PropagateOutputMappingCommand}" />
+                                    <MenuItem Header="Search-and-Replace ouptut events in selected slots (Ctrl+H)" Command="{Binding BatchProcessingPopupCommand}" />
+                                    <Separator />
+                                    <MenuItem Header="Generate slot names from articulations" Command="{Binding GenerateSlotNamesCommand}" />
+                                    <Separator />
+                                    <MenuItem Header="Ascending assignment of Remote Keys from first selected slot" Command="{Binding IncrementRemoteKeysCommand}" />
+                                    <MenuItem Header="Show remote keys as program changes" IsCheckable="True" IsChecked="{Binding ShowRemoteKeysAsProgramChanges}" />
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                            <DataGrid.InputBindings>
+                                <KeyBinding Key="N" Modifiers="Ctrl" 
+                                                Command="{Binding AddSlotsPopupCommand}" />
+                                <KeyBinding Key="D" Modifiers="Ctrl" 
+                                                 Command="{Binding DuplicateSoundSlotCommand}" />
+                                <KeyBinding Key="O" Modifiers="Ctrl"
+                                                Command="{Binding PropagateOutputMappingCommand}" />
+                                <KeyBinding Key="Delete" 
+                                            Command="{Binding RemoveSoundSlotCommand}" />
+                                <KeyBinding Key="Insert" 
+                                            Command="{Binding AddSoundSlotCommand}"
+                                            CommandParameter="{Binding ElementName=SoundSlotGrid, Path=SelectedIndex}" />
+                            </DataGrid.InputBindings>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Remote" Width="*" MaxWidth="50" Binding="{Binding RemoteKey}" />
+                                <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Name}" />
+                                <DataGridTemplateColumn Header="Art.1" Width="0.2*" MinWidth="50">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding Path=DataContext.Group1Options, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                          SelectedValue="{Binding Art1, UpdateSourceTrigger=PropertyChanged}" >
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="DropDownClosed">
+                                                        <i:InvokeCommandAction Command="{Binding Path=DataContext.SetArticulation1Command, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                                   CommandParameter="{Binding Art1}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Art.2" Width="0.2*" MinWidth="50" >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding Path=DataContext.Group2Options, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                          SelectedValue="{Binding Art2, UpdateSourceTrigger=PropertyChanged}" >
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="DropDownClosed">
+                                                        <i:InvokeCommandAction Command="{Binding Path=DataContext.SetArticulation2Command, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                                   CommandParameter="{Binding Art2}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Art.3" Width="0.2*" MinWidth="50" >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding Path=DataContext.Group3Options, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                          SelectedValue="{Binding Art3, UpdateSourceTrigger=PropertyChanged}" >
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="DropDownClosed">
+                                                        <i:InvokeCommandAction Command="{Binding Path=DataContext.SetArticulation3Command, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                                   CommandParameter="{Binding Art3}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Art.4" Width="0.2*" MinWidth="50" >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding Path=DataContext.Group4Options, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                          SelectedValue="{Binding Art4, UpdateSourceTrigger=PropertyChanged}" >
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="DropDownClosed">
+                                                        <i:InvokeCommandAction Command="{Binding Path=DataContext.SetArticulation4Command, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                                   CommandParameter="{Binding Art4}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Color" Width="50" CanUserResize="False">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{StaticResource DefaultColorOptions}" 
+                                                     ItemTemplate="{StaticResource ColorPicker}"      
+                                                     SelectedIndex="{Binding Color, UpdateSourceTrigger=PropertyChanged}" >
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="DropDownClosed">
+                                                        <i:InvokeCommandAction Command="{Binding Path=DataContext.SetColorCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                                   CommandParameter="{Binding Color}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                    <Grid Grid.Row="3">
+                        <Grid Margin="10 15 10 0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="100" />
@@ -200,265 +217,294 @@
                                 Command="{Binding SaveFileCommand}"
                                 CommandParameter="{Binding Name}"
                                 />
+                        </Grid>
                     </Grid>
-                </StackPanel>
+                </Grid>
             </Border>
         </Grid>
         <Grid Grid.Column="1" Margin="0 0 5 0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" MinHeight="340"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Border Grid.Row="0" Style="{StaticResource ElementBorder}" Margin="0 5 0 3"  Background="{StaticResource ElementBackgroundColor}">
-                <StackPanel>
-                    <Border BorderThickness="0 0 0 1" CornerRadius="10 10 0 0" Padding="10" Style="{StaticResource ElementBorder}">
-                        <TextBlock Style="{StaticResource SectionHeader}" HorizontalAlignment="Center" Text="Output Events" />
-                    </Border>
-                    <StackPanel Orientation="Horizontal" Margin="10 10 10 0">
-                        <Button Width="100"
-                                Content="{StaticResource AddElement}" 
-                                Style="{StaticResource UpperLeftButton}"
-                                Command="{Binding FirstSelectedSlot.AddOutputEventCommand}"
-                                CommandParameter="{Binding ElementName=OutputEventsGrid, Path=SelectedIndex}" />
-                        <Button Width="100"
-                                Content="{StaticResource RemoveElement}" 
-                                Style="{StaticResource UpperRightButton}"
-                                Command="{Binding FirstSelectedSlot.RemoveOutputEventCommand}" />
-                    </StackPanel>
-                    <DataGrid ItemsSource="{Binding FirstSelectedSlot.OutputEvents}" 
-                              SelectedIndex="{Binding FirstSelectedSlot.SelectedEventIndex}"
-                              Name="OutputEventsGrid"
-                              SelectionMode="Extended"
-                              dd:DragDrop.IsDragSource="True"
-                              dd:DragDrop.IsDropTarget="True"
-                              KeyboardNavigation.TabNavigation="None"
-                              CanUserDeleteRows="False"
-                              CanUserAddRows="False"
-                              CanUserReorderColumns="False"
-                              CanUserResizeRows="False"
-                              CanUserSortColumns="False"
-                              CanUserResizeColumns="False"
-                              ScrollViewer.VerticalScrollBarVisibility="Visible"
-                              Height="200"
-                              Margin="10 0 10 10"
-                              AutoGenerateColumns="False">
-                        <DataGrid.InputBindings>
-                            <KeyBinding Key="Delete"
-                                        Command="{Binding FirstSelectedSlot.RemoveOutputEventCommand}" />
-                            <KeyBinding Key="Insert"
-                                        Command="{Binding FirstSelectedSlot.AddOutputEventCommand}" 
-                                        CommandParameter="{Binding ElementName=OutputEventsGrid, Path=SelectedIndex}" />
-                        </DataGrid.InputBindings>
-                        <DataGrid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Copy Event To All Selected Slots" 
-                                          Command="{Binding CopyOutputEventCommand}"
-                                          CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}" />
-                                <MenuItem Header="Copy Event To All Selected Slots And Increment Data1" 
-                                          Command="{Binding CopyOutputEventIncrementData1Command}"
-                                          CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}" />
-                                <MenuItem Header="Copy Event To All Selected Slots And Increment Data2" 
-                                          Command="{Binding CopyOutputEventIncrementData2Command}"
-                                          CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}" />
-                                <Separator />
-                                <MenuItem Header="Ascending increment of Data1 nth Event On All Selected Slots" 
-                                          Command="{Binding IncrementData1NthOutputEventCommand}" 
-                                          CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}"  />
-                                <MenuItem Header="Ascending increment ofData2 nth Event On All Selected Slots" 
-                                          Command="{Binding IncrementData2NthOutputEventCommand}" 
-                                          CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}"  />
-                            </ContextMenu>
-                        </DataGrid.ContextMenu>
-                        <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="Type" Width="150">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ComboBox ItemsSource="{Binding EventTypeOptions}" 
-                                                  SelectedValue="{Binding EventType, UpdateSourceTrigger=PropertyChanged}"                                                  
-                                                  DisplayMemberPath="Value" 
-                                                  SelectedValuePath="Key"
-                                                  HorizontalContentAlignment="Center"
-                                                  VerticalContentAlignment="Center" >
-                                        </ComboBox>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Data 1" Width="75" Binding="{Binding Data1}"/>
-                            <DataGridTextColumn Header="Data 2" Width="75" Binding="{Binding Data2}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                    <Border Style="{StaticResource ElementBorder}" 
-                            BorderThickness="0 2 0 0" 
-                            Padding="5"
-                            Background="{StaticResource HeaderBackgroundColor}" 
-                            CornerRadius="0 0 9 9">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="50" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="50" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="25" />
-                            </Grid.RowDefinitions>
-
-                            <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource BrighterTextBlock}">Channel</TextBlock>
-                            <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource BrighterTextBlock}">Length</TextBlock>
-                            <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource BrighterTextBlock}">Transpose</TextBlock>
-                            <TextBlock Grid.Column="0" Grid.Row="3" Style="{StaticResource BrighterTextBlock}">Velocity</TextBlock>
-                            <TextBlock Grid.Column="2" Grid.Row="0" Style="{StaticResource BrighterTextBlock}" Padding="10 0 0 0">Min. Pitch</TextBlock>
-                            <TextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource BrighterTextBlock}" Padding="10 0 0 0">Max Pitch</TextBlock>
-                            <TextBlock Grid.Column="2" Grid.Row="2" Style="{StaticResource BrighterTextBlock}" Padding="10 0 0 0">Min. Velocity</TextBlock>
-                            <TextBlock Grid.Column="2" Grid.Row="3" Style="{StaticResource BrighterTextBlock}" Padding="10 0 0 0">Max Velocity</TextBlock>
-                            <ComboBox Foreground="{StaticResource DefaultForegroundColor}"
-                                Grid.Column="1" Grid.Row="0" BorderThickness="0 1 0 0"
-                                ItemsSource="{Binding FirstSelectedSlot.ChannelOptions}" 
-                                SelectedValue="{Binding FirstSelectedSlot.Channel}">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="DropDownClosed">
-                                        <i:InvokeCommandAction 
-                                            Command="{Binding Path=DataContext.SetChannelCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                            />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </ComboBox>
-                            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding FirstSelectedSlot.LengthFactor}" />
-                            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding FirstSelectedSlot.Transpose}" />
-                            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding FirstSelectedSlot.VelocityFactor}" />
-                            <TextBox Grid.Column="3" Grid.Row="0" Text="{Binding FirstSelectedSlot.MinPitch}" />
-                            <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding FirstSelectedSlot.MaxPitch}" />
-                            <TextBox Grid.Column="3" Grid.Row="2" Text="{Binding FirstSelectedSlot.MinVelocity}" />
-                            <TextBox Grid.Column="3" Grid.Row="3" Text="{Binding FirstSelectedSlot.MaxVelocity}" />
-                        </Grid>
-                    </Border>
-                </StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="105" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Border BorderThickness="0 0 0 1" CornerRadius="10 10 0 0" Padding="10" Style="{StaticResource ElementBorder}">
+                            <TextBlock Style="{StaticResource SectionHeader}" HorizontalAlignment="Center" Text="Output Events" />
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <StackPanel Orientation="Horizontal" Margin="10 10 10 0">
+                            <Button Width="100"
+                                    Content="{StaticResource AddElement}" 
+                                    Style="{StaticResource UpperLeftButton}"
+                                    Command="{Binding FirstSelectedSlot.AddOutputEventCommand}"
+                                    CommandParameter="{Binding ElementName=OutputEventsGrid, Path=SelectedIndex}" />
+                            <Button Width="100"
+                                    Content="{StaticResource RemoveElement}" 
+                                    Style="{StaticResource UpperRightButton}"
+                                    Command="{Binding FirstSelectedSlot.RemoveOutputEventCommand}" />
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <DataGrid 
+                            ItemsSource="{Binding FirstSelectedSlot.OutputEvents}" 
+                            SelectedIndex="{Binding FirstSelectedSlot.SelectedEventIndex}"
+                            Height="175"
+                            Margin="10 0 10 10"
+                            Name="OutputEventsGrid"
+                            SelectionMode="Extended"
+                            dd:DragDrop.IsDragSource="True"
+                            dd:DragDrop.IsDropTarget="True"
+                            AutoGenerateColumns="False"
+                            CanUserDeleteRows="False"
+                            CanUserAddRows="False"
+                            CanUserReorderColumns="False"
+                            CanUserResizeRows="False"
+                            CanUserResizeColumns="False"
+                            CanUserSortColumns="False"
+                            VerticalScrollBarVisibility="Visible"
+                            ScrollViewer.VerticalScrollBarVisibility="Visible"
+                            EnableRowVirtualization="False">
+                            <DataGrid.InputBindings>
+                                <KeyBinding Key="Delete"
+                                                Command="{Binding FirstSelectedSlot.RemoveOutputEventCommand}" />
+                                <KeyBinding Key="Insert"
+                                                Command="{Binding FirstSelectedSlot.AddOutputEventCommand}" 
+                                                CommandParameter="{Binding ElementName=OutputEventsGrid, Path=SelectedIndex}" />
+                            </DataGrid.InputBindings>
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Copy Event To All Selected Slots" 
+                                                  Command="{Binding CopyOutputEventCommand}"
+                                                  CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}" />
+                                    <MenuItem Header="Copy Event To All Selected Slots And Increment Data1" 
+                                                  Command="{Binding CopyOutputEventIncrementData1Command}"
+                                                  CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}" />
+                                    <MenuItem Header="Copy Event To All Selected Slots And Increment Data2" 
+                                                  Command="{Binding CopyOutputEventIncrementData2Command}"
+                                                  CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}" />
+                                    <Separator />
+                                    <MenuItem Header="Ascending increment of Data1 nth Event On All Selected Slots" 
+                                                  Command="{Binding IncrementData1NthOutputEventCommand}" 
+                                                  CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}"  />
+                                    <MenuItem Header="Ascending increment ofData2 nth Event On All Selected Slots" 
+                                                  Command="{Binding IncrementData2NthOutputEventCommand}" 
+                                                  CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}"  />
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="Type" Width="*" MaxWidth="150">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding EventTypeOptions}" 
+                                                          SelectedValue="{Binding EventType, UpdateSourceTrigger=PropertyChanged}"                                                  
+                                                          DisplayMemberPath="Value" 
+                                                          SelectedValuePath="Key"
+                                                          HorizontalContentAlignment="Center"
+                                                          VerticalContentAlignment="Center" >
+                                            </ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Data 1" Width="*" MaxWidth="75" Binding="{Binding Data1}"/>
+                                <DataGridTextColumn Header="Data 2" Width="*" MaxWidth="75" Binding="{Binding Data2}"/>
+                                <DataGridTextColumn Width="*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                    <Grid Grid.Row="3">
+                        <Border Style="{StaticResource ElementBorder}" 
+                                BorderThickness="0 2 0 0" 
+                                Padding="5"
+                                Background="{StaticResource HeaderBackgroundColor}" 
+                                CornerRadius="0 0 9 9">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="50" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="50" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource BrighterTextBlock}">Channel</TextBlock>
+                                <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource BrighterTextBlock}">Length</TextBlock>
+                                <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource BrighterTextBlock}">Transpose</TextBlock>
+                                <TextBlock Grid.Column="0" Grid.Row="3" Style="{StaticResource BrighterTextBlock}">Velocity</TextBlock>
+                                <TextBlock Grid.Column="2" Grid.Row="0" Style="{StaticResource BrighterTextBlock}" Padding="10 0 0 0">Min. Pitch</TextBlock>
+                                <TextBlock Grid.Column="2" Grid.Row="1" Style="{StaticResource BrighterTextBlock}" Padding="10 0 0 0">Max Pitch</TextBlock>
+                                <TextBlock Grid.Column="2" Grid.Row="2" Style="{StaticResource BrighterTextBlock}" Padding="10 0 0 0">Min. Velocity</TextBlock>
+                                <TextBlock Grid.Column="2" Grid.Row="3" Style="{StaticResource BrighterTextBlock}" Padding="10 0 0 0">Max Velocity</TextBlock>
+                                <ComboBox Foreground="{StaticResource DefaultForegroundColor}"
+                                    Grid.Column="1" Grid.Row="0" BorderThickness="0 1 0 0"
+                                    ItemsSource="{Binding FirstSelectedSlot.ChannelOptions}" 
+                                    SelectedValue="{Binding FirstSelectedSlot.Channel}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="DropDownClosed">
+                                            <i:InvokeCommandAction 
+                                                Command="{Binding Path=DataContext.SetChannelCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </ComboBox>
+                                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding FirstSelectedSlot.LengthFactor}" />
+                                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding FirstSelectedSlot.Transpose}" />
+                                <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding FirstSelectedSlot.VelocityFactor}" />
+                                <TextBox Grid.Column="3" Grid.Row="0" Text="{Binding FirstSelectedSlot.MinPitch}" />
+                                <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding FirstSelectedSlot.MaxPitch}" />
+                                <TextBox Grid.Column="3" Grid.Row="2" Text="{Binding FirstSelectedSlot.MinVelocity}" />
+                                <TextBox Grid.Column="3" Grid.Row="3" Text="{Binding FirstSelectedSlot.MaxVelocity}" />
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Grid>
             </Border>
             <Border Grid.Row="1" Style="{StaticResource ElementBorder}" Margin="0 2 0 5">
-                <StackPanel>
-                    <Border BorderThickness="0 0 0 1" CornerRadius="10 10 0 0" Padding="10" Style="{StaticResource ElementBorder}">
-                        <TextBlock Style="{StaticResource SectionHeader}" HorizontalAlignment="Center" Text="Articulations" />
-                    </Border>
-                    <StackPanel Orientation="Horizontal" Margin=" 10 10 10 0">
-                        <Button Content="{StaticResource AddElement}" 
-                                Style="{StaticResource UpperLeftButton}"
-                                Command="{Binding AddArticulationCommand}"
-                                CommandParameter="{Binding ElementName=ArticulationGrid, Path=SelectedIndex}"
-                                Width="100" />
-                        <Button Content="{StaticResource RemoveElement}" 
-                                Style="{StaticResource UpperRightButton}"
-                                Command="{Binding RemoveArticulationCommand}"
-                                Width="100" />
-                    </StackPanel>
-                    <DataGrid ItemsSource="{Binding Articulations}"
-                              SelectedIndex="{Binding SelectedArticulationIndex}"
-                              Name="ArticulationGrid"
-                              SelectionMode="Extended"
-                              dd:DragDrop.IsDragSource="True"
-                              dd:DragDrop.IsDropTarget="True"
-                              dd:DragDrop.DropHandler="{Binding ArticulationDropHandler}"
-                              Height="450"
-                              Margin="10 0 10 10"
-                              AutoGenerateColumns="False"
-                              CanUserDeleteRows="False"
-                              CanUserAddRows="False"
-                              CanUserReorderColumns="False"
-                              CanUserResizeRows="False"
-                              CanUserResizeColumns="False"        
-                              CanUserSortColumns="False"
-                              ScrollViewer.VerticalScrollBarVisibility="Visible"
-                              EnableRowVirtualization="False">                        
-                        <DataGrid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Insert multiple new articulation" Command="{Binding AddArticulationsPopupCommand}" />
-                                <MenuItem Header="Remove unused articulations" Command="{Binding RemoveUnusedArticulationsCommand}" />
-                                <Separator />
-                                <MenuItem Header="Auto-complete description" IsCheckable="True" IsChecked="{Binding AutoCompleteArticulationDescriptor}" />
-                            </ContextMenu>
-                        </DataGrid.ContextMenu>
-                        <DataGrid.InputBindings>
-                            <KeyBinding Key="N" Modifiers="Ctrl" 
-                                        Command="{Binding AddArticulationsPopupCommand}" 
-                                        />
-                            <KeyBinding Key="Delete"
-                                        Command="{Binding RemoveArticulationCommand}" 
-                                        CommandParameter="{Binding ElementName=ArticulationGrid, Path=SelectedItems}"/>
-                            <KeyBinding Key="Insert"
-                                        Command="{Binding AddArticulationCommand}"
-                                        CommandParameter="{Binding ElementName=ArticulationGrid, Path=SelectedIndex}"
-                                        />
-                        </DataGrid.InputBindings>
-                        <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="Type" Width="50">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ComboBox ItemsSource="{Binding DisplayTypeOptions}" 
-                                                  SelectedValue="{Binding DisplayType, UpdateSourceTrigger=PropertyChanged}"                                                  
-                                                  DisplayMemberPath="Value" 
-                                                  SelectedValuePath="Key"
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Border BorderThickness="0 0 0 1" CornerRadius="10 10 0 0" Padding="10" Style="{StaticResource ElementBorder}">
+                            <TextBlock Style="{StaticResource SectionHeader}" HorizontalAlignment="Center" Text="Articulations" />
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <StackPanel Orientation="Horizontal" Margin=" 10 10 10 0">
+                            <Button Content="{StaticResource AddElement}" 
+                                    Style="{StaticResource UpperLeftButton}"
+                                    Command="{Binding AddArticulationCommand}"
+                                    CommandParameter="{Binding ElementName=ArticulationGrid, Path=SelectedIndex}"
+                                    Width="100" />
+                            <Button Content="{StaticResource RemoveElement}" 
+                                    Style="{StaticResource UpperRightButton}"
+                                    Command="{Binding RemoveArticulationCommand}"
+                                    Width="100" />
+                        </StackPanel>                        
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <DataGrid ItemsSource="{Binding Articulations}"
+                            SelectedIndex="{Binding SelectedArticulationIndex}"
+                            Name="ArticulationGrid"
+                            Height="auto"
+                            Margin="10 0 10 10"
+                            SelectionMode="Extended"
+                            dd:DragDrop.IsDragSource="True"
+                            dd:DragDrop.IsDropTarget="True"
+                            dd:DragDrop.DropHandler="{Binding ArticulationDropHandler}"
+                            AutoGenerateColumns="False"
+                            CanUserDeleteRows="False"
+                            CanUserAddRows="False"
+                            CanUserReorderColumns="False"
+                            CanUserResizeRows="False"
+                            CanUserResizeColumns="False"        
+                            CanUserSortColumns="False"
+                            ScrollViewer.VerticalScrollBarVisibility="Visible"
+                            EnableRowVirtualization="False">
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Insert multiple new articulation" Command="{Binding AddArticulationsPopupCommand}" />
+                                    <MenuItem Header="Remove unused articulations" Command="{Binding RemoveUnusedArticulationsCommand}" />
+                                    <Separator />
+                                    <MenuItem Header="Auto-complete description" IsCheckable="True" IsChecked="{Binding AutoCompleteArticulationDescriptor}" />
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                            <DataGrid.InputBindings>
+                                <KeyBinding Key="N" Modifiers="Ctrl" 
+                                                Command="{Binding AddArticulationsPopupCommand}" 
+                                                />
+                                <KeyBinding Key="Delete"
+                                                Command="{Binding RemoveArticulationCommand}" 
+                                                CommandParameter="{Binding ElementName=ArticulationGrid, Path=SelectedItems}"/>
+                                <KeyBinding Key="Insert"
+                                                Command="{Binding AddArticulationCommand}"
+                                                CommandParameter="{Binding ElementName=ArticulationGrid, Path=SelectedIndex}"
+                                                />
+                            </DataGrid.InputBindings>
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="Type" Width="*" MinWidth="20" MaxWidth="55">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding DisplayTypeOptions}" 
+                                                          SelectedValue="{Binding DisplayType, UpdateSourceTrigger=PropertyChanged}"                                                  
+                                                          DisplayMemberPath="Value" 
+                                                          SelectedValuePath="Key"
                                                   
-                                                  HorizontalContentAlignment="Center"
-                                                  VerticalContentAlignment="Center" >
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="DropDownClosed">
-                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.SetArticulationDisplayTypeCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                                            CommandParameter="{Binding DisplayType}" />
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
-                                        </ComboBox>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="Type" Width="75">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ComboBox ItemsSource="{Binding ArticulationTypeOptions}" 
-                                                  SelectedValue="{Binding ArticulationType, UpdateSourceTrigger=PropertyChanged}"                                                  
-                                                  DisplayMemberPath="Value" 
-                                                  SelectedValuePath="Key"
-                                                  HorizontalContentAlignment="Center"
-                                                  VerticalContentAlignment="Center" >
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="DropDownClosed">
-                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.SetArticulationTypeCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                                            CommandParameter="{Binding ArticulationType}" />
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
-                                        </ComboBox>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Text/Symbol" 
-                                                Width="90" 
-                                                Binding="{Binding SymbolOrText}"                                                
-                                                >
-                            </DataGridTextColumn>
-                            <DataGridTextColumn Header="Description" Width="200" Binding="{Binding Description}"/>
-                            <DataGridTemplateColumn Header="Group" Width="50" KeyboardNavigation.IsTabStop="True" >
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ComboBox ItemsSource="{Binding GroupOptions}" 
-                                                  SelectedValue="{Binding Group, UpdateSourceTrigger=PropertyChanged}"       
-                                                  DisplayMemberPath="Value"
-                                                  SelectedValuePath="Key"
-                                                  HorizontalContentAlignment="Center"
-                                                  VerticalContentAlignment="Center" >
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="DropDownClosed">
-                                                    <i:InvokeCommandAction Command="{Binding Path=DataContext.SetGroupCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                                           CommandParameter="{Binding Group}" />
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
-                                        </ComboBox>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
+                                                          HorizontalContentAlignment="Center"
+                                                          VerticalContentAlignment="Center" >
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="DropDownClosed">
+                                                        <i:InvokeCommandAction Command="{Binding Path=DataContext.SetArticulationDisplayTypeCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                                    CommandParameter="{Binding DisplayType}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Type" Width="*" MinWidth="50" MaxWidth="80">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding ArticulationTypeOptions}" 
+                                                          SelectedValue="{Binding ArticulationType, UpdateSourceTrigger=PropertyChanged}"                                                  
+                                                          DisplayMemberPath="Value" 
+                                                          SelectedValuePath="Key"
+                                                          HorizontalContentAlignment="Center"
+                                                          VerticalContentAlignment="Center" >
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="DropDownClosed">
+                                                        <i:InvokeCommandAction Command="{Binding Path=DataContext.SetArticulationTypeCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                                    CommandParameter="{Binding ArticulationType}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Text/Symbol" 
+                                                        Width="0.3*"
+                                                        MinWidth="90" 
+                                                        Binding="{Binding SymbolOrText}"                                                
+                                                        >
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Description" Width="0.7*" MinWidth="100" Binding="{Binding Description}"/>
+                                <DataGridTemplateColumn Header="Group" Width="*" MinWidth="30" MaxWidth="50" KeyboardNavigation.IsTabStop="True" >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding GroupOptions}" 
+                                                          SelectedValue="{Binding Group, UpdateSourceTrigger=PropertyChanged}"       
+                                                          DisplayMemberPath="Value"
+                                                          SelectedValuePath="Key"
+                                                          HorizontalContentAlignment="Center"
+                                                          VerticalContentAlignment="Center" >
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="DropDownClosed">
+                                                        <i:InvokeCommandAction Command="{Binding Path=DataContext.SetGroupCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                                   CommandParameter="{Binding Group}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Grid>
             </Border>
         </Grid>
     </Grid>
