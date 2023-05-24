@@ -71,10 +71,10 @@ namespace EME_Expression_Map_Editor.ViewModel
                 {
                     _articulation.Text = value;
 
-                    if (Common.KeyModifiers.AlternativeInputKeyActive())
-                        Description = value;
-                    else
+                    if (ExpressionMapViewModel.Instance.AutoCompleteArticulationDescriptor)
                         Description = Articulation.TextToDescription(value);
+                    else
+                        Description = value;
                 }
 
                 OnPropertyChanged(nameof(SymbolOrText));

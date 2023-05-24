@@ -100,8 +100,6 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
-
-
         private ObservableCollection<ArticulationViewModel> _articulations = new ObservableCollection<ArticulationViewModel>();
         public ObservableCollection<ArticulationViewModel> Articulations
         {
@@ -132,6 +130,13 @@ namespace EME_Expression_Map_Editor.ViewModel
                 if (item.Group == group)
                     arts.Add(item);
             return arts;
+        }
+
+        private bool _autoCompleteArticulationDescriptor = true; 
+        public bool AutoCompleteArticulationDescriptor
+        {
+            get => _autoCompleteArticulationDescriptor;
+            set => _autoCompleteArticulationDescriptor = value; 
         }
 
         #endregion

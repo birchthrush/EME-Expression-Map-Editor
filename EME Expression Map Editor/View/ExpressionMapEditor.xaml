@@ -375,6 +375,8 @@
                             <ContextMenu>
                                 <MenuItem Header="Insert multiple new articulation" Command="{Binding AddArticulationsPopupCommand}" />
                                 <MenuItem Header="Remove unused articulations" Command="{Binding RemoveUnusedArticulationsCommand}" />
+                                <Separator />
+                                <MenuItem Header="Auto-complete description" IsCheckable="True" IsChecked="{Binding AutoCompleteArticulationDescriptor}" />
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                         <DataGrid.InputBindings>

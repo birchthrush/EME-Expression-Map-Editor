@@ -281,27 +281,21 @@ namespace EME_Expression_Map_Editor.ViewModel
 
         public string MinPitch
         {
-            get => _slot.MinPitch.ToString();
+            get => MidiNote.MidiNoteToString(_slot.MinPitch); 
             set
             {
-                if (Int32.TryParse(value, out int n))
-                {
-                    _slot.MinPitch = n;
-                    OnPropertyChanged(nameof(MinPitch));
-                }
+                _slot.MinPitch = MidiNote.TryParse(value); 
+                OnPropertyChanged(nameof(MinPitch));
             }
         }
 
         public string MaxPitch
         {
-            get => _slot.MaxPitch.ToString();
+            get => MidiNote.MidiNoteToString(_slot.MaxPitch);
             set
             {
-                if (Int32.TryParse(value, out int n))
-                {
-                    _slot.MaxPitch = n;
-                    OnPropertyChanged(nameof(MaxPitch));
-                }
+                _slot.MaxPitch= MidiNote.TryParse(value);
+                OnPropertyChanged(nameof(MaxPitch));
             }
         }
 
