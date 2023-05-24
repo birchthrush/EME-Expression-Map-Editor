@@ -81,7 +81,24 @@ namespace EME_Expression_Map_Editor.ViewModel
         }
 
         public void SoundSlotSelectionChangedHandler()
-            => OnPropertyChanged(nameof(FirstSelectedSlot)); 
+            => OnPropertyChanged(nameof(FirstSelectedSlot));
+
+        private bool _remoteKeysAsProgramChanges = false; 
+        public bool ShowRemoteKeysAsProgramChanges
+        {
+            get => _remoteKeysAsProgramChanges;
+            set
+            {
+                if (_remoteKeysAsProgramChanges != value)
+                {
+                    _remoteKeysAsProgramChanges = value;
+                    
+                    // Force UI refresh: 
+                    foreach (var slot in SoundSlots)
+                        slot.RemoteKey = slot.RemoteKey;
+                }
+            }
+        }
 
 
 
@@ -298,14 +315,6 @@ namespace EME_Expression_Map_Editor.ViewModel
                         slot.OutputEvents.Add((OutputEventViewModel)e.Clone());               
                 }
             }
-        }
-
-        public ICommand ChangeRemoteKeysDisplayTypeCommand { get; private set; }
-        private void ChangeRemoteKeysDisplayType()
-        {
-            SoundSlotViewModel.DisplayRemoteKeyAsNoteValue = !SoundSlotViewModel.DisplayRemoteKeyAsNoteValue;
-            foreach (var slot in SoundSlots)
-                slot.RemoteKey = slot.RemoteKey; 
         }
 
         public ICommand IncrementRemoteKeysCommand { get; private set; }
@@ -545,7 +554,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             SetArticulation4Command = new CustomCommand<ArticulationViewModel>((art_vm) => SetArticulation(art_vm, 3));
             SetChannelCommand = new NoParameterCommand(SetChannel);
             PropagateOutputMappingCommand = new NoParameterCommand(PropagateOutputMapping);
-            ChangeRemoteKeysDisplayTypeCommand = new NoParameterCommand(ChangeRemoteKeysDisplayType);
+            //ChangeRemoteKeysDisplayTypeCommand = new NoParameterCommand(ChangeRemoteKeysDisplayType);
             IncrementRemoteKeysCommand = new NoParameterCommand(IncrementRemoteKeys);
             GenerateSlotNamesCommand = new NoParameterCommand(GenerateSlotNames); 
 

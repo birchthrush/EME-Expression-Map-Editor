@@ -144,10 +144,10 @@ namespace EME_Expression_Map_Editor.ViewModel
             {
                 if (_slot.RemoteKey == SoundSlot.NoRemoteKey)
                     return "-";
-                else if (DisplayRemoteKeyAsNoteValue)
-                    return MidiNote.MidiNoteToString(_slot.RemoteKey);
-                else
+                else if (ExpressionMapViewModel.Instance.ShowRemoteKeysAsProgramChanges)
                     return _slot.RemoteKey.ToString(); 
+                else
+                    return MidiNote.MidiNoteToString(_slot.RemoteKey);
             }
             set
             {
@@ -158,13 +158,6 @@ namespace EME_Expression_Map_Editor.ViewModel
                     _slot.RemoteKey = SoundSlot.NoRemoteKey; 
                 OnPropertyChanged(nameof(RemoteKey)); 
             }
-        }
-
-        private static volatile bool _displayRemoteAsNoteValue = true; 
-        public static  bool DisplayRemoteKeyAsNoteValue
-        {
-            get => _displayRemoteAsNoteValue;
-            set => _displayRemoteAsNoteValue = value; 
         }
 
         // Slot's midi channel: displayed as 1-16 on UI for readability
