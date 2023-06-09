@@ -63,7 +63,7 @@ namespace EME_Expression_Map_Editor.ViewModel
         }
 
 
-        // Blank dummy function for when post_func above are not needed
+        // Blank dummy functions for when post_func above are not needed
         public static void DoNothing<T>(T src, T dest)
         {
 
@@ -92,9 +92,6 @@ namespace EME_Expression_Map_Editor.ViewModel
         {
             public static bool CascadeKeyActive()
                 => Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
-
-            public static bool AlternativeInputKeyActive()
-                => Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
         }
     }
 }
