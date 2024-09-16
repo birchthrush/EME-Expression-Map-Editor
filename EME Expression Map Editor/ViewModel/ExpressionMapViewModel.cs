@@ -598,6 +598,9 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
+        /// <summary>
+        /// Resets VM layer to a blank map with no name.
+        /// </summary>
         private void Reset()
         {
             Name = string.Empty;
@@ -605,6 +608,10 @@ namespace EME_Expression_Map_Editor.ViewModel
             SoundSlots.Clear();
         }
 
+        /// <summary>
+        /// Internal translation function from Model to VM layer. Must be performed after f.e. loading an ExpressionMap from file to prepare VM layer. 
+        /// </summary>
+        /// <param name="map"></param>
         private void ExtractViewModels(ExpressionMap map)
         {
             Name = map.Name;
@@ -634,6 +641,10 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
+        /// <summary>
+        /// Internal translation function from VM to Model layers.
+        /// </summary>
+        /// <returns>ExpressionMap object representing the current state of wrapped VM data.</returns>
         private ExpressionMap CreateExpressionMapFromViewModels()
         {
             ExpressionMap map = new ExpressionMap();
@@ -717,7 +728,8 @@ namespace EME_Expression_Map_Editor.ViewModel
                 if (map != null)
                     ExtractViewModels(map);
             #endif
-                        
+
+            // Legacy initializer
             ExpressionMap unpacked = CreateExpressionMapFromViewModels();
             Reset();
             ExtractViewModels(unpacked); 
