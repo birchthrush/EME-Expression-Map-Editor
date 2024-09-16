@@ -18,7 +18,46 @@ namespace EME_Expression_Map_Editor.Model
                 return XmlWriter.Create(filename, settings);
         }
 
-        public static void WriteVariable(XmlWriter writer, string name, int value)
+        public static void WriteExpressionMap(XmlWriter writer, ExpressionMap expmap)
+        {
+            writer.WriteStartDocument();
+            writer.WriteStartElement(XmlConstants.ExpressionMap.StartElement);
+            WriteVariable(writer, XmlConstants.ExpressionMap.Name, expmap.Name);
+
+            // Write Articulations
+            WriteStartMember(writer, XmlConstants.Articulation.MemberName, 1);
+            WriteStartList(writer);
+            // --- Iterate Articulations --- 
+            foreach (Articulation art in expmap.Articulations)
+                WriteArticulation(writer, art);
+            WriteEndList(writer);
+            WriteEndMember(writer);
+
+
+            WriteStartMember(writer, XmlConstants.SoundSlot.MemberName, 1);
+            WriteStartList(writer);
+            // --- Iterate Sound Slots ---
+            foreach (SoundSlot slot in expmap.SoundSlots)
+                WriteSoundSlot(writer, slot);
+            WriteEndList(writer);
+            WriteEndMember(writer);
+
+
+            WriteStartMember(writer, XmlConstants.ExpressionMap.Controller, 1);
+            // wtf is this? 
+            WriteEndMember(writer);
+
+            writer.WriteEndElement();
+            writer.WriteEndDocument();
+            writer.Flush();
+        }
+
+        private static string GenerateID()
+        {
+            return new Random().Next().ToString();
+        }
+
+        private static void WriteVariable(XmlWriter writer, string name, int value)
         {
             writer.WriteStartElement(XmlConstants.IntegerTypename);
             writer.WriteAttributeString(XmlConstants.Name, name);
@@ -26,7 +65,7 @@ namespace EME_Expression_Map_Editor.Model
             writer.WriteEndElement();
         }
 
-        public static void WriteVariable(XmlWriter writer, string name, double value)
+        private static void WriteVariable(XmlWriter writer, string name, double value)
         {
             writer.WriteStartElement(XmlConstants.FloatTypename);
             writer.WriteAttributeString(XmlConstants.Name, name);
@@ -34,7 +73,7 @@ namespace EME_Expression_Map_Editor.Model
             writer.WriteEndElement();
         }
 
-        public static void WriteVariable(XmlWriter writer, string name, string value)
+        private static void WriteVariable(XmlWriter writer, string name, string value)
         {
             writer.WriteStartElement(XmlConstants.StringTypename);
             writer.WriteAttributeString(XmlConstants.Name, name);
@@ -43,19 +82,19 @@ namespace EME_Expression_Map_Editor.Model
             writer.WriteEndElement();
         }
 
-        public static void WriteStartList(XmlWriter writer)
+        private static void WriteStartList(XmlWriter writer)
         {
             writer.WriteStartElement(XmlConstants.ListType);
             writer.WriteAttributeString(XmlConstants.Name, XmlConstants.Object);
             writer.WriteAttributeString(XmlConstants.Type, XmlConstants.Object);
         }
 
-        public static void WriteEndList(XmlWriter writer)
+        private static void WriteEndList(XmlWriter writer)
         {
             writer.WriteEndElement();
         }
 
-        public static void WriteStartObject(XmlWriter writer, string class_name, string id, string name)
+        private static void WriteStartObject(XmlWriter writer, string class_name, string id, string name)
         {
             writer.WriteStartElement(XmlConstants.Object);
             writer.WriteAttributeString(XmlConstants.Class, class_name);
@@ -64,15 +103,15 @@ namespace EME_Expression_Map_Editor.Model
             writer.WriteAttributeString(XmlConstants.ID, id);
         }
 
-        public static void WriteStartObject(XmlWriter writer, string class_name, string id)
+        private static void WriteStartObject(XmlWriter writer, string class_name, string id)
             => WriteStartObject(writer, class_name, id, string.Empty);
 
-        public static void WriteEndObject(XmlWriter writer)
+        private static void WriteEndObject(XmlWriter writer)
         {
             writer.WriteEndElement();
         }
 
-        public static void WriteStartMember(XmlWriter writer, string name, int ownership)
+        private static void WriteStartMember(XmlWriter writer, string name, int ownership)
         {
             writer.WriteStartElement(XmlConstants.Member);
             writer.WriteAttributeString(XmlConstants.Name, name);
@@ -80,12 +119,12 @@ namespace EME_Expression_Map_Editor.Model
                 WriteVariable(writer, XmlConstants.Ownership, ownership);
         }
 
-        public static void WriteEndMember(XmlWriter writer)
+        private static void WriteEndMember(XmlWriter writer)
         {
             writer.WriteEndElement();
         }
 
-        public static void WriteArticulation(XmlWriter writer, Articulation art)
+        private static void WriteArticulation(XmlWriter writer, Articulation art)
         {
             WriteStartObject(writer, XmlConstants.Articulation.XmlClass, GenerateID());
             WriteVariable(writer, XmlConstants.Articulation.DisplayType, (int)art.DisplayType);
@@ -97,7 +136,7 @@ namespace EME_Expression_Map_Editor.Model
             WriteEndObject(writer);
         }
 
-        public static void WriteOutputEvent(XmlWriter writer, OutputEvent oe)
+        private static void WriteOutputEvent(XmlWriter writer, OutputEvent oe)
         {
             WriteStartObject(writer, XmlConstants.OutputEvent.XmlClass, GenerateID());
             WriteVariable(writer, XmlConstants.OutputEvent.XmlEventType, oe.EventType);
@@ -105,7 +144,6 @@ namespace EME_Expression_Map_Editor.Model
             WriteVariable(writer, XmlConstants.OutputEvent.XmlData2, oe.Data2);
             WriteEndObject(writer);
         }
-
 
         // Slot Attributes
         private static void WriteSlotAttributes(XmlWriter writer, SoundSlot slot)
@@ -119,7 +157,7 @@ namespace EME_Expression_Map_Editor.Model
             WriteVariable(writer, XmlConstants.SoundSlot.MinPitch, slot.MinPitch);
             WriteVariable(writer, XmlConstants.SoundSlot.MaxPitch, slot.MaxPitch);
         }
-        public static void WriteSoundSlot(XmlWriter writer, SoundSlot slot)
+        private static void WriteSoundSlot(XmlWriter writer, SoundSlot slot)
         {
             WriteStartObject(writer, "PSoundSlot", GenerateID());
 
@@ -181,45 +219,6 @@ namespace EME_Expression_Map_Editor.Model
             WriteVariable(writer, "color", slot.Color);
 
             WriteEndObject(writer); // End object 
-        }
-
-        public static void WriteExpressionMap(XmlWriter writer, ExpressionMap expmap)
-        {
-            writer.WriteStartDocument();
-            writer.WriteStartElement(XmlConstants.ExpressionMap.StartElement);
-            WriteVariable(writer, XmlConstants.ExpressionMap.Name, expmap.Name);
-
-            // Write Articulations
-            WriteStartMember(writer, XmlConstants.Articulation.MemberName, 1);
-            WriteStartList(writer);
-            // --- Iterate Articulations --- 
-            foreach (Articulation art in expmap.Articulations)
-                WriteArticulation(writer, art);
-            WriteEndList(writer);
-            WriteEndMember(writer);
-
-
-            WriteStartMember(writer, XmlConstants.SoundSlot.MemberName, 1);
-            WriteStartList(writer);
-            // --- Iterate Sound Slots ---
-            foreach (SoundSlot slot in expmap.SoundSlots)
-                WriteSoundSlot(writer, slot);
-            WriteEndList(writer);
-            WriteEndMember(writer);
-
-
-            WriteStartMember(writer, XmlConstants.ExpressionMap.Controller, 1);
-            // wtf is this? 
-            WriteEndMember(writer);
-
-            writer.WriteEndElement();
-            writer.WriteEndDocument();
-            writer.Flush();
-        }
-
-        public static string GenerateID()
-        {
-            return new Random().Next().ToString();
         }
     }
 }

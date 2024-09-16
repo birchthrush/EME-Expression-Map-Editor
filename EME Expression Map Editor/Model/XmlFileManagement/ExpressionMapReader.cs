@@ -12,7 +12,45 @@ namespace EME_Expression_Map_Editor.Model
             return XmlReader.Create(filename);
         }
 
-        public static string NextString(XmlReader reader)
+        public static void ReadExpressionMap(XmlReader reader, ExpressionMap expmap)
+        {
+            reader.ReadToFollowing("string");
+            reader.MoveToFirstAttribute();
+            reader.MoveToNextAttribute();
+            expmap.Name = reader.Value;
+
+            while (!reader.EOF)
+            {
+                reader.ReadToFollowing(XmlConstants.Object);
+                if (reader[XmlConstants.Class] == XmlConstants.Articulation.XmlClass)
+                {
+                    do
+                    {
+                        Articulation art = new Articulation();
+                        ReadArticulation(reader, art);
+                        expmap.Articulations.Add(art);
+                        reader.Read();
+                    } while (reader.Name.Equals("obj"));
+                }
+                else if (reader[XmlConstants.Class] == XmlConstants.SoundSlot.XmlClass)
+                {
+                    do
+                    {
+                        SoundSlot slot = new SoundSlot();
+                        ReadSoundSlot(reader, slot);
+                        expmap.SoundSlots.Add(slot);
+                        reader.Read();
+                    } while (reader.Name.Equals("obj"));
+                }
+
+                // Read controllers here? 
+            }
+
+            // Remap Articulations
+            expmap.RemapArticulations();
+        }
+
+        private static string NextString(XmlReader reader)
         {
             reader.ReadToFollowing(XmlConstants.StringTypename);
             string? val = reader.GetAttribute(XmlConstants.Value);
@@ -20,7 +58,7 @@ namespace EME_Expression_Map_Editor.Model
             return val != null ? val : string.Empty;
         }
 
-        public static int NextInteger(XmlReader reader)
+        private static int NextInteger(XmlReader reader)
         {
             reader.ReadToFollowing(XmlConstants.IntegerTypename);
             Int32.TryParse(reader.GetAttribute(XmlConstants.Value), out int val);
@@ -28,7 +66,7 @@ namespace EME_Expression_Map_Editor.Model
             return val;
         }
 
-        public static double NextFloat(XmlReader reader)
+        private static double NextFloat(XmlReader reader)
         {
 
             reader.ReadToFollowing(XmlConstants.FloatTypename);
@@ -37,7 +75,7 @@ namespace EME_Expression_Map_Editor.Model
             return val;
         }
 
-        public static void ReadArticulation(XmlReader reader, Articulation art)
+        private static void ReadArticulation(XmlReader reader, Articulation art)
         {
             art.DisplayType = (Display)NextInteger(reader);
             art.ArticulationType = (ArtType)NextInteger(reader);
@@ -48,7 +86,7 @@ namespace EME_Expression_Map_Editor.Model
             reader.ReadEndElement();
         }
 
-        public static void ReadOutputEvent(XmlReader reader, OutputEvent oe)
+        private static void ReadOutputEvent(XmlReader reader, OutputEvent oe)
         {
             oe.EventType = NextInteger(reader);
             oe.Data1 = NextInteger(reader);
@@ -56,7 +94,7 @@ namespace EME_Expression_Map_Editor.Model
             reader.ReadEndElement();
         }
 
-        public static void ReadSoundSlot(XmlReader reader, SoundSlot slot)
+        private static void ReadSoundSlot(XmlReader reader, SoundSlot slot)
         {
             bool ReadUntilAttributeFound(XmlReader r, string attr_name, string tgt_value)
             {
@@ -137,42 +175,6 @@ namespace EME_Expression_Map_Editor.Model
             reader.ReadEndElement();
         }
 
-        public static void ReadExpressionMap(XmlReader reader, ExpressionMap expmap)
-        {
-            reader.ReadToFollowing("string");
-            reader.MoveToFirstAttribute();
-            reader.MoveToNextAttribute();
-            expmap.Name = reader.Value;
 
-            while (!reader.EOF)
-            {
-                reader.ReadToFollowing(XmlConstants.Object);
-                if (reader[XmlConstants.Class] == XmlConstants.Articulation.XmlClass)
-                {
-                    do
-                    {
-                        Articulation art = new Articulation();
-                        ReadArticulation(reader, art);
-                        expmap.Articulations.Add(art);
-                        reader.Read();
-                    } while (reader.Name.Equals("obj"));
-                }
-                else if (reader[XmlConstants.Class] == XmlConstants.SoundSlot.XmlClass)
-                {
-                    do
-                    {
-                        SoundSlot slot = new SoundSlot();
-                        ReadSoundSlot(reader, slot);
-                        expmap.SoundSlots.Add(slot);
-                        reader.Read();
-                    } while (reader.Name.Equals("obj"));
-                }
-
-                // Read controllers here? 
-            }
-
-            // Remap Articulations
-            expmap.RemapArticulations();
-        }
     }
 }
