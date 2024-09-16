@@ -81,7 +81,7 @@
                                 <ContextMenu>
                                     <MenuItem Header="Insert multiple new slots (Ctrl+N)" Command="{Binding AddSlotsPopupCommand}" />
                                     <MenuItem Header="Duplicate selected slots (Ctrl+D)" Command="{Binding DuplicateSoundSlotCommand}" />
-                                    <MenuItem Header="Copy output mapping from selected slot (Ctrl+O)" Command="{Binding PropagateOutputMappingCommand}" />
+                                    <MenuItem Header="Propagate output mapping from first selected slot to others (Ctrl+P)" Command="{Binding PropagateOutputMappingCommand}" />
                                     <MenuItem Header="Search-and-Replace ouptut events in selected slots (Ctrl+H)" Command="{Binding BatchProcessingPopupCommand}" />
                                     <Separator />
                                     <MenuItem Header="Generate slot names from articulations" Command="{Binding GenerateSlotNamesCommand}" />
@@ -95,7 +95,7 @@
                                                 Command="{Binding AddSlotsPopupCommand}" />
                                 <KeyBinding Key="D" Modifiers="Ctrl" 
                                                  Command="{Binding DuplicateSoundSlotCommand}" />
-                                <KeyBinding Key="O" Modifiers="Ctrl"
+                                <KeyBinding Key="P" Modifiers="Ctrl"
                                                 Command="{Binding PropagateOutputMappingCommand}" />
                                 <KeyBinding Key="Delete" 
                                             Command="{Binding RemoveSoundSlotCommand}" />
@@ -295,7 +295,7 @@
                                     <MenuItem Header="Ascending increment of Data1 nth Event On All Selected Slots" 
                                                   Command="{Binding IncrementData1NthOutputEventCommand}" 
                                                   CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}"  />
-                                    <MenuItem Header="Ascending increment ofData2 nth Event On All Selected Slots" 
+                                    <MenuItem Header="Ascending increment of Data2 nth Event On All Selected Slots" 
                                                   Command="{Binding IncrementData2NthOutputEventCommand}" 
                                                   CommandParameter="{Binding FirstSelectedSlot.SelectedEventIndex}"  />
                                 </ContextMenu>
@@ -417,7 +417,7 @@
                             EnableRowVirtualization="False">
                             <DataGrid.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Header="Insert multiple new articulation" Command="{Binding AddArticulationsPopupCommand}" />
+                                    <MenuItem Header="Insert multiple new articulations" Command="{Binding AddArticulationsPopupCommand}" />
                                     <MenuItem Header="Remove unused articulations" Command="{Binding RemoveUnusedArticulationsCommand}" />
                                     <Separator />
                                     <MenuItem Header="Auto-complete description" IsCheckable="True" IsChecked="{Binding AutoCompleteArticulationDescriptor}" />
