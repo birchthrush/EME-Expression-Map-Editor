@@ -30,18 +30,21 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
-        private void AddOutputEventIfUnique(OutputEventViewModel oe)
-        {
-            if (!ExistsInCollection(oe))
-                OutputEvents.Add((OutputEventViewModel)oe.Clone());
-        }
-
-        private bool ExistsInCollection(OutputEventViewModel oe)
+        private void AddOutputEvent(OutputEventViewModel oe)
         {
             foreach (var e in OutputEvents)
+            {
                 if (e.SameDataAs(oe))
-                    return true;
-            return false; 
+                {
+                    // Event already exists - increment occurrence count and exit.
+                    ++e.Occurrences;
+                    return; 
+                }
+            }
+
+            // Event is unique: 
+            oe.Occurrences = 1; 
+            OutputEvents.Add(oe);
         }
 
         private void InitializeReplacementEvent()
@@ -56,7 +59,7 @@ namespace EME_Expression_Map_Editor.ViewModel
         {
             foreach (var slot in slots)
                 foreach (var oe in slot.OutputEvents)
-                    AddOutputEventIfUnique(oe);
+                    AddOutputEvent(oe); 
             
             InitializeReplacementEvent();
         }

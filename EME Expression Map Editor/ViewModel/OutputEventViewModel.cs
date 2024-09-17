@@ -83,6 +83,9 @@ namespace EME_Expression_Map_Editor.ViewModel
             get => EventTypeOptions[EventType]; 
         }
 
+        // Convenience property for Batch Processing Window
+        public int Occurrences { get; set; }
+
         public void Increment(bool data1, bool data2)
         {
             if (data1)
