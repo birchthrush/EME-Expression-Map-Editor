@@ -8,6 +8,47 @@ namespace EME_Expression_Map_Editor.Model
 {
     public static class XmlConstants
     {
+        /*
+         * NOTES ON EXPRESSION MAP FILE FORMAT
+         * This program relies on reverse engineering the expression map format from maps generated natively from within
+         * Cubase. Since the format is entirely undocumented, a certain amount of guesswork is involved and absolute
+         * reliability cannot be guaranteed. The format appears to contain a certain amount of data duplication as well as
+         * some parameters whose utility or purpose is currently unknown. Details below. 
+         * 
+         * STRUCTURE
+         * Maps are saved as a standard XML document with the following approximate structure: 
+         * 
+         * [ Header ]
+         *      [ Name ]
+         *      [ Articulations / SlotVisuals ]
+         *          [ Art/SlotVisual 1..n ]
+         *      [ SoundSlots / Slots ]
+         *             [ Remote Key / PSlotThruTrigger ]
+         *              [ Slot Attributes ]
+         *             [ OutputEvent 1..n ]
+         *         [ Slot Attributes duplicate ]
+         *          [ Articulation 1..n duplicate ]
+         *      [ Controller ]
+         * [ Footer ]
+         * 
+         * 
+         * UNSOLVED MYSTERIES: 
+         * - Multiple object parameters include an ID tag. Its use is unknown, changing it or leaving it out appears to
+         * have no effect. For now this is handled as a simple pseudo-random numbers. 
+         * - Parameter Duplication: for unknown reasons, in Cubase-generated maps every SoundSlot record has its parameters written
+         * twice and also contains its assigned Articulations/SlotVisuals in full, leading to considerable data duplication within 
+         * the XML file. This structure has been retained for the sake of consistency. The side effect is many Articulations will 
+         * be read multiple times, to be cleaned up at a later stage ExpressionMap.RemapArticulations() function. 
+         * 
+         * UNKNOWN PARAMETERS: 
+         * The following parameters appear in Cubase-generated expression maps, but their purpose and use is unknown. 
+         * They are presently discarded on read, and written with arbitrary default values derives from Cubase-generated maps. 
+         *      - Ownership (appears for every object record) 
+         *      - Status
+         *      - Controller (object record near end of file)
+         *       
+         */
+
         public static readonly string FileExtension = ".expressionmap";
 
         public static readonly string DefaultID = "872612400";

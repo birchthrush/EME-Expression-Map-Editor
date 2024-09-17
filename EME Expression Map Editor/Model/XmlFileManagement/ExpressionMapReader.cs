@@ -14,6 +14,7 @@ namespace EME_Expression_Map_Editor.Model
 
         public static void ReadExpressionMap(XmlReader reader, ExpressionMap expmap)
         {
+            // Read file header and ExpressionMap name
             reader.ReadToFollowing("string");
             reader.MoveToFirstAttribute();
             reader.MoveToNextAttribute();
@@ -174,7 +175,5 @@ namespace EME_Expression_Map_Editor.Model
             slot.Color = NextInteger(reader);
             reader.ReadEndElement();
         }
-
-
     }
 }

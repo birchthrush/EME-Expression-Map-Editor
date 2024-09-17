@@ -20,6 +20,7 @@ namespace EME_Expression_Map_Editor.Model
 
         public static void WriteExpressionMap(XmlWriter writer, ExpressionMap expmap)
         {
+            // Write document header and ExpressionMap name
             writer.WriteStartDocument();
             writer.WriteStartElement(XmlConstants.ExpressionMap.StartElement);
             WriteVariable(writer, XmlConstants.ExpressionMap.Name, expmap.Name);
@@ -189,8 +190,8 @@ namespace EME_Expression_Map_Editor.Model
             }
             WriteEndMember(writer);
 
-            WriteSlotAttributes(writer, slot); // WRITE ALL ATTRIBUTES AGAIN (for some reason?) 
-            WriteVariable(writer, "key", -1); // Wtf is this? 
+            WriteSlotAttributes(writer, slot); // WRITE ALL ATTRIBUTES AGAIN (data duplication for unknown reasons; see documentation) 
+            WriteVariable(writer, "key", -1); // Unknown parameter
             WriteEndObject(writer); // End of PSlotMidiAction
 
             WriteStartMember(writer, "sv", 2);
