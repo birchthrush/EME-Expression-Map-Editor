@@ -5,8 +5,16 @@ using System.Globalization;
 
 namespace EME_Expression_Map_Editor.Model
 {
+    /*
+     * 
+     * See XmlFileManagement.XmlConstants for documentation on file format. 
+     * 
+     */
+
     public static class ExpressionMapReader
     {
+
+
         public static XmlReader CreateStandardXmlReader(string filename)
         {
             return XmlReader.Create(filename);

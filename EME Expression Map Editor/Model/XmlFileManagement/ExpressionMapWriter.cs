@@ -4,6 +4,12 @@ using System.Xml;
 
 namespace EME_Expression_Map_Editor.Model
 {
+    /*
+     * 
+     * See XmlFileManagement.XmlConstants for documentation on file format. 
+     * 
+     */
+
     public static class ExpressionMapWriter
     {
         public static XmlWriter CreateStandardXmlWriter(string filename)

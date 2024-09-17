@@ -8,6 +8,7 @@ namespace EME_Expression_Map_Editor.Model
 {
     public static class XmlConstants
     {
+
         /*
          * NOTES ON EXPRESSION MAP FILE FORMAT
          * This program relies on reverse engineering the expression map format from maps generated natively from within
@@ -22,12 +23,13 @@ namespace EME_Expression_Map_Editor.Model
          *      [ Name ]
          *      [ Articulations / SlotVisuals ]
          *          [ Art/SlotVisual 1..n ]
-         *      [ SoundSlots / Slots ]
-         *             [ Remote Key / PSlotThruTrigger ]
-         *              [ Slot Attributes ]
-         *             [ OutputEvent 1..n ]
-         *         [ Slot Attributes duplicate ]
-         *          [ Articulation 1..n duplicate ]
+         *      [ SoundSlots / Slots 1..n ]
+         *          [ Remote Key / PSlotThruTrigger ]
+         *          [ Slot Attributes ]
+         *          [ OutputEvent 1..n ]
+         *          [ Slot Attributes duplicate ]
+         *          [ Articulation n..m duplicate ]
+         *          [ Color ]
          *      [ Controller ]
          * [ Footer ]
          * 
@@ -45,6 +47,7 @@ namespace EME_Expression_Map_Editor.Model
          * They are presently discarded on read, and written with arbitrary default values derives from Cubase-generated maps. 
          *      - Ownership (appears for every object record) 
          *      - Status
+         *      - Version (appears for every SoundSlot record) 
          *      - Controller (object record near end of file)
          *       
          */

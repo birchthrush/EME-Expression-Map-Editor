@@ -24,19 +24,26 @@ namespace EME_Expression_Map_Editor.ViewModel
     public static class Common
     {
 
+        /// <summary>
+        /// Inserts a new T object into list at specified index. Object will have default values as defined by default constructor.
+        /// A post-insertion function may be used for copying certain parameters from preceding object in list. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="idx"></param>
+        /// <param name="copy_func"></param>
+        /// <returns></returns>
         public static int AddItem<T>(ObservableCollection<T> list, int idx, Action<T, T> copy_func) where T : ViewModelBase, new()
         {
             if (list.Count == 0)
             {
                 T item = new T(); 
-                //copy_func(item);
                 list.Add(item);
                 return 0;
             }
             else
             {
                 idx = Math.Clamp(idx, 0, list.Count - 1);
-                //T item = (T)list[idx].Clone();
                 T item = new T(); 
                 list.Insert(idx + 1, item);
                 copy_func(list[idx], item);

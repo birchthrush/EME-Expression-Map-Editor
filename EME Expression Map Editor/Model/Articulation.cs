@@ -77,7 +77,9 @@ namespace EME_Expression_Map_Editor.Model
             return description;
         }
 
-
+		/// <summary>
+		/// Singleton representing a blank articulation. Used as convenience placeholder for functionally unassigned articulations. 
+		/// </summary>
         private static Articulation _blank = new Articulation();
 		public static Articulation Blank
 		{
@@ -101,7 +103,11 @@ namespace EME_Expression_Map_Editor.Model
 			Attribute = 0,
 			Direction = 1
 		}
-
+		
+		/// <summary>
+		/// Numeric code represential musical symbols. Reverse-engineered from Cubase-generated maps; these seem to be
+		/// arbitrary numbers not conforming to any known standards. List is very incomplete. 
+		/// </summary>
 		public enum SymbolCode
 		{
 			TenutoDash = 43,

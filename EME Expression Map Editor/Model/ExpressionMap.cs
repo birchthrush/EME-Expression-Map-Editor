@@ -56,8 +56,8 @@ namespace EME_Expression_Map_Editor.Model
 			return copy; 
 		}
 
-		// Must be performed after map has been read from file or VM layer. See documentation in XmlFileManagement.XmlConstants
-		public void RemapArticulations()
+        // Must be performed after map has been read from file or VM layer. See documentation in XmlFileManagement.XmlConstants
+        public void RemapArticulations()
 		{
 			foreach (SoundSlot slot in SoundSlots)
 			{
