@@ -44,7 +44,7 @@ namespace EME_Expression_Map_Editor.ViewModel
 
             // Event is unique: 
             oe.Occurrences = 1; 
-            OutputEvents.Add(oe);
+            OutputEvents.Add((OutputEventViewModel)oe.Clone());
         }
 
         private void InitializeReplacementEvent()
