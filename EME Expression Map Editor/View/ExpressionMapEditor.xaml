@@ -87,6 +87,7 @@
                                     <MenuItem Header="Generate slot names from articulations" Command="{Binding GenerateSlotNamesCommand}" />
                                     <Separator />
                                     <MenuItem Header="Ascending assignment of Remote Keys from first selected slot" Command="{Binding IncrementRemoteKeysCommand}" />
+                                    <MenuItem Header="Remove Remot Keys assignment from selected slots" Command="{Binding RemoveRemoteKeysCommand }" />
                                     <MenuItem Header="Show remote keys as program changes" IsCheckable="True" IsChecked="{Binding ShowRemoteKeysAsProgramChanges}" />
                                 </ContextMenu>
                             </DataGrid.ContextMenu>

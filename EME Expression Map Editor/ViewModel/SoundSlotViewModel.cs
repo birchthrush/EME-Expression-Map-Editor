@@ -160,6 +160,12 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
+        public void UnassignRemoteKey()
+        {
+            _slot.RemoteKey = SoundSlot.NoRemoteKey; 
+            OnPropertyChanged(nameof(RemoteKey));
+        }
+
         // Slot's midi channel: displayed as 1-16 on UI for readability
         // An offset of (-1) is applied to convert to 0-15 formatting internally
         // Model layer handles range checks

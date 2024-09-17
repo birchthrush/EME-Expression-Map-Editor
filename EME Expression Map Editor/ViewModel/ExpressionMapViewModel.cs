@@ -334,6 +334,13 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
+        public ICommand RemoveRemoteKeysCommand { get; private set; }
+        private void RemoveRemoteKeys()
+        {
+            foreach (var slot in SoundSlots.Where(x => x.IsSelected))
+                slot.UnassignRemoteKey(); 
+        }
+
         public ICommand GenerateSlotNamesCommand { get; private set;  }
         private void GenerateSlotNames()
         {
@@ -751,6 +758,7 @@ namespace EME_Expression_Map_Editor.ViewModel
             SetChannelCommand = new NoParameterCommand(SetChannel);
             PropagateOutputMappingCommand = new NoParameterCommand(PropagateOutputMapping);
             IncrementRemoteKeysCommand = new NoParameterCommand(IncrementRemoteKeys);
+            RemoveRemoteKeysCommand = new NoParameterCommand(RemoveRemoteKeys); 
             GenerateSlotNamesCommand = new NoParameterCommand(GenerateSlotNames); 
 
             // Articulation Grid Commands: 
