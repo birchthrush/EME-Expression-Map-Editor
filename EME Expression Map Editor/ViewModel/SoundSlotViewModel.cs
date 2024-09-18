@@ -138,6 +138,8 @@ namespace EME_Expression_Map_Editor.ViewModel
             }
         }
 
+        // For consistency with Cubase, Program Changes will be displayed as 1-128, not the more binary accurate 0-127. 
+        // Hence the special clauses and offsets. 
         public string RemoteKey
         {
             get
@@ -145,13 +147,17 @@ namespace EME_Expression_Map_Editor.ViewModel
                 if (_slot.RemoteKey == SoundSlot.NoRemoteKey)
                     return "-";
                 else if (ExpressionMapViewModel.Instance.ShowRemoteKeysAsProgramChanges)
-                    return _slot.RemoteKey.ToString(); 
+                    return (_slot.RemoteKey + 1).ToString(); 
                 else
                     return MidiNote.MidiNoteToString(_slot.RemoteKey);
             }
             set
             {
                 int n = MidiNote.TryParse(value);
+
+                if (ExpressionMapViewModel.Instance.ShowRemoteKeysAsProgramChanges)
+                    n -= 1;  // Program change offset
+
                 if (n >= 0)
                     _slot.RemoteKey = n;
                 else

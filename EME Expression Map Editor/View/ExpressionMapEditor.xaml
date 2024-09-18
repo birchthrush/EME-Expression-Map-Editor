@@ -82,7 +82,7 @@
                                     <MenuItem Header="Insert multiple new slots (Ctrl+N)" Command="{Binding AddSlotsPopupCommand}" />
                                     <MenuItem Header="Duplicate selected slots (Ctrl+D)" Command="{Binding DuplicateSoundSlotCommand}" />
                                     <MenuItem Header="Propagate output mapping from first selected slot to others (Ctrl+P)" Command="{Binding PropagateOutputMappingCommand}" />
-                                    <MenuItem Header="Search-and-Replace ouptut events in selected slots (Ctrl+H)" Command="{Binding BatchProcessingPopupCommand}" />
+                                    <MenuItem Header="Batch process output events in selected slots (Ctrl+H)" Command="{Binding BatchProcessingPopupCommand}" />
                                     <Separator />
                                     <MenuItem Header="Generate slot names from articulations" Command="{Binding GenerateSlotNamesCommand}" />
                                     <Separator />

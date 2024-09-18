@@ -11,28 +11,49 @@ namespace EME_Expression_Map_Editor.ViewModel
     {
         private OutputEvent _event = new OutputEvent(); 
 
+        // Note that in order to be consistent with Cubase's standards, Program Changes are displayed
+        // as 1-128, *not* as the binary accurate 0-127 - hence the special clauses and offset-by-one. 
         public string Data1
         {
             get
             {
                 if (_event.EventType == OutputEvent.NoteEvent)
                     return MidiNote.MidiNoteToString(_event.Data1);
+                else if (_event.EventType == OutputEvent.ProgramChangeEvent)
+                    return (_event.Data1 + 1).ToString();
                 else
                     return _event.Data1.ToString();
             }
             set
             {
-                _event.Data1 =  MidiNote.TryParse(value); 
+                // Verify input is either numeric value or valid note name before proceeding
+                string str = value.Trim(); 
+                if (MidiNote.IsValidNoteName(str) || Int32.TryParse(str, out int _))
+                {
+                    int n = MidiNote.TryParse(value);
+                    if (_event.EventType == OutputEvent.ProgramChangeEvent)
+                        _event.Data1 = n - 1;  // Program Change offset
+                    else
+                        _event.Data1 = n;
+                }
+
                 OnPropertyChanged(nameof(Data1));
             }
         }
 
+        // Will be hidden & disabled when using Program Change events
         public string Data2
         {
-            get => _event.Data2.ToString();
+            get
+            {
+                if (_event.EventType == OutputEvent.ProgramChangeEvent)
+                    return string.Empty; 
+                else
+                    return _event.Data2.ToString();
+            }
             set
             {
-                if (Int32.TryParse(value, out int n))
+                if (_event.EventType != OutputEvent.ProgramChangeEvent && Int32.TryParse(value, out int n))
                 {
                     _event.Data2 = n;
                     OnPropertyChanged(nameof(Data2));
@@ -61,6 +82,7 @@ namespace EME_Expression_Map_Editor.ViewModel
                     _event.EventType = OutputEvent.ProgramChangeEvent;
                 OnPropertyChanged(nameof(EventType));
                 OnPropertyChanged(nameof(Data1));
+                OnPropertyChanged(nameof(Data2));   
             }
         }
 
