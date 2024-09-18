@@ -117,7 +117,11 @@ namespace EME_Expression_Map_Editor.ViewModel
         }
 
         public override object Clone()
-            => new OutputEventViewModel(_event.Duplicate());
+        {
+            var copy = new OutputEventViewModel(_event.Duplicate());
+            copy.Occurrences = this.Occurrences;
+            return copy; 
+        }
 
         public OutputEvent UnpackModel()
             => _event.Duplicate();
