@@ -31,15 +31,17 @@ namespace EME_Expression_Map_Editor.Model
             writer.WriteStartElement(XmlConstants.ExpressionMap.StartElement);
             WriteVariable(writer, XmlConstants.ExpressionMap.Name, expmap.Name);
 
-            // Write Articulations
-            WriteStartMember(writer, XmlConstants.Articulation.MemberName, 1);
-            WriteStartList(writer);
-            // --- Iterate Articulations --- 
-            foreach (Articulation art in expmap.Articulations)
-                WriteArticulation(writer, art);
-            WriteEndList(writer);
-            WriteEndMember(writer);
-
+            // Write Articulations if list is non-empty
+            if (expmap.Articulations.Count != 0)
+            {
+                WriteStartMember(writer, XmlConstants.Articulation.MemberName, 1);
+                WriteStartList(writer);
+                // --- Iterate Articulations --- 
+                foreach (Articulation art in expmap.Articulations)
+                    WriteArticulation(writer, art);
+                WriteEndList(writer);
+                WriteEndMember(writer);
+            }
 
             WriteStartMember(writer, XmlConstants.SoundSlot.MemberName, 1);
             WriteStartList(writer);
