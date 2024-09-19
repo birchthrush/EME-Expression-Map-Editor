@@ -1,6 +1,60 @@
 # Expression Map Editor (EME)
 
 ## Features
+<details>
+  <summary><strong></strong></summary>
+</details>
+
+<details>
+  <summary><strong>Automatic completion of Articulation descriptors (optional)</strong></summary>
+
+  By convention, the Text field for an articulation is a lower-case abbreviation. EME will automatically generate the full description field by capitalizing each word and expanding selected abbreviated keywords. 
+
+  | Abbreviation | Full Description    |
+  | ------------ | ------------------- |
+  | s            | Short               |
+  | m            | Medium              |
+  | l            | Long                |
+  | f            | Fast                |
+  | sl           | Slow                |
+  | tr           | Trills              |
+  | stac         | Staccato            |
+  | trem         | Tremolo             |
+  | det          | Detaché             |
+  | marc         | Marcato             |
+  | msrd         | Measured            |
+  | leg          | Legato              |
+  | cresc        | Crescendo           |
+  | dim          | Diminuendo          |
+  | port         | Portato             |
+  | flaut        | Flautando           |
+  | cs           | Con Sordino         |
+  | ss           | Senza Sordino       |
+  | sus          | Sustains            |
+  | espr         | Espressivo          |
+  | acc          | Accented            |
+  | fp           | Fortepiano          |
+  | dbl          | Double              |
+  | trpl         | Triple              |
+  | spic         | Spiccato            |
+  | norm         | Normal              |
+  | nat          | Natural             |
+  | pizz         | Pizzicato           |
+  | rep          | Repetitions         |
+  | gliss        | Glissando           |
+  | sp           | Sul Ponticello      |
+  | st           | Sul Tasto           |
+  | pp           | Pianissimo          |
+  | ff           | Fortissimo          |
+  | nv           | Non-Vibrato         |
+  | v            | Vibrato             |
+  | mv           | Molto Vibrato       |
+  | sv           | Strong Vibrato      |
+  | pv           | Progressive Vibrato |
+  | xf           | Crossfade           |
+
+  If this behavior is not desired, the auto-completion can be disabled via a right-click menu option in the Articulation list. 
+</details>
 
 ## Known Limitations 
 <details>
