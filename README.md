@@ -1,5 +1,7 @@
 # Expression Map Editor (EME)
 
+![EME Main UI](https://github.com/birchthrush/EME-Expression-Map-Editor/blob/master/EME%20Expression%20Map%20Editor/Resources/Screenshots/main_ui.png)
+
 The basic interface should be familiar to all Cubase users, but contains numerous quality-of-life enhancements to speed up the creation of new expression maps, especially complex ones. 
 
 For more information on Cubase Expression Maps, refer to the [Cubase user manual](https://archive.steinberg.help/cubase_pro_artist/v9.5/en/cubase_nuendo/topics/expression_maps/expression_maps_c.html). 
@@ -10,6 +12,11 @@ For more information on Cubase Expression Maps, refer to the [Cubase user manual
 </details>
 
 ## Features
+<details>
+  <summary><strong>Create multiple slots or articulations</strong></summary>
+
+  Right-click in either list window to bring up the option to create multiple blank slots or articulation in one go. 
+</details>
 
 <details>
   <summary><strong>Multiple and ascending value assignment</strong></summary>
@@ -19,7 +26,7 @@ For more information on Cubase Expression Maps, refer to the [Cubase user manual
   Where applicable, hold the *alt* modifier key to assign automatically ascending values. 
 </details>
 
-<details>
+<details>  
   <summary><strong>Automatic completion of Articulation descriptors (optional)</strong></summary>
 
   By convention, the Text field for an articulation is a lower-case abbreviation. EME will automatically generate the full description field by capitalizing each word and expanding selected abbreviated keywords. 
@@ -99,11 +106,15 @@ For more information on Cubase Expression Maps, refer to the [Cubase user manual
 
   EME allows rudimentary search-and-replace operations to be performed on sound slots' output events. Select the slots you wish to operate on and select *batch processing* from the right-click menu (or use the *ctrl+h* keyboard shortcut) to bring up the window. 
 
+  ![Batch Processing Window](https://github.com/birchthrush/EME-Expression-Map-Editor/blob/master/EME%20Expression%20Map%20Editor/Resources/Screenshots/batch_processing_window.png)
 
   The window will display a set of all unique Output Events contained in the selected slots, along with the number of times each event occurs. Select which events you wish to affect and the type of operation: 
   - *Delete* will simply remove all occurrences of the selected events from all selected slots.
   - *Replace* will replace all occurrences of the selected events with the data specified in the lower section of the window.   
 </details>
+
+### A Note on Program Changes
+Note that for the sake of consistency with Cubase's conventions, all Program Changes are displayed as 1-128 - and *not* as the more binary accurate 0-127, unlike many other DAW:s and instruments. 
 
 ## Known Limitations 
 <details>
