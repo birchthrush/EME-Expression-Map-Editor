@@ -108,9 +108,7 @@ For more information on Cubase Expression Maps, refer to the [Cubase user manual
   - *Replace* will replace all occurrences of the selected events with the data specified in the lower section of the window.   
 </details>
 
-<details>
-  <summary><strong>Keyboard shortcuts</strong></summary>
-
+### Keyboard Shortcuts
   | Shortcut | Command                                             |
   | -------- | --------------------------------------------------- |
   | Insert   | Creates new element in list                         |
@@ -119,8 +117,6 @@ For more information on Cubase Expression Maps, refer to the [Cubase user manual
   | ctrl+d   | Duplicate selected sound slot(s)                    |
   | ctrl+p   | Propagate output events from first selected slot    |
   | ctrl+h   | Batch processing of output events on selected slots |
-</details>
-
 
 ### A Note on Program Changes
 Note that for the sake of consistency with Cubase's conventions, all Program Changes are displayed as 1-128 - and *not* as the more binary accurate 0-127, unlike many other DAW:s and instruments. 
