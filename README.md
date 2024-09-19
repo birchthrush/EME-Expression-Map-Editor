@@ -11,8 +11,8 @@
 <details>
   <summary><strong>Limited error checking</strong></summary>
 
-  For example, EME does not explicitly forbid the creation of multiple articulations with identical names - however doing so will result in undefined behavior once imported back into Cubase. Employ common sense. ``
+  For example, EME does not explicitly forbid the creation of multiple articulations with identical names - however doing so will result in undefined behavior once imported back into Cubase. Employ common sense.
 </details>
 
-### Disclaimer
+## Disclaimer
 While EME has been tested extensively without issue, do note that this program relies on reverse-engineering an undocumented format - as such, perfect reliability cannot be guaranteed. Future versions of Cubase may introduce changes to the format that create compatibility issues. Compatibility has not been verified with other third-party expression map tools/generators. Use at your own risk. 
