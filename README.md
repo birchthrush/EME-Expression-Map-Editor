@@ -6,11 +6,6 @@ The basic interface should be familiar to all Cubase users, but contains numerou
 
 For more information on Cubase Expression Maps, refer to the [Cubase user manual](https://archive.steinberg.help/cubase_pro_artist/v9.5/en/cubase_nuendo/topics/expression_maps/expression_maps_c.html). 
 
-
-<details>
-  <summary><strong></strong></summary>
-</details>
-
 ## Features
 <details>
   <summary><strong>Create multiple slots or articulations</strong></summary>
@@ -112,6 +107,20 @@ For more information on Cubase Expression Maps, refer to the [Cubase user manual
   - *Delete* will simply remove all occurrences of the selected events from all selected slots.
   - *Replace* will replace all occurrences of the selected events with the data specified in the lower section of the window.   
 </details>
+
+<details>
+  <summary><strong>Keyboard shortcuts</strong></summary>
+
+  | Shortcut | Command                                             |
+  | -------- | --------------------------------------------------- |
+  | Insert   | Creates new element in list                         |
+  | Delete   | Removes selected element(s) from list               |
+  | ctrl+n   | Create multiple elements                            |
+  | ctrl+d   | Duplicate selected sound slot(s)                    |
+  | ctrl+p   | Propagate output events from first selected slot    |
+  | ctrl+h   | Batch processing of output events on selected slots |
+</details>
+
 
 ### A Note on Program Changes
 Note that for the sake of consistency with Cubase's conventions, all Program Changes are displayed as 1-128 - and *not* as the more binary accurate 0-127, unlike many other DAW:s and instruments. 
