@@ -1,8 +1,22 @@
 # Expression Map Editor (EME)
 
-## Features
+The basic interface should be familiar to all Cubase users, but contains numerous quality-of-life enhancements to speed up the creation of new expression maps, especially complex ones. 
+
+For more information on Cubase Expression Maps, refer to the [Cubase user manual](https://archive.steinberg.help/cubase_pro_artist/v9.5/en/cubase_nuendo/topics/expression_maps/expression_maps_c.html). 
+
+
 <details>
   <summary><strong></strong></summary>
+</details>
+
+## Features
+
+<details>
+  <summary><strong>Multiple and ascending value assignment</strong></summary>
+
+  Many parameters - most notably articulations, colors and midi channels - will be assigned for all selected sound slots. 
+  
+  Where applicable, hold the *alt* modifier key to assign automatically ascending values. 
 </details>
 
 <details>
@@ -53,7 +67,42 @@
   | pv           | Progressive Vibrato |
   | xf           | Crossfade           |
 
-  If this behavior is not desired, the auto-completion can be disabled via a right-click menu option in the Articulation list. 
+  If this behavior is not desired, auto-completion can be disabled via a right-click menu option in the Articulation list. 
+</details>
+
+<details>
+  <summary><strong>Automatic generation of Sound Slot names</strong></summary>
+
+  Accessible via right-click menu. EME will generate names for the selected slots based on their assigned articulations' Description field. If multiple groups are used, the names will be concatenated from left to right. 
+</details>
+
+<details>
+  <summary><strong>Duplication of slots, copying of output mapping</strong></summary>
+
+  Sound Slots can be duplicated via a right-click option (or the *ctrl+d* key command), retaining all their parameters. This is often useful for managing the combinatorial explosion resulting from using groups, where you often end up with multiple slots that differ only in their group assignments and minor details in output mapping - in such cases, duplicating then modifying slots may be faster than building all from scratch. 
+
+  Also available is the option of copying only the Output Events across multiple slots. When making a multiple selection, the Output section will always reflect the *first* selected slot - this is the data that will be copied across *all* selected sound slots, overwriting any existing Output Events. 
+</details>
+
+<details>
+  <summary><strong>Copying and automatic incrementation of Output Events</strong></summary>
+
+  The following operations are available as right-click options in the Output Events section. Operations will be carried out (in top-to-bottom order where relevant) on all selected sound slots. Note that the Output Events section always reflects the contents of the *first* selected slot. 
+  - Copy output events: with options for automatically incrementing either Data field.
+  - Increment nth event: will increment the specified Data field on the nth event (ie: if the first output event in a list is selected, the first event on all slots will be incremented if it exists) on all slots. This in-place modification is sometimes useful when slots have been created via duplication and already have existing output events.
+
+  Typical use case: many instruments have all articulations laid out with ascending keyswitches. Set up and select the appropriate sound slots (with the lowest keyswitched articulation on top), insert a keyswitch OutputEvent on the first event and use the *Copy and increment Data1* command to create ascending keyswitches on all slots. 
+</details>
+
+<details>
+  <summary><strong>Batch processing of output mapping</strong></summary>
+
+  EME allows rudimentary search-and-replace operations to be performed on sound slots' output events. Select the slots you wish to operate on and select *batch processing* from the right-click menu (or use the *ctrl+h* keyboard shortcut) to bring up the window. 
+
+
+  The window will display a set of all unique Output Events contained in the selected slots, along with the number of times each event occurs. Select which events you wish to affect and the type of operation: 
+  - *Delete* will simply remove all occurrences of the selected events from all selected slots.
+  - *Replace* will replace all occurrences of the selected events with the data specified in the lower section of the window.   
 </details>
 
 ## Known Limitations 
