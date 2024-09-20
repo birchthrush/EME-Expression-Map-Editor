@@ -1,12 +1,18 @@
 # Expression Map Editor (EME)
 
+A standalone Windows application for creating and editing expression maps for use with Cubase. 
+
 ![EME Main UI](https://github.com/birchthrush/EME-Expression-Map-Editor/blob/master/EME%20Expression%20Map%20Editor/Resources/Screenshots/main_ui.png)
 
-The basic interface should be familiar to all Cubase users, but contains numerous quality-of-life enhancements to speed up the creation of new expression maps, especially complex ones. 
+The basic interface should be familiar to all Cubase users, but contains numerous quality-of-life enhancements over the native editor to speed up the creation of new expression maps, especially complex ones. 
 
 For more information on Cubase Expression Maps, refer to the [Cubase user manual](https://archive.steinberg.help/cubase_pro_artist/v9.5/en/cubase_nuendo/topics/expression_maps/expression_maps_c.html). 
 
-## Features
+### Requirements
+
+Windows only. Requires .NET 6.0 or newer. 
+
+## Main Features
 <details>
   <summary><strong>Create multiple slots or articulations</strong></summary>
 
