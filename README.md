@@ -8,7 +8,9 @@ The basic interface should be familiar to all Cubase users, but contains numerou
 
 For more information on Cubase Expression Maps, refer to the [Cubase user manual](https://archive.steinberg.help/cubase_pro_artist/v9.5/en/cubase_nuendo/topics/expression_maps/expression_maps_c.html). 
 
-### Requirements
+### Installation
+
+No installation required. Just download and run the executable. 
 
 Windows only. Requires .NET 6.0 or newer. 
 
