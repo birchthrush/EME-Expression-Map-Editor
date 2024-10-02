@@ -126,8 +126,10 @@ Windows only. Requires .NET 6.0 or newer.
   | ctrl+p   | Propagate output events from first selected slot    |
   | ctrl+h   | Batch processing of output events on selected slots |
 
-### A Note on Program Changes
+### Notes on Data Entry
 Note that for the sake of consistency with Cubase's conventions, all Program Changes are displayed as 1-128 - and *not* as the more binary accurate 0-127, unlike many other DAW:s and instruments. 
+
+Pitches may be entered either as note names (C-2 to G8) or numerically (0 to 127). Middle-C is notated as C3 (note name) or 60 (numerically). 
 
 ## Known Limitations 
 <details>
@@ -142,4 +144,4 @@ Note that for the sake of consistency with Cubase's conventions, all Program Cha
 </details>
 
 ## Disclaimer
-While EME has been tested extensively for my own use cases without issues, do note that this program relies on reverse-engineering an undocumented format - as such, perfect reliability cannot be guaranteed. Future versions of Cubase may introduce changes to the format that create compatibility issues. Compatibility has not been verified with other third-party expression map tools/generators. Use at your own risk. 
+While EME has been tested extensively in my own use cases without issues in Cubase 12 & 13, do note that this program relies on reverse-engineering an undocumented format - as such, perfect reliability cannot be guaranteed. Future versions of Cubase may introduce changes to the expression map system or file format that create compatibility issues. Compatibility has not been verified with other third-party expression map tools/generators. Use at your own risk. 
