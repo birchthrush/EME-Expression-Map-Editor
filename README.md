@@ -127,7 +127,7 @@ Windows only. Requires .NET 6.0 or newer.
   | ctrl+h   | Batch processing of output events on selected slots |
 
 ### Notes on Data Entry
-Note that for the sake of consistency with Cubase's conventions, all Program Changes are displayed as 1-128 - and *not* as the more binary accurate 0-127, unlike many other DAW:s and instruments. 
+For the sake of consistency with Cubase's conventions, all Program Changes are displayed as 1-128 - and *not* as the more binary accurate 0-127, unlike many other DAW:s and instruments. 
 
 Pitches may be entered either as note names (C-2 to G8) or numerically (0 to 127). Middle-C is notated as C3 (note name) or 60 (numerically). 
 
