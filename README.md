@@ -12,7 +12,7 @@ For more information on Cubase expression maps, refer to the [Cubase user manual
 
 No installation required. Just download and run the executable. 
 
-Windows only. Requires .NET 6.0 or newer. 
+Windows only. Requires .NET 8 to be installed - if you don't have it, Windows will ask to install it. 
 
 ## Main Features
 <details>
